@@ -95,6 +95,7 @@ def send_deal():
     print('\x1b[2A',end='\r')
     print(" "*200)
     print(" "*200)
+    print(get_t[1])
     print(" "*200)
     print('\x1b[3A',end='\r')
 
