@@ -267,6 +267,9 @@ class sx126x:
                 print("message is "+str(r_buff[4:-1]),end='\r\n')
             else:
                 print("This message was not meant for us, it was meant for %d"%r_buff[2])
+                for i in r_buff:
+                    print(r_buff[i])
+                    
             
             # print the rssi
             if self.rssi:
