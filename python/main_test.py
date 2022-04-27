@@ -88,8 +88,8 @@ def send_deal():
     # the sending message format
     #
     #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit                       own 
-    #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                          frequency                   message payload
-    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + get_t[3].encode()
+    #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                          frequency             message payload
+    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + get_t[3].encode + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + get_t[3].encode()
 
     node.send(data)
     print('\x1b[2A',end='\r')
