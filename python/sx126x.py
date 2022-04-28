@@ -263,7 +263,7 @@ class sx126x:
             r_buff = self.ser.read(self.ser.inWaiting())
             #####Made a check to see if the message was for us
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
-            if r_buff[4] == self.node_id:
+            if r_buff[2] == self.node_id:
                 print(str(r_buff[2]))
                 print("receive message from node address with frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], r_buff[1],r_buff[2]+self.start_freq),end='\r\n',flush = True)
 
