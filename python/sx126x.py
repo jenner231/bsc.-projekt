@@ -276,12 +276,6 @@ class sx126x:
                 print(str(r_buff[3]))
                 print(str(r_buff[4]))
                 print(str(r_buff[5]))
-                print(str(r_buff[6]))
-                print(str(r_buff[7]))
-                print(str(r_buff[8]))
-                print(str(r_buff[9]))
-                print(str(r_buff[10]))
-                print(str(r_buff[11]))
 
             
             # print the rssi
