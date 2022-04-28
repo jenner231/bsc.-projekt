@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="bytes([int(get_t[1]))" />
+    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="bytes(str(get_t[1]))" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -91,7 +91,21 @@
       <option name="project" value="LOCAL" />
       <updated>1651143600183</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="bytes([int(get_t[1]))">
+      <created>1651143844639</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1651143844639</updated>
+    </task>
+    <task id="LOCAL-00010" summary="bytes(str(get_t[1]))">
+      <created>1651143989993</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1651143989993</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -113,6 +127,7 @@
     <MESSAGE value="str r_buff[2]" />
     <MESSAGE value="get_t[1]" />
     <MESSAGE value="bytes([int(get_t[1]))" />
-    <option name="LAST_COMMIT_MESSAGE" value="bytes([int(get_t[1]))" />
+    <MESSAGE value="bytes(str(get_t[1]))" />
+    <option name="LAST_COMMIT_MESSAGE" value="bytes(str(get_t[1]))" />
   </component>
 </project>
