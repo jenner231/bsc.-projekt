@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="print fix">
+    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="revert">
       <change beforePath="$PROJECT_DIR$/sx126x.py" beforeDir="false" afterPath="$PROJECT_DIR$/sx126x.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +51,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651133665590</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="revert">
+      <created>1651133811553</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1651133811553</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -68,6 +75,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test" />
     <MESSAGE value="print fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="print fix" />
+    <MESSAGE value="revert" />
+    <option name="LAST_COMMIT_MESSAGE" value="revert" />
   </component>
 </project>
