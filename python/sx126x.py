@@ -262,23 +262,27 @@ class sx126x:
             r_buff = self.ser.read(self.ser.inWaiting())
             #####Made a check to see if the message was for us
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
-            if r_buff[3] == self.node_id:
+            if str(r_buff[4]) == self.node_id:
                 print(str(r_buff[2]))
                 print("receive message from node address with frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], r_buff[1],r_buff[2]+self.start_freq),end='\r\n',flush = True)
 
                 print("message is "+str(r_buff[4:-1]),end='\r\n')
             else:
                 print("This message was not meant for us, it was meant for")
-                print('%d'%r_buff[2])
-                print(r_buff[0])
-                print(r_buff[1])
-                print(r_buff[2])
-                print(r_buff[3])
-                print(r_buff[4])
-                print(r_buff[5])
-                print(r_buff[6])
-                print(r_buff[7])
-                print(r_buff[8])
+                print('%d'%str(r_buff[2]))
+                print(str(r_buff[0]))
+                print(str(r_buff[1]))
+                print(str(r_buff[2]))
+                print(str(r_buff[3]))
+                print(str(r_buff[4]))
+                print(str(r_buff[5]))
+                print(str(r_buff[6]))
+                print(str(r_buff[7]))
+                print(str(r_buff[8]))
+                print(str(r_buff[9]))
+                print(str(r_buff[10]))
+                print(str(r_buff[11]))
+
             
             # print the rssi
             if self.rssi:
