@@ -270,13 +270,13 @@ class sx126x:
                 print("message is "+str(r_buff[4:-1]),end='\r\n')
             else:
                 print("This message was not meant for us, it was meant for")
-                print('%s'%r_buff[4].decode(utf_8),end='\r\n')
-                print(r_buff[0].decode(utf_8))
-                print(r_buff[1].decode(utf_8))
-                print(r_buff[2].decode(utf_8))
-                print(r_buff[3].decode(utf_8))
-                print(r_buff[4].decode(utf_8))
-                print(r_buff[5].decode(utf_8))
+                print('%s'%r_buff[4]) #.decode(utf_8),end='\r\n')
+                print(r_buff[0])#.decode(utf_8))
+                print(r_buff[1])#.decode(utf_8))
+                print(r_buff[2])#.decode(utf_8))
+                print(r_buff[3])#.decode(utf_8))
+                print(r_buff[4])#.decode(utf_8))
+                print(r_buff[5])#.decode(utf_8))
 
             
             # print the rssi
