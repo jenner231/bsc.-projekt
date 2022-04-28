@@ -96,6 +96,7 @@ def send_deal():
     print(" "*200)
     print(" "*200)
     print(" "*200)
+    print(get_t[1])
     print('\x1b[3A',end='\r')
 
 def send_cpu_continue(continue_or_not = True):
