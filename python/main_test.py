@@ -87,8 +87,8 @@ def send_deal():
     #####
     # the sending message format
     #
-    #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit                       own 
-    #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                          frequency             message payload
+    #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit                       
+    #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                           node_id       message payload
     data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + get_t[1].encode() + get_t[3].encode()
 
     node.send(data)
@@ -96,7 +96,6 @@ def send_deal():
     print(" "*200)
     print(" "*200)
     print(" "*200)
-    print(get_t[1])
     print('\x1b[3A',end='\r')
 
 def send_cpu_continue(continue_or_not = True):
