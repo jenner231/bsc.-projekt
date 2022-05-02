@@ -269,7 +269,7 @@ class sx126x:
 
                 print("Message is: "+str(r_buff[5:-1]),end='\r\n')
             else:
-                print("%d sent a message but it was meant for: "%(int(chr(r_buff[4]))),+ str(r_buff[3]))
+                print("%d sent a message but it was meant for: "%(int(chr(r_buff[4]))) +str(r_buff[3]),end='\r\n')
 
             
             # print the rssi
