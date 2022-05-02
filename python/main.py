@@ -24,6 +24,7 @@ import termios
 import tty
 from threading import Timer
 
+
 old_settings = termios.tcgetattr(sys.stdin)
 tty.setcbreak(sys.stdin.fileno())
 

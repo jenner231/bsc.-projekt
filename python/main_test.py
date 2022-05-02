@@ -29,6 +29,13 @@ old_settings = termios.tcgetattr(sys.stdin)
 tty.setcbreak(sys.stdin.fileno())
 
 
+#####Importing node_id from a seperate folder not including in git, so we can keep pulling without defaulting back to std node_id
+sys.path.insert(1, '/home/pi/node_id')
+import node
+n_id = node.node.node_id
+sys.path.insert(1, '/home/bsc.-projekt/python')
+
+
 #
 #    Need to disable the serial login shell and have to enable serial interface 
 #    command `sudo raspi-config`
@@ -64,7 +71,7 @@ def get_cpu_temp():
 #
 
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
-node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,node_id=0,power=22,rssi=True,air_speed=2400,relay=False)
+node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,node_id=n_id,power=22,rssi=True,air_speed=2400,relay=False)
 
 def send_deal():
     #####Added the second input requirement of node id (also mentioned as 0 in line 72)
