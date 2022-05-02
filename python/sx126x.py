@@ -265,11 +265,11 @@ class sx126x:
             ##### node_id 0 is for broadcast messages
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             if int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0:
-                print("Receive message from node address with frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], chr(r_buff[4]),r_buff[2]+self.start_freq),end='\r\n',flush = True)
+                print("Receive message from node address with frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], int(chr(r_buff[4])),r_buff[2]+self.start_freq),end='\r\n',flush = True)
 
                 print("Message is: "+str(r_buff[5:-1]),end='\r\n')
             else:
-                print("%d sent a message but it was meant for: "%chr(r_buff[4]),+ str(r_buff[3]))
+                print("%d sent a message but it was meant for: "%int(chr(r_buff[4])),+ str(r_buff[3]))
 
             
             # print the rssi
