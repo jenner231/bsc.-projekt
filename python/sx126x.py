@@ -262,8 +262,9 @@ class sx126x:
             time.sleep(0.5)
             r_buff = self.ser.read(self.ser.inWaiting())
             #####Made a check to see if the message was for us
+            ##### node_id 0 is for broadcast messages
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
-            if int(chr(r_buff[3])) == self.node_id:
+            if int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0:
                 print("receive message from node address with frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], r_buff[1],r_buff[2]+self.start_freq),end='\r\n',flush = True)
 
                 print("message is "+str(r_buff[4:-1]),end='\r\n')
