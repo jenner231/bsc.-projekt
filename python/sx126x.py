@@ -268,7 +268,7 @@ class sx126x:
 
                 print("message is "+str(r_buff[4:-1]),end='\r\n')
             else:
-                print("This message was not meant for us, it was meant for: "+ str(r_buff[3])))
+                print("This message was not meant for us, it was meant for: "+ str(r_buff[3]))
                 print('%s'%int(chr(r_buff[3])))
 
             
