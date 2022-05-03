@@ -187,3 +187,5 @@ termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
     #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit              own                own 
     #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                   node id            frequency                  
   #  data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([int(get_t[1])]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.node_id]) + bytes([node.offset_freq])
+
+## just testing how bracnhing works
