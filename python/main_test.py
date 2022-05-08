@@ -26,8 +26,8 @@ import asyncio
 import tty
 from threading import Timer
 
-#####old_settings = termios.tcgetattr(sys.stdin)
-#####tty.setcbreak(sys.stdin.fileno())
+old_settings = termios.tcgetattr(sys.stdin)
+tty.setcbreak(sys.stdin.fileno())
 
 
 #####Importing node_id from a seperate folder not including in git, so we can keep pulling without defaulting back to std node_id
@@ -72,7 +72,7 @@ def get_cpu_temp():
 #
 
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
-#node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,node_id=n_id,power=22,rssi=True,air_speed=2400,relay=False)
+node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,node_id=n_id,power=22,rssi=True,air_speed=2400,relay=False)
 
 def send_deal():
     #####Added the second input requirement of node id (also mentioned as 0 in line 72)
@@ -126,65 +126,72 @@ def send_cpu_continue(continue_or_not = True):
         timer_task.cancel()
         pass
 def main():
-    old_settings = termios.tcgetattr(sys.stdin)
-    tty.setcbreak(sys.stdin.fileno())
-    node = sx126x.sx126x(serial_num="/dev/ttyS0", freq=868, addr=0, node_id=n_id, power=22, rssi=True, air_speed=2400,
-                         relay=False)
-
     try:
+        old_settings = termios.tcgetattr(sys.stdin)
+        tty.setcbreak(sys.stdin.fileno())
+        node = sx126x.sx126x(serial_num="/dev/ttyS0", freq=868, addr=0, node_id=n_id, power=22, rssi=True, air_speed=2400,
+                         relay=False)
         time.sleep(1)
         print("Press \033[1;32mEsc\033[0m to exit")
         print("Press \033[1;32mi\033[0m   to send")
         print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
-
+    
+     # it will send rpi cpu temperature every 10 seconds 
         # it will send rpi cpu temperature every 10 seconds
+     # it will send rpi cpu temperature every 10 seconds 
+        # it will send rpi cpu temperature every 10 seconds
+     # it will send rpi cpu temperature every 10 seconds 
+        # it will send rpi cpu temperature every 10 seconds
+     # it will send rpi cpu temperature every 10 seconds 
+        # it will send rpi cpu temperature every 10 seconds
+     # it will send rpi cpu temperature every 10 seconds 
         seconds = 10
-
+    
         while True:
 
             if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
                 c = sys.stdin.read(1)
 
-                # dectect key Esc
+            # dectect key Esc
                 if c == '\x1b': break
-                # dectect key i
+            # dectect key i
                 if c == '\x69':
                     send_deal()
-                # dectect key s
+            # dectect key s
                 if c == '\x73':
                     print("Press \033[1;32mc\033[0m   to exit the send task")
-                    timer_task = Timer(seconds, send_cpu_continue)
+                    timer_task = Timer(seconds,send_cpu_continue)
                     timer_task.start()
-
+                
                     while True:
                         if sys.stdin.read(1) == '\x63':
                             timer_task.cancel()
-                            print('\x1b[1A', end='\r')
-                            print(" " * 100)
-                            print('\x1b[1A', end='\r')
+                            print('\x1b[1A',end='\r')
+                            print(" "*100)
+                            print('\x1b[1A',end='\r')
                             break
 
                 sys.stdout.flush()
-
+            
             node.receive()
-
-            # timer,send messages automatically
-
+        
+        # timer,send messages automatically
+        
     except:
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
-        # print('\x1b[2A',end='\r')
-        # print(" "*100)
-        # print(" "*100)
-        # print('\x1b[2A',end='\r')
-
-    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
     # print('\x1b[2A',end='\r')
     # print(" "*100)
     # print(" "*100)
     # print('\x1b[2A',end='\r')
 
-    if __name__ == "__main()__":
-        main()
+termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+# print('\x1b[2A',end='\r')
+# print(" "*100)
+# print(" "*100)
+# print('\x1b[2A',end='\r')
+
+    ##if __name__ == "__main()__":
+      ##  main()
 
 #def send_ack():
     #send data with node id, wait for answer, if we get answer, note node_id 
