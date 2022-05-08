@@ -166,7 +166,7 @@ async def async_main():
 
 try:
     seconds = 10
-    async_main()
+    asyncio.run(async_main())
 
 except:
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
