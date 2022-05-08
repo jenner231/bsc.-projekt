@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="if node_id = node_id receive, if node_id=0 broadcast">
-      <change beforePath="$PROJECT_DIR$/main_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_test.py" afterDir="false" />
-    </list>
+    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="main function wrap" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651491765028</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="main function wrap">
+      <created>1652010549410</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1652010549410</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -138,6 +143,7 @@
     <MESSAGE value="bytes([int(get_t[1]))" />
     <MESSAGE value="bytes(str(get_t[1]))" />
     <MESSAGE value="if node_id = node_id receive, if node_id=0 broadcast" />
-    <option name="LAST_COMMIT_MESSAGE" value="if node_id = node_id receive, if node_id=0 broadcast" />
+    <MESSAGE value="main function wrap" />
+    <option name="LAST_COMMIT_MESSAGE" value="main function wrap" />
   </component>
 </project>
