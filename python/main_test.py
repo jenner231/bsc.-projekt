@@ -23,6 +23,7 @@ import time
 import select
 import termios
 import asyncio
+import tty
 from threading import Timer
 
 old_settings = termios.tcgetattr(sys.stdin)
