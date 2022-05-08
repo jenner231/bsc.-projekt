@@ -26,8 +26,8 @@ import asyncio
 import tty
 from threading import Timer
 
-#####old_settings = termios.tcgetattr(sys.stdin)
-#####tty.setcbreak(sys.stdin.fileno())
+old_settings = termios.tcgetattr(sys.stdin)
+tty.setcbreak(sys.stdin.fileno())
 
 
 #####Importing node_id from a seperate folder not including in git, so we can keep pulling without defaulting back to std node_id
@@ -72,7 +72,7 @@ def get_cpu_temp():
 #
 
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
-#node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,node_id=n_id,power=22,rssi=True,air_speed=2400,relay=False)
+node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,node_id=n_id,power=22,rssi=True,air_speed=2400,relay=False)
 
 def send_deal():
     #####Added the second input requirement of node id (also mentioned as 0 in line 72)
@@ -125,12 +125,8 @@ def send_cpu_continue(continue_or_not = True):
         time.sleep(0.2)
         timer_task.cancel()
         pass
-def main():
-    old_settings = termios.tcgetattr(sys.stdin)
-    tty.setcbreak(sys.stdin.fileno())
-    node = sx126x.sx126x(serial_num="/dev/ttyS0", freq=868, addr=0, node_id=n_id, power=22, rssi=True, air_speed=2400,
-                         relay=False)
 
+def main():
     try:
         time.sleep(1)
         print("Press \033[1;32mEsc\033[0m to exit")
@@ -177,14 +173,14 @@ def main():
         # print(" "*100)
         # print('\x1b[2A',end='\r')
 
-    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
     # print('\x1b[2A',end='\r')
     # print(" "*100)
     # print(" "*100)
     # print('\x1b[2A',end='\r')
 
-    if __name__ == "__main()__":
-        main()
+if __name__ == "__main()__":
+    main()
 
 #def send_ack():
     #send data with node id, wait for answer, if we get answer, note node_id 

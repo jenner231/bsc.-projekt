@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="commented out if name = main">
+    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="move node etc. to main()">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_test.py" afterDir="false" />
     </list>
@@ -164,7 +164,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652011103346</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="move node etc. to main()">
+      <created>1652012899746</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1652012899746</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -191,6 +198,18 @@
     <MESSAGE value="main function wrap" />
     <MESSAGE value="restore tty" />
     <MESSAGE value="commented out if name = main" />
-    <option name="LAST_COMMIT_MESSAGE" value="commented out if name = main" />
+    <MESSAGE value="move node etc. to main()" />
+    <option name="LAST_COMMIT_MESSAGE" value="move node etc. to main()" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
