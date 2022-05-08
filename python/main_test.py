@@ -178,8 +178,8 @@ def main():
     # print(" "*100)
     # print('\x1b[2A',end='\r')
 
-    if __name__ == "__main()__":
-        main()
+    #if __name__ == "__main()__":
+    #    main()
 
 #def send_ack():
     #send data with node id, wait for answer, if we get answer, note node_id 
