@@ -47,7 +47,7 @@ sys.path.insert(1, '/home/bsc.-projekt/python')
 
 
 #    The following is to obtain the temprature of the RPi CPU 
-def get_cpu_temp():
+async def get_cpu_temp():
     tempFile = open( "/sys/class/thermal/thermal_zone0/temp" )
     cpu_temp = tempFile.read()
     tempFile.close()
@@ -74,7 +74,7 @@ def get_cpu_temp():
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
 node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,node_id=n_id,power=22,rssi=True,air_speed=2400,relay=False)
 
-def send_deal():
+async def send_deal():
     #####Added the second input requirement of node id (also mentioned as 0 in line 72)
     get_rec = ""
     print("")
@@ -107,7 +107,7 @@ def send_deal():
     print(" "*200)
     print('\x1b[3A',end='\r')
 
-def send_cpu_continue(continue_or_not = True):
+async def send_cpu_continue(continue_or_not = True):
     if continue_or_not:
         global timer_task
         global seconds
@@ -126,14 +126,13 @@ def send_cpu_continue(continue_or_not = True):
         timer_task.cancel()
         pass
 
-def async_main():
+async def async_main():
     time.sleep(1)
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
 
     # it will send rpi cpu temperature every 10 seconds
-    seconds = 10
 
     while True:
 
@@ -166,6 +165,7 @@ def async_main():
         # timer,send messages automatically
 
 try:
+    seconds = 10
     async_main()
 
 except:
@@ -182,8 +182,8 @@ termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
 # print('\x1b[2A',end='\r')
 
 
-#def send_ack():
-    #send data with node id, wait for answer, if we get answer, note node_id 
+async def send_ack():
+  #  send data with node id, wait for answer, if we get answer, note node_id 
  #   offset_frequence = int(get_t[2])-(850 if int(get_t[2])>850 else 410)
     #####Added the node id to the data variable, both in receiving node and own node.
     #####
@@ -191,6 +191,8 @@ termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
     #
     #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit              own                own 
     #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                   node id            frequency                  
-  #  data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([int(get_t[1])]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.node_id]) + bytes([node.offset_freq])
-
+   while(1):
+    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([int(get_t[1])]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.node_id]) + bytes([node.offset_freq])
+    node.send(data)
+    await asyncio.sleep(60)
 ## just testing how bracnhing works
