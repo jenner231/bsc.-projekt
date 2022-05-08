@@ -126,61 +126,63 @@ def send_cpu_continue(continue_or_not = True):
         timer_task.cancel()
         pass
 
-def main():
-    try:
-        time.sleep(1)
-        print("Press \033[1;32mEsc\033[0m to exit")
-        print("Press \033[1;32mi\033[0m   to send")
-        print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
+def async_main():
+    time.sleep(1)
+    print("Press \033[1;32mEsc\033[0m to exit")
+    print("Press \033[1;32mi\033[0m   to send")
+    print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
 
-        # it will send rpi cpu temperature every 10 seconds
-        seconds = 10
+    # it will send rpi cpu temperature every 10 seconds
+    seconds = 10
 
-        while True:
+    while True:
 
-            if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
-                c = sys.stdin.read(1)
+        if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
+            c = sys.stdin.read(1)
 
-                # dectect key Esc
-                if c == '\x1b': break
-                # dectect key i
-                if c == '\x69':
-                    send_deal()
-                # dectect key s
-                if c == '\x73':
-                    print("Press \033[1;32mc\033[0m   to exit the send task")
-                    timer_task = Timer(seconds, send_cpu_continue)
-                    timer_task.start()
+            # dectect key Esc
+            if c == '\x1b': break
+            # dectect key i
+            if c == '\x69':
+                send_deal()
+            # dectect key s
+            if c == '\x73':
+                print("Press \033[1;32mc\033[0m   to exit the send task")
+                timer_task = Timer(seconds, send_cpu_continue)
+                timer_task.start()
 
-                    while True:
-                        if sys.stdin.read(1) == '\x63':
-                            timer_task.cancel()
-                            print('\x1b[1A', end='\r')
-                            print(" " * 100)
-                            print('\x1b[1A', end='\r')
-                            break
+                while True:
+                    if sys.stdin.read(1) == '\x63':
+                        timer_task.cancel()
+                        print('\x1b[1A', end='\r')
+                        print(" " * 100)
+                        print('\x1b[1A', end='\r')
+                        break
 
-                sys.stdout.flush()
+            sys.stdout.flush()
 
-            node.receive()
+        node.receive()
 
-            # timer,send messages automatically
+        # timer,send messages automatically
 
-    except:
-        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
-        # print('\x1b[2A',end='\r')
-        # print(" "*100)
-        # print(" "*100)
-        # print('\x1b[2A',end='\r')
+try:
+    async_main()
+
+except:
+    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+    # print('\x1b[2A',end='\r')
+    # print(" "*100)
+    # print(" "*100)
+    # print('\x1b[2A',end='\r')
 
 termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
-    # print('\x1b[2A',end='\r')
-    # print(" "*100)
-    # print(" "*100)
-    # print('\x1b[2A',end='\r')
+# print('\x1b[2A',end='\r')
+# print(" "*100)
+# print(" "*100)
+# print('\x1b[2A',end='\r')
 
 if __name__ == "__main()__":
-    main()
+main()
 
 #def send_ack():
     #send data with node id, wait for answer, if we get answer, note node_id 
