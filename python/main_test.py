@@ -134,7 +134,7 @@ async def send_cpu_continue(continue_or_not = True):
         pass
 
 async def async_main():
-    time.sleep(1)
+    asyncio.sleep(1)
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
@@ -154,15 +154,15 @@ async def async_main():
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
-                cpu = asyncio.create_task(send_cpu_continue())
-                await cpu
+                #cpu = asyncio.create_task(send_cpu_continue())
+                #await cpu
                 #timer_task = Timer(seconds, send_cpu_continue)
                 #timer_task.start()
 
                 while True:
                     #press c to cancel
                     if sys.stdin.read(1) == '\x63':
-                        cpu.cancel()
+                        #cpu.cancel()
                         #timer_task.cancel()
                         print('\x1b[1A', end='\r')
                         print(" " * 100)
