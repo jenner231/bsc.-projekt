@@ -82,7 +82,7 @@ async def send_deal():
     print("")
     print("input a string such as \033[1;32m0,0,868,Hello World\033[0m,it will send `Hello World` to lora node device of address 0 with node id 0 and 868M ")
     print("please input and press Enter key:",end='',flush=True)
-
+    ack_id = 0
     while True:
         rec = sys.stdin.read(1)
         if rec != None:
@@ -98,9 +98,9 @@ async def send_deal():
     #####
     # the sending message format
     #
-    #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit                     
-    #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                           node_id      message payload
-    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + get_t[1].encode() + str(node.node_id).encode() + get_t[3].encode()
+    #         receiving node              receiving node             receiving node             own high 8bit            own low 8bit                     
+    #         high 8bit address           low 8bit addre             frequency                  address                  address                      rec node id         own node_id                  ack_id                  message payload
+    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + get_t[1].encode() + str(node.node_id).encode() + str(ack_id).encode() + get_t[3].encode()
 
     node.send(data)
     print('\x1b[2A',end='\r')
@@ -134,7 +134,7 @@ async def send_deal():
         #pass
 
 async def async_main():
-    asyncio.sleep(1)
+    await asyncio.sleep(1)
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
@@ -195,17 +195,17 @@ termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
 # print('\x1b[2A',end='\r')
 
 
-#async def send_ack():
+async def send_ack():
   #  send data with node id, wait for answer, if we get answer, note node_id 
- #   offset_frequence = int(get_t[2])-(850 if int(get_t[2])>850 else 410)
+    offset_frequence = int(868)-(850 if int(868)>850 else 410)
+    ack_id = 1
     #####Added the node id to the data variable, both in receiving node and own node.
     #####
     # the sending message format
     #
-    #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit              own                own 
-    #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                   node id            frequency                  
-   #while True:
-    #data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([int(get_t[1])]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.node_id]) + bytes([node.offset_freq])
-    #node.send(data)
-    #await asyncio.sleep(60)
-## just testing how bracnhing works
+    #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit                      own                own 
+    #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                           node id            frequency                  
+    while True:
+       data = bytes([int(0)>>8]) + bytes([int(0)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(0).encode() + str(node.node_id).encode() + str(ack_id).encode()
+       node.send(data)
+       await asyncio.sleep(60)

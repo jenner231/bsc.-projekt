@@ -1,11 +1,21 @@
 # This file is used for LoRa and Raspberry pi4B related issues 
 
+from typing_extensions import Self
 import RPi.GPIO as GPIO
 import serial
 import time
+import sys
 from encodings import utf_8
 
+
+
 class sx126x:
+    ##importing the node library to manually set node id on each node without overwriting from github pulls
+    sys.path.insert(1, '/home/pi/node_id')
+    import node
+    n_id = node.node.node_id
+    sys.path.insert(1, '/home/bsc.-projekt/python')
+
 
     M0 = 22
     M1 = 27
@@ -18,7 +28,7 @@ class sx126x:
     serial_n = ""
     addr_temp = 0
     #####Created node_id variable as a unique identifier. Each node should have their own node_id
-    node_id = 0
+    node_id = n_id
     reachable_dev = []
 
     #
@@ -56,6 +66,7 @@ class sx126x:
     SX126X_Power_17dBm = 0x01
     SX126X_Power_13dBm = 0x02
     SX126X_Power_10dBm = 0x03
+
 
     lora_air_speed_dic = {
         1200:0x01,
@@ -255,6 +266,14 @@ class sx126x:
         # if self.rssi == True:
             # self.get_channel_rssi()
         time.sleep(0.1)
+    
+    def ret_ack(self, received_data):
+        get_t = received_data
+        get_t[5] = 2
+        #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit                     
+        #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                              rec node id         own node_id                  ack_id                 
+        data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([get_t[2]+self.start_freq]) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + get_t[4].encode() + str(self.node_id).encode() + str(get_t[5]).encode()
+        self.send(data)
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self):
@@ -264,13 +283,21 @@ class sx126x:
             #####Made a check to see if the message was for us
             ##### node_id 0 is for broadcast messages
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
-            if int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0:
-                print("Receive message from node address with frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], int(chr(r_buff[4])),r_buff[2]+self.start_freq),end='\r\n',flush = True)
+            if (int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0):
+                match int(chr(r_buff[5])):
+                    case '0':
+                        print("Receive message from node address with id and frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], int(chr(r_buff[4])),r_buff[2]+self.start_freq),end='\r\n',flush = True)
 
-                print("Message is: "+str(r_buff[5:-1]),end='\r\n')
+                        print("Message is: "+str(r_buff[6:-1]),end='\r\n')
+                    case '1':
+                        ###Only change is the value of r_buff[5] which is the value of ack_id
+                        ##call the acknowledgement function 
+                        ret_ack(self, r_buff)
+                    case '2':
+                        self.reachable_dev.append(int(chr(r_buff[5])))
+                        print(self.reachable_dev)
             else:
                 print("%d sent a message but it was meant for: %d"%(int(chr(r_buff[4])), int(chr(r_buff[3]))))
-
             
             # print the rssi
             if self.rssi:
