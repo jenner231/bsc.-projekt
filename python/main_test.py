@@ -109,29 +109,29 @@ async def send_deal():
     print(" "*200)
     print('\x1b[3A',end='\r')
 
-async def send_cpu_continue(continue_or_not = True):
-    if continue_or_not:
-        await asyncio.sleep(10)
+#async def send_cpu_continue(continue_or_not = True):
+    #if continue_or_not:
+        #await asyncio.sleep(10)
         #global timer_task
         #global seconds
         #
         # boarcast the cpu temperature at 868.125MHz
         #
-        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
-        node.send(data)
-        await asyncio.sleep(0.2)
+        #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
+        #node.send(data)
+        #await asyncio.sleep(0.2)
         #time.sleep(0.2)
-        rec = asyncio.create_task(send_cpu_continue())
-        await rec
+        #rec = asyncio.create_task(send_cpu_continue())
+        #await rec
         #timer_task = Timer(seconds,send_cpu_continue)
         #timer_task.start()
-    else:
-        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
-        node.send(data)
-        await asyncio.sleep(0.2)
+    #else:
+        #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
+        #node.send(data)
+        #await asyncio.sleep(0.2)
         #time.sleep(0.2)
         #timer_task.cancel()
-        pass
+        #pass
 
 async def async_main():
     asyncio.sleep(1)
@@ -150,7 +150,7 @@ async def async_main():
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
-                send_deal()
+                await send_deal()
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
