@@ -142,7 +142,6 @@ async def async_main():
     # it will send rpi cpu temperature every 10 seconds
 
     while True:
-        print("test")
 
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
             c = sys.stdin.read(1)
@@ -177,7 +176,8 @@ async def async_main():
         # timer,send messages automatically
 
 try:
-    seconds = 10
+    #seconds = 10
+    print("test")
     asyncio.run(async_main())
 
 except:
