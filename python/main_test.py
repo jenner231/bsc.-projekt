@@ -141,37 +141,37 @@ async def async_main():
 
     # it will send rpi cpu temperature every 10 seconds
 
-    #while True:
+    while True:
 
-     #   if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
-      #      c = sys.stdin.read(1)
+        if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
+            c = sys.stdin.read(1)
 
             # dectect key Esc
-       #     if c == '\x1b': break
+            if c == '\x1b': break
             # dectect key i
-        #    if c == '\x69':
-         #       send_deal()
+            if c == '\x69':
+                send_deal()
             # dectect key s
-          #  if c == '\x73':
-           #     print("Press \033[1;32mc\033[0m   to exit the send task")
-                #cpu = asyncio.create_task(send_cpu_continue())
-                #await cpu
+            if c == '\x73':
+                print("Press \033[1;32mc\033[0m   to exit the send task")
+                cpu = asyncio.create_task(send_cpu_continue())
+                await cpu
                 #timer_task = Timer(seconds, send_cpu_continue)
                 #timer_task.start()
 
-            #    while True:
+                while True:
                     #press c to cancel
-             #       if sys.stdin.read(1) == '\x63':
-                        #cpu.cancel()
+                    if sys.stdin.read(1) == '\x63':
+                        cpu.cancel()
                         #timer_task.cancel()
-              #          print('\x1b[1A', end='\r')
-               #         print(" " * 100)
-                #        print('\x1b[1A', end='\r')
-                 #       break
+                        print('\x1b[1A', end='\r')
+                        print(" " * 100)
+                        print('\x1b[1A', end='\r')
+                        break
 
-           # sys.stdout.flush()
+            sys.stdout.flush()
 
-        #node.receive()
+        node.receive()
 
         # timer,send messages automatically
 
