@@ -16,6 +16,8 @@
 #
 
 from encodings import utf_8
+from multiprocessing import cpu_count
+from pickle import TRUE
 import sys
 import sx126x
 import threading
@@ -109,21 +111,26 @@ async def send_deal():
 
 async def send_cpu_continue(continue_or_not = True):
     if continue_or_not:
-        global timer_task
-        global seconds
+        await asyncio.sleep(10)
+        #global timer_task
+        #global seconds
         #
         # boarcast the cpu temperature at 868.125MHz
         #
         data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
         node.send(data)
-        time.sleep(0.2)
-        timer_task = Timer(seconds,send_cpu_continue)
-        timer_task.start()
+        await asyncio.sleep(0.2)
+        #time.sleep(0.2)
+        rec = asyncio.create_task(send_cpu_continue())
+        await rec
+        #timer_task = Timer(seconds,send_cpu_continue)
+        #timer_task.start()
     else:
         data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
         node.send(data)
-        time.sleep(0.2)
-        timer_task.cancel()
+        await asyncio.sleep(0.2)
+        #time.sleep(0.2)
+        #timer_task.cancel()
         pass
 
 async def async_main():
@@ -147,12 +154,16 @@ async def async_main():
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
-                timer_task = Timer(seconds, send_cpu_continue)
-                timer_task.start()
+                cpu = asyncio.create_task(send_cpu_continue())
+                await cpu
+                #timer_task = Timer(seconds, send_cpu_continue)
+                #timer_task.start()
 
                 while True:
+                    #press c to cancel
                     if sys.stdin.read(1) == '\x63':
-                        timer_task.cancel()
+                        cpu.cancel()
+                        #timer_task.cancel()
                         print('\x1b[1A', end='\r')
                         print(" " * 100)
                         print('\x1b[1A', end='\r')
@@ -182,7 +193,7 @@ termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
 # print('\x1b[2A',end='\r')
 
 
-async def send_ack():
+#async def send_ack():
   #  send data with node id, wait for answer, if we get answer, note node_id 
  #   offset_frequence = int(get_t[2])-(850 if int(get_t[2])>850 else 410)
     #####Added the node id to the data variable, both in receiving node and own node.
@@ -191,8 +202,8 @@ async def send_ack():
     #
     #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit              own                own 
     #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                   node id            frequency                  
-   while(1):
-    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([int(get_t[1])]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.node_id]) + bytes([node.offset_freq])
-    node.send(data)
-    await asyncio.sleep(60)
+   #while True:
+    #data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([int(get_t[1])]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.node_id]) + bytes([node.offset_freq])
+    #node.send(data)
+    #await asyncio.sleep(60)
 ## just testing how bracnhing works
