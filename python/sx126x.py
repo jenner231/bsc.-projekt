@@ -1,6 +1,5 @@
 # This file is used for LoRa and Raspberry pi4B related issues 
 
-from typing_extensions import Self
 import RPi.GPIO as GPIO
 import serial
 import time
