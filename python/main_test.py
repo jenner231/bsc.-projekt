@@ -133,7 +133,7 @@ async def send_cpu_continue(continue_or_not = True):
         #timer_task.cancel()
         pass
 
-async def async_main():
+def async_main():
     asyncio.sleep(1)
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
@@ -178,7 +178,8 @@ async def async_main():
 try:
     #seconds = 10
     print("test")
-    asyncio.run(async_main())
+    async_main()
+    #asyncio.run(async_main())
 
 except:
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
