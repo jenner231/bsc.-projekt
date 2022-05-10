@@ -282,19 +282,19 @@ class sx126x:
             #####Made a check to see if the message was for us
             ##### node_id 0 is for broadcast messages
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
-            if (int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0):
-                match int(chr(r_buff[5])):
-                    case '0':
-                        print("Receive message from node address with id and frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], int(chr(r_buff[4])),r_buff[2]+self.start_freq),end='\r\n',flush = True)
+            ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
+            if ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 0):
+                    print("Receive message from node address with id and frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], int(chr(r_buff[4])),r_buff[2]+self.start_freq),end='\r\n',flush = True)
 
-                        print("Message is: "+str(r_buff[6:-1]),end='\r\n')
-                    case '1':
-                        ###Only change is the value of r_buff[5] which is the value of ack_id
-                        ##call the acknowledgement function 
-                        ret_ack(self, r_buff)
-                    case '2':
-                        self.reachable_dev.append(int(chr(r_buff[5])))
-                        print(self.reachable_dev)
+                    print("Message is: "+str(r_buff[6:-1]),end='\r\n')
+            elif ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 1):
+                ###Only change is the value of r_buff[5] which is the value of ack_id
+                ##call the acknowledgement function 
+                ret_ack(self, r_buff)
+            elif ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 2):
+                #####appending the received node_id
+                self.reachable_dev.append(int(chr(r_buff[5])))
+                print(self.reachable_dev)
             else:
                 print("%d sent a message but it was meant for: %d"%(int(chr(r_buff[4])), int(chr(r_buff[3]))))
             
