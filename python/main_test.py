@@ -140,6 +140,7 @@ async def async_main():
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
 
     # it will send rpi cpu temperature every 10 seconds
+    print("before ack")
     await send_ack()
     while True:
 
