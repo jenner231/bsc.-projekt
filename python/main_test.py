@@ -99,8 +99,8 @@ async def send_deal():
     # the sending message format
     #
     #         receiving node              receiving node             receiving node             own high 8bit            own low 8bit                     
-    #         high 8bit address           low 8bit addre             frequency                  address                  address                                                 ack_id                  message payload
-    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) +  str(ack_id).encode() + get_t[3].encode()
+    #         high 8bit address           low 8bit addre             frequency                  address                  address                          own freqency            ack_id                  message payload
+    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) +  str(ack_id).encode() + get_t[2].encode()
 
     node.send(data)
     print('\x1b[2A',end='\r')
