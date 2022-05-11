@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="#send_main" />
+    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="send_ack test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -266,7 +266,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652282404309</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="send_ack test">
+      <created>1652283076820</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1652283076820</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -301,7 +308,8 @@
     <MESSAGE value="lopp until complete" />
     <MESSAGE value="#send_Ack" />
     <MESSAGE value="#send_main" />
-    <option name="LAST_COMMIT_MESSAGE" value="#send_main" />
+    <MESSAGE value="send_ack test" />
+    <option name="LAST_COMMIT_MESSAGE" value="send_ack test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
