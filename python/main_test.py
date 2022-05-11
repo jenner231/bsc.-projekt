@@ -151,7 +151,9 @@ async def async_main():
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
+                print("i detected")
                 await send_ack()
+                print("send_ack tried")
                 await send_deal()
             # dectect key s
             if c == '\x73':
