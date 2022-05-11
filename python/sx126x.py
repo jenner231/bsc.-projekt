@@ -285,7 +285,7 @@ class sx126x:
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             if ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 0):
-                    print("Receive message from node address with id and frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], int(chr(r_buff[4])),r_buff[2]+self.start_freq),end='\r\n',flush = True)
+                    print("Receive message from node address with id and frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8) & r_buff[0], int(chr(r_buff[4])),r_buff[2]+self.start_freq),end='\r\n',flush = True)
 
                     print("Message is: "+str(r_buff[6:-1]),end='\r\n')
             elif ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 1):
