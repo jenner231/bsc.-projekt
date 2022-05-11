@@ -74,13 +74,13 @@ async def get_cpu_temp():
 #
 
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
-node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,node_id=n_id,power=22,rssi=True,air_speed=2400,relay=False)
+node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=0,power=22,rssi=True,air_speed=2400,relay=False)
 
 async def send_deal():
     #####Added the second input requirement of node id (also mentioned as 0 in line 72)
     get_rec = ""
     print("")
-    print("input a string such as \033[1;32m0,0,868,Hello World\033[0m,it will send `Hello World` to lora node device of address 0 with node id 0 and 868M ")
+    print("input a string such as \033[1;32m0,868,Hello World\033[0m,it will send `Hello World` to lora node device of address 0 with frequncy 868M ")
     print("please input and press Enter key:",end='',flush=True)
     ack_id = 0
     while True:
@@ -99,8 +99,8 @@ async def send_deal():
     # the sending message format
     #
     #         receiving node              receiving node             receiving node             own high 8bit            own low 8bit                     
-    #         high 8bit address           low 8bit addre             frequency                  address                  address                                               rec node id         own node_id                  ack_id                  message payload
-    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + get_t[1].encode() + str(node.node_id).encode() + str(ack_id).encode() + get_t[3].encode()
+    #         high 8bit address           low 8bit addre             frequency                  address                  address                                                 ack_id                  message payload
+    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) +  str(ack_id).encode() + get_t[3].encode()
 
     node.send(data)
     print('\x1b[2A',end='\r')
@@ -196,16 +196,14 @@ termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
 
 
 async def send_ack():
-  #  send data with node id, wait for answer, if we get answer, note node_id 
+  #  send data with ack id, wait for answer, if we get answer, note addr of answering node
     offset_frequence = int(868)-(850 if int(868)>850 else 410)
     ack_id = 1
-    #####Added the node id to the data variable, both in receiving node and own node.
-    #####
     # the sending message format
     #
-    #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit                      own                own 
-    #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                           node id            frequency                  
+    #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit                      own                own
+    #         high 8bit address           low 8bit address         frequency                  address                  address                           node id            frequency
     while True:
-       data = bytes([int(0)>>8]) + bytes([int(0)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(0).encode() + str(node.node_id).encode() + str(ack_id).encode()
+       data = bytes([int(0)>>8]) + bytes([int(0)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(0).encode() + str(ack_id).encode()
        node.send(data)
        await asyncio.sleep(60)

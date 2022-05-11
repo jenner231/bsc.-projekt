@@ -26,8 +26,7 @@ class sx126x:
     addr = 65535
     serial_n = ""
     addr_temp = 0
-    #####Created node_id variable as a unique identifier. Each node should have their own node_id
-    node_id = n_id
+    #### reachable_dev for heartbeat
     reachable_dev = []
 
     #
@@ -90,8 +89,8 @@ class sx126x:
         64:SX126X_PACKAGE_SIZE_64_BYTE,
         32:SX126X_PACKAGE_SIZE_32_BYTE
     }
-    #####added node_id in the init function
-    def __init__(self,serial_num,freq,addr,node_id,power,rssi,air_speed=2400,\
+
+    def __init__(self,serial_num,freq,addr,power,rssi,air_speed=2400,\
                  net_id=0,buffer_size = 240,crypt=0,\
                  relay=False,lbt=False,wor=False):
         self.rssi = rssi
@@ -99,7 +98,6 @@ class sx126x:
         self.freq = freq
         self.serial_n = serial_num
         self.power = power
-        self.node_id = node_id
         # Initial the GPIO for M0 and M1 Pin
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -111,14 +109,13 @@ class sx126x:
         # The hardware UART of Pi3B+,Pi4B is /dev/ttyS0
         self.ser = serial.Serial(serial_num,9600)
         self.ser.flushInput()
-        self.set(freq,addr,node_id,power,rssi,air_speed,net_id,buffer_size,crypt,relay,lbt,wor)
-    #####Added node_id in the set function
-    def set(self,freq,addr,node_id,power,rssi,air_speed=2400,\
+        self.set(freq,addr,power,rssi,air_speed,net_id,buffer_size,crypt,relay,lbt,wor)
+
+    def set(self,freq,addr,power,rssi,air_speed=2400,\
             net_id=0,buffer_size = 240,crypt=0,\
             relay=False,lbt=False,wor=False):
         self.send_to = addr
         self.addr = addr
-        self.node_id = node_id
         # We should pull up the M1 pin when sets the module
         GPIO.output(self.M0,GPIO.LOW)
         GPIO.output(self.M1,GPIO.HIGH)
@@ -254,7 +251,7 @@ class sx126x:
 
 #
 # the data format like as following
-# "node address,node_id,frequence,payload"
+# "node address,frequence,payload"
 # "20,868,Hello World"
     def send(self,data):
         GPIO.output(self.M1,GPIO.LOW)
@@ -269,9 +266,9 @@ class sx126x:
     def ret_ack(self, received_data):
         get_t = received_data
         get_t[5] = 2
-        #         receiving node              receiving node             receiving node           receiving node             own high 8bit            own low 8bit                     
-        #         high 8bit address           low 8bit address           node id                  frequency                  address                  address                              rec node id         own node_id                  ack_id                 
-        data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([get_t[2]+self.start_freq]) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + get_t[4].encode() + str(self.node_id).encode() + str(get_t[5]).encode()
+        #         receiving node              receiving node                   receiving node                  own high 8bit            own low 8bit                    own frequency
+        #         high 8bit address           low 8bit address                 frequency                         address                  address                                                  ack_id
+        data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([get_t[2]+self.start_freq]) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + str(get_t[4]).encode()
         self.send(data)
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
@@ -284,20 +281,21 @@ class sx126x:
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
-            if ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 0):
-                    print("Receive message from node address with id and frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], int(chr(r_buff[4])),r_buff[2]+self.start_freq),end='\r\n',flush = True)
+            if int(chr(r_buff[4])) == 0:
+                    print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
                     print(str(r_buff[0:1]))
                     print("Message is: "+str(r_buff[6:-1]),end='\r\n')
-            elif ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 1):
-                ###Only change is the value of r_buff[5] which is the value of ack_id
+            elif int(chr(r_buff[4])) == 1:
+                ###Only change is the value of r_buff[4] which is the value of ack_id
                 ##call the acknowledgement function 
                 ret_ack(self, r_buff)
-            elif ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 2):
+            elif int(chr(r_buff[4])) == 2:
                 #####appending the received node_id
-                self.reachable_dev.append(int(chr(r_buff[5])))
+                self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
                 print(self.reachable_dev)
             else:
-                print("%d sent a message but it was meant for: %d"%(int(chr(r_buff[4])), int(chr(r_buff[3]))))
+                #error handling if ack_id invalid value
+                print("error")
             
             # print the rssi
             if self.rssi:
