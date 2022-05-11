@@ -288,7 +288,7 @@ class sx126x:
                 ###Only change is the value of r_buff[4] which is the value of ack_id
                 ##call the acknowledgement function
                 print("ack id 1 received \n trying to call ret_ack")
-                ret_ack(self, r_buff)
+                #ret_ack(self, r_buff)
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
                 self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])

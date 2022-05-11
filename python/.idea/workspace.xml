@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="main work pls">
-      <change beforePath="$PROJECT_DIR$/main_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sx126x.py" beforeDir="false" afterPath="$PROJECT_DIR$/sx126x.py" afterDir="false" />
+    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="ack_id">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652013994718</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="ack_id">
+      <created>1652273736618</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1652273736618</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -221,7 +227,8 @@
     <MESSAGE value="commented out if name = main" />
     <MESSAGE value="move node etc. to main()" />
     <MESSAGE value="main work pls" />
-    <option name="LAST_COMMIT_MESSAGE" value="main work pls" />
+    <MESSAGE value="ack_id" />
+    <option name="LAST_COMMIT_MESSAGE" value="ack_id" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
