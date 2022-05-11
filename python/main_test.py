@@ -198,6 +198,7 @@ termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
 
 async def send_ack():
   #  send data with ack id, wait for answer, if we get answer, note addr of answering node
+    print("hello")
     offset_frequence = int(868)-(850 if int(868)>850 else 410)
     ack_id = 1
     # the sending message format
