@@ -93,7 +93,7 @@ async def send_deal():
 
     get_t = get_rec.split(",")
 
-    offset_frequence = int(get_t[2])-(850 if int(get_t[2])>850 else 410)
+    offset_frequence = int(get_t[1])-(850 if int(get_t[1])>850 else 410)
     #####Added the node id to the data variable, both in receiving node and own node.
     #####
     # the sending message format

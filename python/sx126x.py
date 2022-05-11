@@ -284,7 +284,7 @@ class sx126x:
             if int(chr(r_buff[4])) == 0:
                     print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
                     print(str(r_buff[0:1]))
-                    print("Message is: "+str(r_buff[6:-1]),end='\r\n')
+                    print("Message is: "+str(r_buff[5:-1]),end='\r\n')
             elif int(chr(r_buff[4])) == 1:
                 ###Only change is the value of r_buff[4] which is the value of ack_id
                 ##call the acknowledgement function 
