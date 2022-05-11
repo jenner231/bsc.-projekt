@@ -179,9 +179,9 @@ async def async_main():
 
 try:
     #seconds = 10
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(async_main())
-
+    #loop = asyncio.get_event_loop()
+    #loop.run_until_complete(async_main())
+    asyncio.run(async_main())
 except:
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
     # print('\x1b[2A',end='\r')
