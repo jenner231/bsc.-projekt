@@ -140,7 +140,7 @@ async def async_main():
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
 
     # it will send rpi cpu temperature every 10 seconds
-
+    await send_ack()
     while True:
 
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
@@ -201,9 +201,9 @@ async def send_ack():
     ack_id = 1
     # the sending message format
     #
-    #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit                      own                own
-    #         high 8bit address           low 8bit address         frequency                  address                  address                           node id            frequency
+    #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
+    #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     while True:
-       data = bytes([int(0)>>8]) + bytes([int(0)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(0).encode() + str(ack_id).encode()
+       data = bytes([int(0)>>8]) + bytes([int(0)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
        node.send(data)
        await asyncio.sleep(60)
