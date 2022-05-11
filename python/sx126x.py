@@ -286,13 +286,13 @@ class sx126x:
             if ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 0):
                     print("Receive message from node address with id and frequence\033[1;32m %d,%d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[0], int(chr(r_buff[4])),r_buff[2]+self.start_freq),end='\r\n',flush = True)
                     print(str(r_buff[0]))
-                    print(chr(r_buff[1]))
-                    print(int(chr(r_buff[2])),end='\r\n')
-                    print(int(chr(r_buff[3])),end='\r\n')
-                    print(int(chr(r_buff[4])),end='\r\n')
-                    print(int(chr(r_buff[5])),end='\r\n')
-                    print(int(chr(r_buff[6])),end='\r\n')
-                    print(int(chr(r_buff[7])),end='\r\n')
+                    print(str(r_buff[1]))
+                    print(str(r_buff[2]),end='\r\n')
+                    print(str(r_buff[3]),end='\r\n')
+                    print(str(r_buff[4]),end='\r\n')
+                    print(str(r_buff[5]),end='\r\n')
+                    print(str(r_buff[6]),end='\r\n')
+                    print(str(r_buff[7]),end='\r\n')
 
                     print("Message is: "+str(r_buff[6:-1]),end='\r\n')
             elif ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 1):
