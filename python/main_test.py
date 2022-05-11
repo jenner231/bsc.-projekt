@@ -200,6 +200,7 @@ async def send_ack():
     offset_frequence = int(868)-(850 if int(868)>850 else 410)
     ack_id = 1
     # the sending message format
+    print("hello")
     #
     #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
