@@ -134,16 +134,15 @@ async def send_deal():
         #pass
 async def send_ack():
   #  send data with ack id, wait for answer, if we get answer, note addr of answering node
-    #offset_frequence = int(18)
-    #ack_id = 1
+    offset_frequence = int(18)
+    ack_id = 1
     # the sending message format
-    print("hello")
     #
     #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
-    #data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
-    #node.send(data)
+    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
+    node.send(data)
 
 async def async_main():
     await asyncio.sleep(0.1)
