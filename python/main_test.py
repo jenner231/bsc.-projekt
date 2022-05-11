@@ -134,7 +134,7 @@ async def send_deal():
         #pass
 
 async def async_main():
-    await asyncio.sleep(1)
+    await asyncio.sleep(0.1)
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
@@ -178,7 +178,6 @@ async def async_main():
 
 try:
     #seconds = 10
-    print("test")
     loop = asyncio.get_event_loop()
     loop.run_until_complete(async_main())
 
@@ -205,6 +204,6 @@ async def send_ack():
     #
     #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
-    data = bytes([255]) + bytes([255]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
+    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
     node.send(data)
     await asyncio.sleep(60)
