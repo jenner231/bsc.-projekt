@@ -143,9 +143,7 @@ async def async_main():
     print("before ack")
 
     while True:
-        await send_ack()
-            
-        await asyncio.sleep(60)
+
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
             c = sys.stdin.read(1)
 
@@ -153,6 +151,7 @@ async def async_main():
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
+                await send_ack()
                 await send_deal()
             # dectect key s
             if c == '\x73':
