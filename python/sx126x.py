@@ -280,15 +280,15 @@ class sx126x:
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
-            if int(chr(r_buff[4])) == 0:
+            if int(chr(r_buff[3])) == 0:
                     print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
                     print(str(r_buff[0:1]))
-                    print("Message is: "+str(r_buff[5:-1]),end='\r\n')
-            elif int(chr(r_buff[4])) == 1:
+                    print("Message is: "+str(r_buff[4:-1]),end='\r\n')
+            elif int(chr(r_buff[3])) == 1:
                 ###Only change is the value of r_buff[4] which is the value of ack_id
                 ##call the acknowledgement function 
                 ret_ack(self, r_buff)
-            elif int(chr(r_buff[4])) == 2:
+            elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
                 self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
                 print(self.reachable_dev)

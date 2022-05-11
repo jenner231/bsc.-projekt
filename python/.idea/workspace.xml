@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="main work pls">
-      <change beforePath="$PROJECT_DIR$/main_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sx126x.py" beforeDir="false" afterPath="$PROJECT_DIR$/sx126x.py" afterDir="false" />
-    </list>
+    <list default="true" id="2ceb3ed1-c329-4488-a36e-371dc362c135" name="Changes" comment="main work pls" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,6 +20,11 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/main_test.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/Temp1_SX126X_LoRa_HAT_Code.zip/SX126X_LoRa_HAT_Code/raspberrypi/python/sx126x.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/Temp1_SX126X_LoRa_HAT_Code.zip/SX126X_LoRa_HAT_Code/raspberrypi/python/main.py" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
