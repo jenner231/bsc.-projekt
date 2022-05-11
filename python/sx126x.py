@@ -292,7 +292,7 @@ class sx126x:
                     print(str(r_buff[4]),end='\r\n')
                     print(str(r_buff[5]),end='\r\n')
                     print(str(r_buff[6]),end='\r\n')
-                    print(str(r_buff[7]),end='\r\n')
+                    print(str(r_buff[7:-1]),end='\r\n')
 
                     print("Message is: "+str(r_buff[6:-1]),end='\r\n')
             elif ((int(chr(r_buff[3])) == self.node_id or int(chr(r_buff[3])) == 0) and int(chr(r_buff[5])) == 1):
