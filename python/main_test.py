@@ -139,9 +139,6 @@ async def async_main():
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
 
-    # it will send rpi cpu temperature every 10 seconds
-    print("before ack")
-
     while True:
 
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
@@ -151,9 +148,7 @@ async def async_main():
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
-                print("i detected")
                 await send_ack()
-                print("send_ack tried")
                 await send_deal()
             # dectect key s
             if c == '\x73':
@@ -200,13 +195,13 @@ termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
 
 async def send_ack():
   #  send data with ack id, wait for answer, if we get answer, note addr of answering node
-    offset_frequence = int(18)
-    ack_id = 1
+    #offset_frequence = int(18)
+    #ack_id = 1
     # the sending message format
     print("hello")
     #
     #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
-    data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
+    #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
     #data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
-    node.send(data)
+    #node.send(data)
