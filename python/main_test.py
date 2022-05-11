@@ -144,6 +144,8 @@ async def async_main():
 
     while True:
         await send_ack()
+            
+        await asyncio.sleep(60)
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
             c = sys.stdin.read(1)
 
@@ -206,4 +208,3 @@ async def send_ack():
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
     node.send(data)
-    await asyncio.sleep(60)
