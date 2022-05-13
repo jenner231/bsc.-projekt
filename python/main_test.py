@@ -147,6 +147,7 @@ async def send_ack():
     print(data[2])
     print(data[3])
     node.send(data)
+    await asyncio.sleep(0.2)
 
 async def async_main():
     await asyncio.sleep(0.1)
@@ -161,8 +162,10 @@ async def async_main():
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
+                task_ack = asyncio.create_task(send_ack())
+                task_deal = asyncio.create_task(send_deal())
                 await send_ack()
-                #await send_deal()
+                await send_deal()
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
@@ -182,7 +185,7 @@ async def async_main():
                         break
 
             sys.stdout.flush()
-        node.receive()
+        await node.receive()
 
         # timer,send messages automatically
 
