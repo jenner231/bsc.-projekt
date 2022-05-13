@@ -267,7 +267,7 @@ class sx126x:
         get_t = received_data
         print(received_data)
         get_t[3] = 2
-        print(get_t)
+        print(received_data)
         time.sleep(4)
         #         receiving node              receiving node                   receiving node                  own high 8bit            own low 8bit                    own frequency
         #         high 8bit address           low 8bit address                 frequency                         address                  address                                                  ack_id
