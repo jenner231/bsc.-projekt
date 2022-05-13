@@ -164,9 +164,12 @@ async def async_main():
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
-                node.receive()
                 await send_ack()
-                node.receive()
+                receive_or_not = True
+                while receive_or_not:
+                    node.receive()
+                    if sys.stdin.read(1) == '\x69':
+                        receive_or_not = False
                 #await send_deal()
             # dectect key s
             if c == '\x73':
