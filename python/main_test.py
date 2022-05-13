@@ -156,20 +156,13 @@ async def async_main():
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
 
     while True:
-        node.receive()
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
             c = sys.stdin.read(1)
-            node.receive()
             # dectect key Esc
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
                 await send_ack()
-                receive_or_not = True
-                while receive_or_not:
-                    node.receive()
-                    if sys.stdin.read(1) == '\x69':
-                        receive_or_not = False
                 #await send_deal()
             # dectect key s
             if c == '\x73':
