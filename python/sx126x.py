@@ -262,6 +262,8 @@ class sx126x:
         # if self.rssi == True:
             # self.get_channel_rssi()
         time.sleep(0.1)
+        if(data[6] == 50):
+            print("we're actually sending")
     
     def ret_ack(self, received_data):
         time.sleep(0.1)
