@@ -10,9 +10,9 @@ from encodings import utf_8
 
 class sx126x:
     ##importing the node library to manually set node id on each node without overwriting from github pulls
-    sys.path.insert(1, '/home/pi/node_id')
-    import node
-    n_id = node.node.node_id
+    sys.path.insert(1, '/home/pi/address')
+    import address
+    n_addr = address.node.n_address
     sys.path.insert(1, '/home/bsc.-projekt/python')
 
 
@@ -23,7 +23,7 @@ class sx126x:
     cfg_reg = [0xC2,0x00,0x09,0x00,0x00,0x00,0x62,0x00,0x12,0x43,0x00,0x00]
     get_reg = bytes(12)
     rssi = False
-    addr = 65535
+    addr = n_addr
     serial_n = ""
     addr_temp = 0
     #### reachable_dev for heartbeat

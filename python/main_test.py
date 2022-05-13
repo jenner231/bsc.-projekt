@@ -33,9 +33,9 @@ tty.setcbreak(sys.stdin.fileno())
 
 
 #####Importing node_id from a seperate folder not including in git, so we can keep pulling without defaulting back to std node_id
-sys.path.insert(1, '/home/pi/node_id')
-import node
-n_id = node.node.node_id
+sys.path.insert(1, '/home/pi/address')
+import address
+n_addr = address.node.n_address
 sys.path.insert(1, '/home/bsc.-projekt/python')
 
 
