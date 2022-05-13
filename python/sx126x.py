@@ -280,6 +280,7 @@ class sx126x:
         print(data[5])
         print(data[6])
         self.send(data)
+        print("We send return ack")
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self):
