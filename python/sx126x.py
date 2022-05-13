@@ -278,7 +278,7 @@ class sx126x:
         print(data[3])
         print(data[4])
         print(data[5])
-        print(data[9])
+        print(data[6])
         self.send(data)
         print("We send return ack")
 
