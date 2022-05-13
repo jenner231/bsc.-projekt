@@ -147,6 +147,7 @@ async def send_ack():
     print(data[2])
     print(data[3])
     node.send(data)
+    node.receive()
 
 async def async_main():
     await asyncio.sleep(0.1)
