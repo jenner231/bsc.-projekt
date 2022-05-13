@@ -159,12 +159,14 @@ async def async_main():
 
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
             c = sys.stdin.read(1)
-
+            node.receive()
             # dectect key Esc
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
+                node.receive()
                 await send_ack()
+                node.receive()
                 #await send_deal()
             # dectect key s
             if c == '\x73':
