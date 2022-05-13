@@ -264,6 +264,7 @@ class sx126x:
         time.sleep(0.1)
     
     def ret_ack(self, received_data):
+        time.sleep(0.1)
         get_t = received_data
         print(received_data)
         ack_id = 2
@@ -303,8 +304,8 @@ class sx126x:
                 self.ret_ack(r_buff)
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
+                print("can we reach this checkpoint?")
                 self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
-                print("hello")
             else:
                 #error handling if ack_id invalid value
                 print("error")
