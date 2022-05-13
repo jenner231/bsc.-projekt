@@ -147,7 +147,7 @@ async def send_ack():
     print(data[2])
     print(data[3])
     node.send(data)
-    await asyncio.sleep(0.2)
+    await asyncio.sleep(1)
 
 async def async_main():
     await asyncio.sleep(0.1)
@@ -185,6 +185,7 @@ async def async_main():
                         break
 
             sys.stdout.flush()
+        time.sleep(1)
         node.receive()
 
         # timer,send messages automatically
