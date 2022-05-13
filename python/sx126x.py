@@ -265,7 +265,7 @@ class sx126x:
     
     def ret_ack(self, received_data):
         get_t = received_data
-        print(received_data)
+        #print(received_data)
         get_t[3] = 2
         print(get_t)
         #         receiving node              receiving node                   receiving node                  own high 8bit            own low 8bit                    own frequency
