@@ -296,7 +296,7 @@ class sx126x:
                 print(r_buff[0])
                 print(r_buff[1])
                 print(r_buff[2])
-                print(r_buff[0]<<8 + r_buff[1])
+                print((r_buff[0]<<8) + r_buff[1])
                 ###Only change is the value of r_buff[4] which is the value of ack_id
                 ##call the acknowledgement function
                 print("ack id 1 received \n trying to call ret_ack")
