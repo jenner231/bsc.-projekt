@@ -264,18 +264,15 @@ class sx126x:
         time.sleep(0.1)
     
     def ret_ack(self, received_data):
-        get_t = []
-        for i in received_data:
-            get_t[i] = int(chr(received_data[i]))
-
-        print(get_t)
+        get_t = received_data
+        print(received_data)
         ack_id = 2
-        #get_t[3] = 2
+        address = get_t[0]<<8 + get_t[1]
         time.sleep(2)
         print(get_t)
         #         receiving node              receiving node                   receiving node                  own high 8bit            own low 8bit                    own frequency
         #         high 8bit address           low 8bit address                 frequency                         address                  address                                                  ack_id
-        data = bytes([int(0)>>8]) + bytes([int(0)&0xff]) + bytes([int(received_data[2])+self.start_freq]) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + str(ack_id).encode()
+        data = bytes([int(0)>>8]) + bytes([int(0)&0xff]) + bytes([int(850)+self.start_freq]) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + str(ack_id).encode()
         print(data[0])
         print(data[1])
         print(data[2])
