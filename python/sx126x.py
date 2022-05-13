@@ -264,8 +264,11 @@ class sx126x:
         time.sleep(0.1)
     
     def ret_ack(self, received_data):
-        get_t = received_data
-        print(received_data)
+        get_t = []
+        for i in received_data:
+            get_t[i] = int(chr(received_data[i]))
+
+        print(get_t)
         ack_id = 2
         #get_t[3] = 2
         time.sleep(2)
