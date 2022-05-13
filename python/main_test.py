@@ -185,7 +185,7 @@ async def async_main():
                         break
 
             sys.stdout.flush()
-        await node.receive()
+        node.receive()
 
         # timer,send messages automatically
 
