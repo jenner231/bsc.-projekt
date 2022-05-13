@@ -265,9 +265,8 @@ class sx126x:
     
     def ret_ack(self, received_data):
         get_t = received_data
-        #print(received_data)
+        print(received_data)
         get_t[3] = 2
-        print(get_t)
         #         receiving node              receiving node                   receiving node                  own high 8bit            own low 8bit                    own frequency
         #         high 8bit address           low 8bit address                 frequency                         address                  address                                                  ack_id
         data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([get_t[2]+self.start_freq]) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + str(get_t[3]).encode()
@@ -286,6 +285,10 @@ class sx126x:
                     print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
                     print("Message is: "+str(r_buff[4:-1]),end='\r\n')
             elif int(chr(r_buff[3])) == 1:
+                print(r_buff[0])
+                print(r_buff[1])
+                print(r_buff[2])
+                print(r_buff[3])
                 ###Only change is the value of r_buff[4] which is the value of ack_id
                 ##call the acknowledgement function
                 print("ack id 1 received \n trying to call ret_ack")

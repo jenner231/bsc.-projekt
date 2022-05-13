@@ -142,6 +142,10 @@ async def send_ack():
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
+    print(data[0])
+    print(data[1])
+    print(data[2])
+    print(data[3])
     node.send(data)
 
 async def async_main():
