@@ -266,7 +266,6 @@ class sx126x:
     def ret_ack(self, received_data):
         get_t = received_data
         print(received_data)
-        print(received_data)
         ack_id = 2
         #get_t[3] = 2
         time.sleep(2)
@@ -274,6 +273,13 @@ class sx126x:
         #         receiving node              receiving node                   receiving node                  own high 8bit            own low 8bit                    own frequency
         #         high 8bit address           low 8bit address                 frequency                         address                  address                                                  ack_id
         data = bytes([int((get_t[0]<<8) + get_t[1])>>8]) + bytes([int((get_t[0]<<8) + get_t[1])&0xff]) + bytes([get_t[2]+self.start_freq]) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + str(ack_id).encode()
+        print(data[0])
+        print(data[1])
+        print(data[2])
+        print(data[3])
+        print(data[4])
+        print(data[5])
+        print(data[6])
         self.send(data)
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
