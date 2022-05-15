@@ -174,8 +174,8 @@ async def cancel_cpu(cont):
 async def return_ack():
         #####check wether we've gotten a heartbeat each loop
         #####49 == 1 in ascii
-    print(node.get_ack)
-    if node.get_ack[0] == 49:
+    info = node.get_ack
+    if info[0] == 49:
         offset_frequence = 18
         print("checkpoint1")
         #####node.get_ack[1] is the sender address stored in the get_ack function
