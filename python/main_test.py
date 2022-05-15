@@ -180,10 +180,10 @@ async def async_main():
                 #timer_task = Timer(seconds, send_cpu_continue)
                 #timer_task.start()
                 #####Create the task to send "sensor" data to nearby devices
+                cpu = asyncio.create_task(send_cpu_continue())
                 
                 cont = True
                 while cont == True:
-                    cpu = asyncio.create_task(send_cpu_continue())
                     await cpu
                     #press c to cancel
                     if sys.stdin.read(1) == '\x63':
