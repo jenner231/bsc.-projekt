@@ -171,6 +171,15 @@ async def cancel_cpu(cont):
             print(time)
             await asyncio.sleep(0.1)
 
+async def return_ack():
+        #####check wether we've gotten a heartbeat each loop
+    if node.get_ack[0] == 1:
+        offset_frequence = 18
+        #####node.get_ack[1] is the sender address stored in the get_ack function
+        data = bytes([int(node.get_ack[1])>>8]) + bytes([int(node.get_ack[1])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(node.get_ack[0]).encode()
+
+        node.send(data)
+
 async def async_main():
     await asyncio.sleep(0.1)
     print("Press \033[1;32mEsc\033[0m to exit")
@@ -205,6 +214,8 @@ async def async_main():
 
             sys.stdout.flush()
         node.receive()
+        await return_ack()
+
         await asyncio.sleep(0.01)
 
         # timer,send messages automatically

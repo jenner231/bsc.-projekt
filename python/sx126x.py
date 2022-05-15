@@ -28,6 +28,8 @@ class sx126x:
     addr_temp = 0
     #### reachable_dev for heartbeat
     reachable_dev = []
+    ack_info = (0,0)
+
 
     #
     # start frequence of two lora module
@@ -285,11 +287,21 @@ class sx126x:
         self.send(data2)
         print("We send return ack")
 
+    def receive_ack(self, r_buff):
+        #####Store tuple of (ack_id, sender address) 
+            self.ack_info = (r_buff[3], ((r_buff[0]<<8) + r_buff[1]))
+
+
+    def get_ack(self):
+        ack_info = self.ack_info
+        self.ack_info = (0,0)
+        return ack_info
+
+
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self):
         if self.ser.inWaiting() > 0:
             time.sleep(0.5)
-            node = self
             r_buff = self.ser.read(self.ser.inWaiting())
             #####Made a check to see if the message was for us
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
@@ -299,14 +311,8 @@ class sx126x:
                     print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
                     print("Message is: "+str(r_buff[4:-1]),end='\r\n')
             elif int(chr(r_buff[3])) == 1:
-                print(r_buff[0])
-                print(r_buff[1])
-                print(r_buff[2])
-                print((r_buff[0]<<8) + r_buff[1])
-                ###Only change is the value of r_buff[4] which is the value of ack_id
-                ##call the acknowledgement function
-                print("ack id 1 received \n trying to call ret_ack")
-                self.ret_ack(r_buff)
+                self.receive_ack(r_buff)
+                print("Noted ack_id")
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
                 print("can we reach this checkpoint?")
