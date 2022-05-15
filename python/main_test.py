@@ -152,11 +152,9 @@ async def send_ack():
 async def cancel_cpu(cont):
     time = 0
     max_time = 10
-    cancel_cont = cont
-    print("checkpoint 1")
     #####We need to differentiate between the two continue variables, as if we dont press c, after 10 seconds we want to return true for the outer loop, but false for the cancel_cpu loop
     ##### But if we do press c, we want to cancel both
-    while cancel_cont:
+    while cont:
         print(time)
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
             if sys.stdin.read(1) == '\x63':
@@ -164,13 +162,10 @@ async def cancel_cpu(cont):
                 print(" " * 100)
                 print('\x1b[1A', end='\r')
                 cont = False
-                cancel_cont = cont
                 return cont
         if max_time < time:
-            #cancel_cont = False
             return cont
         else:
-            cancel_cont = True
             time = time + 0.1
             print(time)
             await asyncio.sleep(0.1)
@@ -203,9 +198,8 @@ async def async_main():
                 while cont == True:
                     cpu = asyncio.create_task(send_cpu_continue())
                     await cpu
-                    cont2 = await cancel_cpu(cont)
-                    cont = cont2
-                    print("checkpoint 2")
+                    cont = await cancel_cpu(cont)
+                    print("Stopped sending data")
                     #press c to cancel
                 
                     #await asyncio.sleep(10) 
