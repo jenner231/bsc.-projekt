@@ -174,7 +174,7 @@ async def cancel_cpu(cont):
 async def return_ack():
         #####check wether we've gotten a heartbeat each loop
         #####49 == 1 in ascii
-    print("checkpoint1")
+    print(node.get_ack[0])
     if node.get_ack[0] == 49:
         offset_frequence = 18
         print("checkpoint1")
@@ -219,7 +219,8 @@ async def async_main():
 
             sys.stdout.flush()
         node.receive()
-        await return_ack()
+        task_return = asyncio.create_task(return_ack())
+        await task_return
 
         await asyncio.sleep(0.01)
 
