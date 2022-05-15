@@ -112,23 +112,23 @@ async def send_deal():
 async def send_cpu_continue(continue_or_not = True):
     if continue_or_not:
         await asyncio.sleep(10)
-        global timer_task
-        global seconds
+        #global timer_task
+        #global seconds
         
         # boarcast the cpu temperature at 868.125MHz
         
         data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
         node.send(data)
-        await asyncio.sleep(0.2)
-        time.sleep(0.2)
-        rec = asyncio.create_task(send_cpu_continue())
-        await rec
-        timer_task = Timer(seconds,send_cpu_continue)
-        timer_task.start()
+        await asyncio.sleep(10)
+        #time.sleep(0.2)
+        #rec = asyncio.create_task(send_cpu_continue())
+        #await rec
+        #timer_task = Timer(seconds,send_cpu_continue)
+        #timer_task.start()
     else:
         data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
         node.send(data)
-        await asyncio.sleep(0.2)
+
         #time.sleep(0.2)
         #timer_task.cancel()
         pass
@@ -169,23 +169,27 @@ async def async_main():
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
-                cpu = asyncio.create_task(send_cpu_continue())
-                await cpu
                 #timer_task = Timer(seconds, send_cpu_continue)
                 #timer_task.start()
-
-                while True:
+                #####Create the task to send "sensor" data to nearby devices
+                cpu = asyncio.create_task(send_cpu_continue())
+                cont = True
+                while cont == True:
                     #press c to cancel
                     if sys.stdin.read(1) == '\x63':
+                        cont = False
                         cpu.cancel()
                         #timer_task.cancel()
                         print('\x1b[1A', end='\r')
                         print(" " * 100)
                         print('\x1b[1A', end='\r')
+                        await asyncio.sleep(0.1)
                         break
+                    await cpu
 
             sys.stdout.flush()
         node.receive()
+        await asyncio.sleep(0.01)
 
         # timer,send messages automatically
 
