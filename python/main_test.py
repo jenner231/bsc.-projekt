@@ -151,7 +151,6 @@ async def send_ack():
 
 async def cancel_cpu(cont):
     time = datetime.timedelta(datetime.now()).total_seconds()
-    total
     while cont:
         if sys.stdin.read(1) == '\x63':                      
             print('\x1b[1A', end='\r')
