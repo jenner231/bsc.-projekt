@@ -156,6 +156,7 @@ async def cancel_cpu(cont):
     #####We need to differentiate between the two continue variables, as if we dont press c, after 10 seconds we want to return true for the outer loop, but false for the cancel_cpu loop
     ##### But if we do press c, we want to cancel both
     while cancel_cont:
+        print(time)
         if sys.stdin.read(1) == '\x63':                      
             print('\x1b[1A', end='\r')
             print(" " * 100)
