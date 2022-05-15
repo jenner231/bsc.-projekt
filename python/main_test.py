@@ -119,14 +119,6 @@ async def send_cpu_continue(continue_or_not = True):
         # boarcast the cpu temperature at 868.125MHz
         
         data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
-        print(data[0])
-        print(data[1])
-        print(data[2])
-        print(data[3])
-        print(data[4])
-        print(data[5])
-        print(data[6])
-        print(data[7])
         node.send(data)
         #time.sleep(0.2)
         #rec = asyncio.create_task(send_cpu_continue())
@@ -156,6 +148,17 @@ async def send_ack():
     node.send(data)
     await asyncio.sleep(1)
 
+async def cancel_cpu(cont):
+    while cont:
+        if sys.stdin.read(1) == '\x63':                      
+            print('\x1b[1A', end='\r')
+            print(" " * 100)
+            print('\x1b[1A', end='\r')
+            await asyncio.sleep(0.1)
+            cont = False
+            return cont
+        await asyncio.sleep(0.1)
+
 async def async_main():
     await asyncio.sleep(0.1)
     print("Press \033[1;32mEsc\033[0m to exit")
@@ -184,17 +187,10 @@ async def async_main():
                 while cont == True:
                     cpu = asyncio.create_task(send_cpu_continue())
                     await cpu
+                    cont = await cancel_cpu(cont)
                     #press c to cancel
-                    if sys.stdin.read(1) == '\x63':
-                        cont = False
-                        cpu.cancel()
-                        #timer_task.cancel()
-                        print('\x1b[1A', end='\r')
-                        print(" " * 100)
-                        print('\x1b[1A', end='\r')
-                        await asyncio.sleep(0.1)
-                        break
-                    await asyncio.sleep(10)
+                
+                    await asyncio.sleep(10) 
 
             sys.stdout.flush()
         node.receive()
