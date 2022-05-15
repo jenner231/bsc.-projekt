@@ -219,8 +219,9 @@ async def async_main():
 
             sys.stdout.flush()
         node.receive()
-        task_return = asyncio.create_task(return_ack())
-        await task_return
+        return_ack()
+        #task_return = asyncio.create_task(return_ack())
+        #await task_return
 
         await asyncio.sleep(0.01)
 
