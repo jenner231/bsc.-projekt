@@ -150,7 +150,8 @@ async def send_ack():
     await asyncio.sleep(1)
 
 async def cancel_cpu(cont):
-    time = datetime.timedelta(datetime.now()).total_seconds()
+    time = 0
+    print("checkpoint 1")
     while cont:
         if sys.stdin.read(1) == '\x63':                      
             print('\x1b[1A', end='\r')
@@ -158,8 +159,9 @@ async def cancel_cpu(cont):
             print('\x1b[1A', end='\r')
             cont = False
             return cont
-        elif (time + datetime.timedelta(seconds=10)) > datetime.timedelta(datetime.now()).total_seconds():
+        elif (10) < time:
             return cont
+        time = time + 0.1
         await asyncio.sleep(0.1)
 
 async def async_main():
