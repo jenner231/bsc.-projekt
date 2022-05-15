@@ -75,7 +75,7 @@ async def get_cpu_temp():
 #
 
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
-node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=n_addr,power=22,rssi=True,air_speed=2400,relay=False)
+node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=n_addr,ack_info=(0,0),power=22,rssi=True,air_speed=2400,relay=False)
 
 async def send_deal():
     #####Added the second input requirement of node id (also mentioned as 0 in line 72)
@@ -173,6 +173,7 @@ async def cancel_cpu(cont):
 
 async def return_ack():
         #####check wether we've gotten a heartbeat each loop
+        
     if node.get_ack[0] == 1:
         offset_frequence = 18
         #####node.get_ack[1] is the sender address stored in the get_ack function
