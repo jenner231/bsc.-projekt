@@ -100,7 +100,6 @@ class sx126x:
         self.freq = freq
         self.serial_n = serial_num
         self.power = power
-        self.ack_info = ack_info
         # Initial the GPIO for M0 and M1 Pin
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
