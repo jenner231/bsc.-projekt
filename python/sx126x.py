@@ -265,7 +265,7 @@ class sx126x:
             print("we're actually sending")
     
     def ret_ack(self, received_data):
-        time.sleep(0.1)
+        time.sleep(2)
         get_t = received_data
         print(received_data)
         ack_id = 2
