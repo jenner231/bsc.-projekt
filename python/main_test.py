@@ -205,6 +205,7 @@ async def async_main():
 
             sys.stdout.flush()
         node.receive()
+        print("hello")
         await asyncio.sleep(0.01)
 
         # timer,send messages automatically
