@@ -157,14 +157,14 @@ async def cancel_cpu(cont):
     ##### But if we do press c, we want to cancel both
     while cancel_cont:
         print(time)
-        if sys.stdin.read(1) == '\x63':
-            print('\x1b[1A', end='\r')
-            print(" " * 100)
-            print('\x1b[1A', end='\r')
-            cont = False
-            cancel_cont = cont
-            return cont
-        elif 1 < time:
+        #if sys.stdin.read(1) == '\x63':
+         #   print('\x1b[1A', end='\r')
+          #  print(" " * 100)
+           # print('\x1b[1A', end='\r')
+            #cont = False
+            #cancel_cont = cont
+            #return cont
+        if 1 < time:
             cancel_cont = False
             return cont
         else:
