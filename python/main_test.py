@@ -188,7 +188,6 @@ async def async_main():
                 #task_deal = asyncio.create_task(send_deal())
                 #await send_deal()
                 await send_ack()
-                break
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
@@ -203,7 +202,6 @@ async def async_main():
                     #press c to cancel
                 
                     #await asyncio.sleep(10) 
-                break
 
             sys.stdout.flush()
         node.receive()
