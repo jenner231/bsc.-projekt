@@ -111,7 +111,7 @@ async def send_deal():
 
 async def send_cpu_continue(continue_or_not = True):
     if continue_or_not:
-        await asyncio.sleep(10)
+        #await asyncio.sleep(10)
         #global timer_task
         #global seconds
         
