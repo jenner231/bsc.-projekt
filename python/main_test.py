@@ -175,13 +175,11 @@ async def return_ack():
         #####check wether we've gotten a heartbeat each loop
         #####49 == 1 in ascii
     info = node.get_ack()
-    print(info)
     if info[0] == 49:
         offset_frequence = 18
-        print("checkpoint1")
+
         #####node.get_ack[1] is the sender address stored in the get_ack function
         data = bytes([int(node.get_ack[1])>>8]) + bytes([int(node.get_ack[1])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(node.get_ack[0]).encode()
-        print("checkpoint1")
         node.send(data)
     else:
         pass
@@ -220,9 +218,8 @@ async def async_main():
 
             sys.stdout.flush()
         node.receive()
-        await return_ack()
-        #task_return = asyncio.create_task(return_ack())
-        #await task_return
+        task_return = asyncio.create_task(return_ack())
+        await task_return
 
         await asyncio.sleep(0.01)
 
