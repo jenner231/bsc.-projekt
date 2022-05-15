@@ -151,6 +151,7 @@ async def send_ack():
 
 async def cancel_cpu(cont):
     time = 0
+    max_time = 10
     cancel_cont = cont
     print("checkpoint 1")
     #####We need to differentiate between the two continue variables, as if we dont press c, after 10 seconds we want to return true for the outer loop, but false for the cancel_cpu loop
@@ -165,8 +166,8 @@ async def cancel_cpu(cont):
                 cont = False
                 cancel_cont = cont
                 return cont
-        if 5 < time:
-            cancel_cont = False
+        if max_time < time:
+            #cancel_cont = False
             return cont
         else:
             cancel_cont = True
