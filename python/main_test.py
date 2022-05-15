@@ -164,6 +164,7 @@ async def cancel_cpu(cont):
         else:
             time = time + 0.1
             time.sleep(0.1)
+        print("checkpoint"+time)
 
 async def async_main():
     await asyncio.sleep(0.1)
@@ -194,6 +195,7 @@ async def async_main():
                     cpu = asyncio.create_task(send_cpu_continue())
                     await cpu
                     cont = await cancel_cpu(cont)
+                    print("checkpoint 2")
                     #press c to cancel
                 
                     #await asyncio.sleep(10) 
