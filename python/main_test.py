@@ -184,6 +184,7 @@ async def async_main():
                 cont = True
                 while cont == True:
                     cpu = asyncio.create_task(send_cpu_continue())
+                    await cpu
                     #press c to cancel
                     if sys.stdin.read(1) == '\x63':
                         cont = False
@@ -194,7 +195,6 @@ async def async_main():
                         print('\x1b[1A', end='\r')
                         await asyncio.sleep(0.1)
                         break
-                    await cpu
 
             sys.stdout.flush()
         node.receive()
