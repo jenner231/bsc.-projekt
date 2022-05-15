@@ -216,7 +216,7 @@ async def async_main():
 
             sys.stdout.flush()
         node.receive()
-        #await return_ack()
+        await return_ack()
 
         await asyncio.sleep(0.01)
 
