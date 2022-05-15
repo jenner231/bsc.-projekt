@@ -176,10 +176,12 @@ async def return_ack():
         #####49 == 1 in ascii
     info = node.get_ack()
     if info[0] == 49:
+        print("checkpoint1 ")
         offset_frequence = 18
 
         #####node.get_ack[1] is the sender address stored in the get_ack function
         data = bytes([int(node.get_ack[1])>>8]) + bytes([int(node.get_ack[1])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(node.get_ack[0]).encode()
+        print("checkpoint2")
         node.send(data)
     else:
         pass
