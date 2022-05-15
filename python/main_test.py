@@ -184,8 +184,8 @@ async def async_main():
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
-                #task_ack = asyncio.create_task(send_ack())
-                task_deal = asyncio.create_task(send_deal())
+                task_ack = asyncio.create_task(send_ack())
+                #task_deal = asyncio.create_task(send_deal())
                 #await send_deal()
                 await send_ack()
                 break
