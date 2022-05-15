@@ -317,8 +317,8 @@ class sx126x:
                 print("Noted ack_id")
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
-                print("can we reach this checkpoint?")
                 self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
+                print("Devices in range: " + self.reachable_dev)
             else:
                 #error handling if ack_id invalid value
                 print("error")
