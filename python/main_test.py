@@ -110,6 +110,7 @@ async def send_deal():
     print('\x1b[3A',end='\r')
 
 async def send_cpu_continue(continue_or_not = True):
+    ack_id = 0
     if continue_or_not:
         #await asyncio.sleep(10)
         #global timer_task
@@ -117,7 +118,7 @@ async def send_cpu_continue(continue_or_not = True):
         
         # boarcast the cpu temperature at 868.125MHz
         
-        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
+        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
         node.send(data)
         await asyncio.sleep(10)
         #time.sleep(0.2)
@@ -126,7 +127,7 @@ async def send_cpu_continue(continue_or_not = True):
         #timer_task = Timer(seconds,send_cpu_continue)
         #timer_task.start()
     else:
-        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
+        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() +  "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
         node.send(data)
 
         #time.sleep(0.2)
