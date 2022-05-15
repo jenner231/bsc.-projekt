@@ -179,6 +179,8 @@ async def return_ack():
         data = bytes([int(node.get_ack[1])>>8]) + bytes([int(node.get_ack[1])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(node.get_ack[0]).encode()
 
         node.send(data)
+    else:
+        pass
 
 async def async_main():
     await asyncio.sleep(0.1)
@@ -214,7 +216,7 @@ async def async_main():
 
             sys.stdout.flush()
         node.receive()
-        await return_ack()
+        #await return_ack()
 
         await asyncio.sleep(0.01)
 
