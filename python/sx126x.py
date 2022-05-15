@@ -282,13 +282,14 @@ class sx126x:
         #print(data[4])
         #print(data[5])
         #print(data[6])
-        self.send(self, data2)
+        self.send(data2)
         print("We send return ack")
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self):
         if self.ser.inWaiting() > 0:
             time.sleep(0.5)
+            node = self
             r_buff = self.ser.read(self.ser.inWaiting())
             #####Made a check to see if the message was for us
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
@@ -305,7 +306,7 @@ class sx126x:
                 ###Only change is the value of r_buff[4] which is the value of ack_id
                 ##call the acknowledgement function
                 print("ack id 1 received \n trying to call ret_ack")
-                self.ret_ack(self, r_buff)
+                self.ret_ack(node, r_buff)
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
                 print("can we reach this checkpoint?")
