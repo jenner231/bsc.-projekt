@@ -162,6 +162,7 @@ async def cancel_cpu(cont):
                 print(" " * 100)
                 print('\x1b[1A', end='\r')
                 cont = False
+                print("Stopped sending data")
                 return cont
         if max_time < time:
             return cont
@@ -187,6 +188,7 @@ async def async_main():
                 task_deal = asyncio.create_task(send_deal())
                 #await send_deal()
                 await send_ack()
+                break
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
@@ -194,15 +196,14 @@ async def async_main():
                 #timer_task.start()
                 #####Create the task to send "sensor" data to nearby devices
                 
-                cont = True
                 while cont == True:
                     cpu = asyncio.create_task(send_cpu_continue())
                     await cpu
                     cont = await cancel_cpu(cont)
-                    print("Stopped sending data")
                     #press c to cancel
                 
                     #await asyncio.sleep(10) 
+                break
 
             sys.stdout.flush()
         node.receive()
