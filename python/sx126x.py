@@ -318,7 +318,7 @@ class sx126x:
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
                 self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
-                print("Devices in range: " + self.reachable_dev)
+                print("Devices in range: "+str(self.reachable_dev))
             else:
                 #error handling if ack_id invalid value
                 print("error")
