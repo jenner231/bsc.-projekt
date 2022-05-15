@@ -18,6 +18,7 @@
 from encodings import utf_8
 from multiprocessing import cpu_count
 from pickle import TRUE
+from ssl import ALERT_DESCRIPTION_UNKNOWN_PSK_IDENTITY
 import sys
 import sx126x
 import threading
@@ -179,10 +180,10 @@ async def return_ack():
         print("checkpoint1 ")
         offset_frequence = 18
         #####50 represents 2 in ascii
-        info[0] = 50
+        ack_id = 2
 
         #####node.get_ack[1] is the sender address stored in the get_ack function
-        data = bytes([int(info[1])>>8]) + bytes([int(info[1])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(info[0]).encode()
+        data = bytes([int(info[1])>>8]) + bytes([int(info[1])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
         print("checkpoint2")
         node.send(data)
     else:
