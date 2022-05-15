@@ -163,10 +163,10 @@ async def cancel_cpu(cont):
             print('\x1b[1A', end='\r')
             cont = False
             cancel_cont = cont
-            return cont
+            return await cont
         elif 1 < time:
             cancel_cont = False
-            return cont
+            return await cont
         else:
             cancel_cont = True
             time = time + 0.1
@@ -202,7 +202,8 @@ async def async_main():
                 while cont == True:
                     cpu = asyncio.create_task(send_cpu_continue())
                     await cpu
-                    cont = await cancel_cpu(cont)
+                    cont2 = await cancel_cpu(cont)
+                    cont = cont2
                     print("checkpoint 2")
                     #press c to cancel
                 
