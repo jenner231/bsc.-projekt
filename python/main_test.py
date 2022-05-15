@@ -159,10 +159,11 @@ async def cancel_cpu(cont):
             print('\x1b[1A', end='\r')
             cont = False
             return cont
-        elif (10) < time:
+        elif 1 < time:
             return cont
-        time = time + 0.1
-        await asyncio.sleep(0.1)
+        else:
+            time = time + 0.1
+            await asyncio.sleep(0.1)
 
 async def async_main():
     await asyncio.sleep(0.1)
