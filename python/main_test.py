@@ -171,7 +171,7 @@ async def cancel_cpu(cont):
             cancel_cont = True
             time = time + 0.1
             print(time)
-            time.sleep(0.1)
+            #time.sleep(0.1)
 
 async def async_main():
     await asyncio.sleep(0.1)
