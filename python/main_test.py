@@ -156,10 +156,10 @@ async def cancel_cpu(cont):
             print('\x1b[1A', end='\r')
             print(" " * 100)
             print('\x1b[1A', end='\r')
-            await asyncio.sleep(0.1)
             cont = False
             return cont
-        elif (time + 10) < datetime.time()
+        elif (time + 10) > datetime.time():
+            return cont
         await asyncio.sleep(0.1)
 
 async def async_main():
@@ -193,7 +193,7 @@ async def async_main():
                     cont = await cancel_cpu(cont)
                     #press c to cancel
                 
-                    await asyncio.sleep(10) 
+                    #await asyncio.sleep(10) 
 
             sys.stdout.flush()
         node.receive()
