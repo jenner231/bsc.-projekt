@@ -119,6 +119,14 @@ async def send_cpu_continue(continue_or_not = True):
         # boarcast the cpu temperature at 868.125MHz
         
         data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
+        print(data[0])
+        print(data[1])
+        print(data[2])
+        print(data[3])
+        print(data[4])
+        print(data[5])
+        print(data[6])
+        print(data[7])
         node.send(data)
         await asyncio.sleep(10)
         #time.sleep(0.2)
@@ -129,7 +137,6 @@ async def send_cpu_continue(continue_or_not = True):
     else:
         data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() +  "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
         node.send(data)
-
         #time.sleep(0.2)
         #timer_task.cancel()
         pass
