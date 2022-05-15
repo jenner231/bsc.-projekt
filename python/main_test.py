@@ -128,7 +128,6 @@ async def send_cpu_continue(continue_or_not = True):
         print(data[6])
         print(data[7])
         node.send(data)
-        await asyncio.sleep(10)
         #time.sleep(0.2)
         #rec = asyncio.create_task(send_cpu_continue())
         #await rec
@@ -180,10 +179,10 @@ async def async_main():
                 #timer_task = Timer(seconds, send_cpu_continue)
                 #timer_task.start()
                 #####Create the task to send "sensor" data to nearby devices
-                cpu = asyncio.create_task(send_cpu_continue())
                 
                 cont = True
                 while cont == True:
+                    cpu = asyncio.create_task(send_cpu_continue())
                     await cpu
                     #press c to cancel
                     if sys.stdin.read(1) == '\x63':
@@ -195,6 +194,7 @@ async def async_main():
                         print('\x1b[1A', end='\r')
                         await asyncio.sleep(0.1)
                         break
+                    await asyncio.sleep(10)
 
             sys.stdout.flush()
         node.receive()
