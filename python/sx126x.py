@@ -92,7 +92,7 @@ class sx126x:
         32:SX126X_PACKAGE_SIZE_32_BYTE
     }
 
-    def __init__(self,serial_num,freq,addr,power,rssi,air_speed=2400,\
+    def __init__(self,serial_num,freq,addr,ack_info,power,rssi,air_speed=2400,\
                  net_id=0,buffer_size = 240,crypt=0,\
                  relay=False,lbt=False,wor=False):
         self.rssi = rssi
@@ -100,6 +100,7 @@ class sx126x:
         self.freq = freq
         self.serial_n = serial_num
         self.power = power
+        self.ack_info = ack_info
         # Initial the GPIO for M0 and M1 Pin
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
