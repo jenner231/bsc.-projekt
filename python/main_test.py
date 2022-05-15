@@ -167,7 +167,9 @@ async def cancel_cpu(cont):
             cancel_cont = False
             return cont
         else:
+            cancel_cont = True
             time = time + 0.1
+            print(time)
             time.sleep(0.1)
     print("checkpoint"+time)
 
