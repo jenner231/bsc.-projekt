@@ -319,7 +319,9 @@ class sx126x:
             if int(chr(r_buff[3])) == 0:
                     print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
                     print("Message is: "+str(r_buff[4:-1]),end='\r\n')
-                    print("Message length is: %d"%len(r_buff))
+                    temp = str(r_buff)
+                    length = temp.split(",")
+                    print("Message length is: %d"%len(length))
             elif int(chr(r_buff[3])) == 1:
                 self.receive_ack(r_buff)
                 print("Noted ack_id")
