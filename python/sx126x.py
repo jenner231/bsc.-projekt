@@ -299,6 +299,13 @@ class sx126x:
         self.ack_info = (0,0)
         return ack_info
 
+    
+    def col_detect(self):
+        if self.ser.inWaiting() > 0 and self.ser.inWaiting() < 4:
+            time.sleep(0.5)
+            r_buff = self.ser.read(self.ser.inWaiting())
+
+
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self):
@@ -312,6 +319,7 @@ class sx126x:
             if int(chr(r_buff[3])) == 0:
                     print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
                     print("Message is: "+str(r_buff[4:-1]),end='\r\n')
+                    print("Message length is: %d"%len(r_buff))
             elif int(chr(r_buff[3])) == 1:
                 self.receive_ack(r_buff)
                 print("Noted ack_id")
