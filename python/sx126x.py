@@ -1,5 +1,6 @@
 # This file is used for LoRa and Raspberry pi4B related issues 
 
+from ctypes import sizeof
 import RPi.GPIO as GPIO
 import serial
 import time
@@ -318,7 +319,7 @@ class sx126x:
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             if int(chr(r_buff[3])) == 0:
                     print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
-                    print("Message is: "+str(r_buff[4:-1]),end='\r\n')
+                    print("Message is: "+str(r_buff[0:-1]),end='\r\n')
                     temp = str(r_buff)
                     length = temp.split(",")
                     print("Message length is: %d"%len(length))
