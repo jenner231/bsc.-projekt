@@ -336,7 +336,7 @@ class sx126x:
                 print("Noted ack_id")
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
-                temp = str(r_buff[4:-1])
+                temp = str(r_buff[0:-1])
                 split = temp.split("\\")
                 print(str(split))
                 print("Message is: "+str(split[1:-1]),end='\r\n')
