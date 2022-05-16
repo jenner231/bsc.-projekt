@@ -319,7 +319,7 @@ class sx126x:
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self):
         if self.ser.inWaiting() > 0:
-            time.sleep(0.05)
+            time.sleep(0.01)
             r_buff = self.ser.read(self.ser.inWaiting())
             #####Made a check to see if the message was for us
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
