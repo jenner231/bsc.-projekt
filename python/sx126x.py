@@ -338,7 +338,7 @@ class sx126x:
                 #####appending the received node_id
                 temp = str(r_buff[4:-1])
                 split = temp.split("\\")
-                print(split)
+                print(str(split))
                 print("Message is: "+str(split[1:-1]),end='\r\n')
                 self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
                 print("Devices in range: "+str(self.reachable_dev))
