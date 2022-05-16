@@ -358,10 +358,10 @@ class sx126x:
     def get_channel_rssi(self):
         GPIO.output(self.M1,GPIO.LOW)
         GPIO.output(self.M0,GPIO.LOW)
-        time.sleep(0.1)
+        time.sleep(0.01)
         self.ser.flushInput()
         self.ser.write(bytes([0xC0,0xC1,0xC2,0xC3,0x00,0x02]))
-        time.sleep(0.1)
+        time.sleep(0.01)
         re_temp = bytes(5)
         if self.ser.inWaiting() > 0:
             time.sleep(0.1)
