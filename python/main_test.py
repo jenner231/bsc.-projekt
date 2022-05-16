@@ -148,7 +148,7 @@ async def send_ack():
     print(data[2])
     print(data[3])
     node.send(data)
-    await asyncio.sleep(1)
+    #await asyncio.sleep(1)
 
 async def cancel_cpu(cont):
     time = 0
@@ -189,7 +189,7 @@ async def return_ack():
         pass
 
 async def async_main():
-    await asyncio.sleep(0.1)
+    #await asyncio.sleep(0.1)
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
@@ -225,7 +225,7 @@ async def async_main():
         task_return = asyncio.create_task(return_ack())
         await task_return
 
-        await asyncio.sleep(0.01)
+        #wait asyncio.sleep(0.01)
 
         # timer,send messages automatically
 
