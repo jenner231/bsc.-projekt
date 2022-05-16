@@ -1,6 +1,7 @@
 # This file is used for LoRa and Raspberry pi4B related issues 
 
 from ctypes import sizeof
+from curses import raw
 import RPi.GPIO as GPIO
 import serial
 import time
@@ -306,7 +307,7 @@ class sx126x:
     #         time.sleep(0.5)
     #         r_buff = self.ser.read(self.ser.inWaiting())
     #         temp = str(r_buff[4:-1])
-    #         split = temp.split("\")
+    #         split = temp.split("\\")
     #         n = len(split)
     #         while  n > 1:
     #             new_message = split[1:-1]
@@ -335,6 +336,7 @@ class sx126x:
                 print("Noted ack_id")
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
+                print("\\")
                 print("Message is: "+str(r_buff[0:-1]),end='\r\n')
                 self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
                 print("Devices in range: "+str(self.reachable_dev))
