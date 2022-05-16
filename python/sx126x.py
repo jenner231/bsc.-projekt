@@ -301,10 +301,17 @@ class sx126x:
         return ack_info
 
     
-    def col_detect(self):
-        if self.ser.inWaiting() > 0 and self.ser.inWaiting() < 4:
-            time.sleep(0.5)
-            r_buff = self.ser.read(self.ser.inWaiting())
+    # def col_detect(self):
+    #     if self.ser.inWaiting() > 0:
+    #         time.sleep(0.5)
+    #         r_buff = self.ser.read(self.ser.inWaiting())
+    #         temp = str(r_buff[4:-1])
+    #         split = temp.split("\")
+    #         n = len(split)
+    #         while  n > 1:
+    #             new_message = split[1:-1]
+    #             n = 
+
 
 
 
@@ -319,7 +326,7 @@ class sx126x:
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             if int(chr(r_buff[3])) == 0:
                     print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
-                    print("Message is: "+str(r_buff[0:-1]),end='\r\n')
+                    print("Message is: "+str(r_buff[4:-1]),end='\r\n')
                     temp = str(r_buff)
                     length = temp.split(",")
                     print("Message length is: %d"%len(length))
@@ -328,6 +335,7 @@ class sx126x:
                 print("Noted ack_id")
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
+                print("Message is: "+str(r_buff[0:-1]),end='\r\n')
                 self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
                 print("Devices in range: "+str(self.reachable_dev))
             else:
