@@ -361,7 +361,7 @@ class sx126x:
         time.sleep(0.1)
         self.ser.flushInput()
         self.ser.write(bytes([0xC0,0xC1,0xC2,0xC3,0x00,0x02]))
-        time.sleep(0.5)
+        time.sleep(0.1)
         re_temp = bytes(5)
         if self.ser.inWaiting() > 0:
             time.sleep(0.1)
