@@ -336,8 +336,10 @@ class sx126x:
                 print("Noted ack_id")
             elif int(chr(r_buff[3])) == 2:
                 #####appending the received node_id
-                print("\\")
-                print("Message is: "+str(r_buff[0:-1]),end='\r\n')
+                temp = str(r_buff[4:-1])
+                split = temp.split("\\")
+                print(split)
+                print("Message is: "+str(split[1:-1]),end='\r\n')
                 self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
                 print("Devices in range: "+str(self.reachable_dev))
             else:
