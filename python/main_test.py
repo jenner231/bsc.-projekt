@@ -201,6 +201,7 @@ async def async_main():
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
 
     while True:
+        timer = 0
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
             c = sys.stdin.read(1)
             # dectect key Esc
@@ -211,7 +212,8 @@ async def async_main():
                 #task_deal = asyncio.create_task(send_deal())
                 #await send_deal()
                 await send_ack()
-                await asyncio.sleep(5)
+                print(datetime.time())
+                timer = datetime.time()
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
@@ -229,8 +231,11 @@ async def async_main():
 
             sys.stdout.flush()
         node.receive()
-        task_return = asyncio.create_task(return_ack())
-        await task_return
+        if timer != 0:
+            task_return = asyncio.create_task(return_ack())
+            await task_return
+            if timer + 5 < datetime.time():
+                timer = 0
 
         #wait asyncio.sleep(0.01)
 
