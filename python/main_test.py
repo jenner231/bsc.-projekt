@@ -211,6 +211,7 @@ async def async_main():
                 #task_deal = asyncio.create_task(send_deal())
                 #await send_deal()
                 await send_ack()
+                await asyncio.sleep(5)
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
