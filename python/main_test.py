@@ -28,6 +28,7 @@ import termios
 import asyncio
 import tty
 import datetime
+import random
 from threading import Timer
 
 old_settings = termios.tcgetattr(sys.stdin)
@@ -177,6 +178,7 @@ async def return_ack():
         #####check wether we've gotten a heartbeat each loop
         #####49 == 1 in ascii
     info = node.get_ack()
+    await asyncio.sleep(random.uniform(0,5))
     if info[0] == 49:
         print("checkpoint1 ")
         offset_frequence = 18
