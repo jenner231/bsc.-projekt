@@ -134,6 +134,7 @@ async def send_cpu_continue(continue_or_not = True):
         #timer_task.cancel()
         pass
 async def send_ack():
+    node.reachable_dev.clear()
   #  send data with ack id, wait for answer, if we get answer, note addr of answering node
     offset_frequence = int(18)
     ack_id = 1

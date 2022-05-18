@@ -319,6 +319,7 @@ class sx126x:
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self):
         if self.ser.inWaiting() > 0:
+            #####TODO: Make sleep appropriate. If too small, it will not read the entire message!!
             time.sleep(0.05)
             r_buff = self.ser.read(self.ser.inWaiting())
             #####Made a check to see if the message was for us
