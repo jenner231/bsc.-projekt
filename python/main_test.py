@@ -234,8 +234,10 @@ async def async_main():
         if timer != 0:
             task_return = asyncio.create_task(return_ack())
             await task_return
-            if timer + 5 < datetime.now():
+            if timer + str('00:00:05', "%H:%M:%S") < datetime.now():
                 timer = 0
+        else: 
+            pass
 
         #wait asyncio.sleep(0.01)
 
