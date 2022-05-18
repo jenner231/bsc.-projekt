@@ -178,7 +178,7 @@ async def return_ack():
         #####check wether we've gotten a heartbeat each loop
         #####49 == 1 in ascii
     info = node.get_ack()
-    rand = float((random.randrange(0, 5, 0.3)) / 10)
+    rand = float((random.randrange(0, 50, 3)) / 10)
     await asyncio.sleep(rand)
     if info[0] == 49:
         print("checkpoint1 ")
