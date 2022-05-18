@@ -178,7 +178,8 @@ async def return_ack():
         #####check wether we've gotten a heartbeat each loop
         #####49 == 1 in ascii
     info = node.get_ack()
-    await asyncio.sleep(random.uniform(0,5))
+    rand = random.randrange(0, 5, 0.3)
+    await asyncio.sleep(rand)
     if info[0] == 49:
         print("checkpoint1 ")
         offset_frequence = 18
