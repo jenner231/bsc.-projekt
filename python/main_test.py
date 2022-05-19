@@ -251,7 +251,7 @@ async def async_main():
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
-                task_fward = asyncio.create_task(for_mes())
+                task_fward = asyncio.create_task(request_cpu_continue)
                 await task_fward
                 #task_ack = asyncio.create_task(send_ack())
                 #task_deal = asyncio.create_task(send_deal())
