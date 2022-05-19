@@ -5,6 +5,7 @@ from curses import raw
 import RPi.GPIO as GPIO
 import serial
 import time
+import datetime
 import sys
 from encodings import utf_8
 
@@ -31,6 +32,10 @@ class sx126x:
     #### reachable_dev for heartbeat
     reachable_dev = []
     ack_info = (0,0)
+    forward = 0
+    received_time = (0, 0)
+    path = []
+    data = []
 
 
     #
@@ -301,17 +306,69 @@ class sx126x:
         self.ack_info = (0,0)
         return ack_info
 
-    
-    # def col_detect(self):
-    #     if self.ser.inWaiting() > 0:
-    #         time.sleep(0.5)
-    #         r_buff = self.ser.read(self.ser.inWaiting())
-    #         temp = str(r_buff[4:-1])
-    #         split = temp.split("\\")
-    #         n = len(split)
-    #         while  n > 1:
-    #             new_message = split[1:-1]
-    #             n = 
+    #####Function to determine wether we have seen a request for this data before. e.g if multiple nodes can reach the end node with different paths, 
+    #####we only want to answer the first one
+    def calc_new_message(self, time, path):
+        m, s = time.strftime("%M") * 60, time.strftime("%S")
+        #####See if we've already received a time from the same address set time to the time received, else set time to 0 for next statement
+        if self.received_time[0] != 0 and self.received_time[1] == path[0]:
+            c_m, c_s = self.received_time.strftime("%M"), self.received_time.strftime("%S")
+        else:
+            c_m, c_s = 0, 0
+        #####if we have a message with the same origin from the same time, we return false, else True
+        if (m + s) == (c_m + c_s) and path[0] == self.path[0]:
+            return False
+        else:
+            return True
+
+
+
+
+    def check_message(self, r_buff):
+        visited = False
+        #####Check we have visited this not before to avoid infinite loop when flooding the network in broadcasts
+        for i in r_buff[5]:
+            if self.addr == r_buff[5][i]:
+                visited = True
+                break
+
+        
+        ####if we're the end node, go in here
+        if r_buff[4] == self.addr and (not visited):
+            if self.calc_new_message(r_buff[6], r_buff[5]):
+                id = (r_buff[0]<<8) + r_buff[1]
+                self.received_time = (r_buff[6], id)
+
+                #####We set path to r_buff[5], so we can get the array of nodes we to send the information back through. 
+                path = r_buff[5]
+                ##### we need the path to navigate the way back to original sender of request.
+                self.path = path
+
+        elif r_buff[4] != self.addr and not visited:
+            if self.calc_new_message(r_buff[6], r_buff[5]):
+                ###if we have the node in reachable_dev, only send message to it instead of broadcast!!!!
+                id = (r_buff[0]<<8) + r_buff[1]
+                self.received_time = (r_buff[6], id)
+                r_buff[5].append(self.addr)
+                self.forward = r_buff[3:-1]
+            else: 
+                pass
+        else: 
+            pass
+
+
+
+    def ret_data(self, r_buff):
+        path = r_buff[4]
+        payload = r_buff[5:-1]
+        if path:
+            self.data = r_buff[5:-1]
+            self.path = path
+
+        else:
+            print(payload)
+            
+            
 
 
 
@@ -335,10 +392,14 @@ class sx126x:
                     self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
                     print(print("Node IDs in range: "+str(self.reachable_dev)))
             elif int(chr(r_buff[3])) == 1:
-                self.receive_ack(r_buff)
-                print("Noted ack_id")
+                self.check_message(r_buff)
+                #self.receive_ack(r_buff)
+                #print("Noted ack_id")
             elif int(chr(r_buff[3])) == 2:
-                #####appending the received node_id
+               
+                self.ret_data(r_buff)
+
+
                 temp = str(r_buff[0:-1])
                 split = temp.split("\\")
                 print(str(split))

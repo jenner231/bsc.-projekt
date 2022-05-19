@@ -112,17 +112,22 @@ async def send_deal():
     print(" "*200)
     print('\x1b[3A',end='\r')
 
-async def send_cpu_continue(continue_or_not = True):
+async def request_cpu_continue(continue_or_not = True):
+    end_node = 3
+    path = [node.addr]
     ack_id = 1
+    time = datetime.datetime.now()
     if continue_or_not:
         #await asyncio.sleep(10)
         #global timer_task
         #global seconds
         
-        # boarcast the cpu temperature at 868.125MHz
-        
-        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
+        # broadcast a request to end_node for it's "sensor" data, here, cpu temp
+        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + str(end_node).encode() + str(path).encode() + str(time).encode()
         node.send(data)
+        # broadcast the cpu temperature at 868.125MHz
+        #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
+        #node.send(data)
         #time.sleep(0.2)
         #rec = asyncio.create_task(send_cpu_continue())
         #await rec
@@ -193,6 +198,43 @@ async def return_ack():
     else:
         pass
 
+async def for_mes():
+    if(node.forward != 0):
+        #####Just setting variables for readability. We set forward in our chechk_message function in sx126x
+        ack_id = node.forward[0]
+        end_node = node.forward[1]
+        path = node.forward[2]
+        time = node.forward[3]
+        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + str(end_node).encode() + str(path).encode() + str(time).encode()
+        node.send(data)
+        node.forward = 0
+    else:
+        pass
+
+async def ret_mes():
+    ####if we have something in our path array, basically says if len(node.path) not empty
+    if node.path:
+        send_to = node.path[-1]
+        temp = str("CPU Temperature:"+str(get_cpu_temp())+ " C")
+        if len(node.path) == 1:
+            path = []
+        else:
+            path = node.path[0:-2]
+
+        offset_frequence = 18
+        ack_id = 2
+        if node.data:
+            temp = node.data
+            node.data = []
+
+
+        #####node.get_ack[1] is the sender address stored in the get_ack function
+        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode() + str(path).encode() + str(temp).encode()
+        node.send(data)
+
+
+                
+
 async def async_main():
     #await asyncio.sleep(0.1)
     print("Press \033[1;32mEsc\033[0m to exit")
@@ -235,6 +277,9 @@ async def async_main():
                 timer = 0
         else: 
             pass
+
+        task_fward = asyncio.create_task(for_mes())
+        await task_fward
 
         #wait asyncio.sleep(0.01)
 
