@@ -124,6 +124,7 @@ async def request_cpu_continue():
         # broadcast a request to end_node for it's "sensor" data, here, cpu temp
     data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + str(end_node).encode() + str(path).encode() + str(time).encode()
     node.send(data)
+    print("check1")
     # broadcast the cpu temperature at 868.125MHz
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
     #node.send(data)
@@ -136,7 +137,7 @@ async def request_cpu_continue():
     #node.send(data)
     #time.sleep(0.2)
     #timer_task.cancel()
-    
+
 async def send_ack():
     #node.reachable_dev.clear()
   #  send data with ack id, wait for answer, if we get answer, note addr of answering node
