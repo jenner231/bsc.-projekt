@@ -85,7 +85,7 @@ async def send_deal():
     print("")
     print("input a string such as \033[1;32m0,868,Hello World\033[0m,it will send `Hello World` to lora node device of address 0 with frequncy 868M ")
     print("please input and press Enter key:",end='',flush=True)
-    ack_id = 0
+    ack_id = 1
     while True:
         rec = sys.stdin.read(1)
         if rec != None:
@@ -113,7 +113,7 @@ async def send_deal():
     print('\x1b[3A',end='\r')
 
 async def send_cpu_continue(continue_or_not = True):
-    ack_id = 0
+    ack_id = 1
     if continue_or_not:
         #await asyncio.sleep(10)
         #global timer_task
@@ -135,10 +135,10 @@ async def send_cpu_continue(continue_or_not = True):
         #timer_task.cancel()
         pass
 async def send_ack():
-    node.reachable_dev.clear()
+    #node.reachable_dev.clear()
   #  send data with ack id, wait for answer, if we get answer, note addr of answering node
     offset_frequence = int(18)
-    ack_id = 1
+    ack_id = 0
     # the sending message format
     #
     #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
@@ -155,8 +155,7 @@ async def send_ack():
 async def cancel_cpu(cont):
     time = 0
     max_time = 10
-    #####We need to differentiate between the two continue variables, as if we dont press c, after 10 seconds we want to return true for the outer loop, but false for the cancel_cpu loop
-    ##### But if we do press c, we want to cancel both
+
     while cont:
         print(time)
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
@@ -212,8 +211,6 @@ async def async_main():
                 #task_deal = asyncio.create_task(send_deal())
                 #await send_deal()
                 await send_ack()
-                print(datetime.now().time())
-                timer = datetime.now().time()
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
@@ -234,7 +231,7 @@ async def async_main():
         if timer != 0:
             task_return = asyncio.create_task(return_ack())
             await task_return
-            if timer + str('00:00:05', "%H:%M:%S") < datetime.now():
+            if timer + str('00:00:05', "%H:%M:%S") < datetime.now().time():
                 timer = 0
         else: 
             pass
