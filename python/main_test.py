@@ -112,33 +112,31 @@ async def send_deal():
     print(" "*200)
     print('\x1b[3A',end='\r')
 
-async def request_cpu_continue(continue_or_not = True):
+async def request_cpu_continue():
     end_node = 3
     path = [node.addr]
     ack_id = 1
     time = datetime.datetime.now()
-    if continue_or_not:
         #await asyncio.sleep(10)
         #global timer_task
         #global seconds
         
         # broadcast a request to end_node for it's "sensor" data, here, cpu temp
-        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + str(end_node).encode() + str(path).encode() + str(time).encode()
-        node.send(data)
-        # broadcast the cpu temperature at 868.125MHz
-        #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
-        #node.send(data)
-        #time.sleep(0.2)
-        #rec = asyncio.create_task(send_cpu_continue())
-        #await rec
-        #timer_task = Timer(seconds,send_cpu_continue)
-        #timer_task.start()
-    else:
-        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() +  "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
-        node.send(data)
-        #time.sleep(0.2)
-        #timer_task.cancel()
-        pass
+    data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + str(end_node).encode() + str(path).encode() + str(time).encode()
+    node.send(data)
+    # broadcast the cpu temperature at 868.125MHz
+    #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
+    #node.send(data)
+    #time.sleep(0.2)
+    #rec = asyncio.create_task(send_cpu_continue())
+    #await rec
+    #timer_task = Timer(seconds,send_cpu_continue)
+    #timer_task.start()
+    #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() +  "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
+    #node.send(data)
+    #time.sleep(0.2)
+    #timer_task.cancel()
+    
 async def send_ack():
     #node.reachable_dev.clear()
   #  send data with ack id, wait for answer, if we get answer, note addr of answering node

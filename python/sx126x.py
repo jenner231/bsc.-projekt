@@ -392,6 +392,7 @@ class sx126x:
                     self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
                     print(print("Node IDs in range: "+str(self.reachable_dev)))
             elif int(chr(r_buff[3])) == 1:
+                print("check1")
                 self.check_message(r_buff)
                 #self.receive_ack(r_buff)
                 #print("Noted ack_id")
