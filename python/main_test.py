@@ -114,9 +114,12 @@ async def send_deal():
 
 async def request_cpu_continue():
     end_node = 3
+    print("check1")
     path = [node.addr]
     ack_id = 1
+    print("check2")
     time = datetime.datetime.now()
+    print("check3")
         #await asyncio.sleep(10)
         #global timer_task
         #global seconds
@@ -262,7 +265,7 @@ async def async_main():
                 #####Create the task to send "sensor" data to nearby devices
                 
                 while cont == True:
-                    cpu = asyncio.create_task(send_cpu_continue())
+                    cpu = asyncio.create_task(request_cpu_continue())
                     await cpu
                     cont = await cancel_cpu(cont)
                     #press c to cancel
@@ -271,13 +274,13 @@ async def async_main():
 
             sys.stdout.flush()
         node.receive()
-        if timer != 0:
-            task_return = asyncio.create_task(return_ack())
-            await task_return
-            if timer + str('00:00:05', "%H:%M:%S") < datetime.now().time():
-                timer = 0
-        else: 
-            pass
+        # if timer != 0:
+        #     task_return = asyncio.create_task(return_ack())
+        #     await task_return
+        #     if timer + str('00:00:05', "%H:%M:%S") < datetime.now().time():
+        #         timer = 0
+        # else: 
+        #     pass
 
 
         #wait asyncio.sleep(0.01)
