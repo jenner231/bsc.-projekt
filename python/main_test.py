@@ -249,10 +249,12 @@ async def async_main():
             if c == '\x1b': break
             # dectect key i
             if c == '\x69':
-                task_ack = asyncio.create_task(send_ack())
+                task_fward = asyncio.create_task(for_mes())
+                await task_fward
+                #task_ack = asyncio.create_task(send_ack())
                 #task_deal = asyncio.create_task(send_deal())
                 #await send_deal()
-                await send_ack()
+                #await send_ack()
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
@@ -278,8 +280,6 @@ async def async_main():
         else: 
             pass
 
-        task_fward = asyncio.create_task(for_mes())
-        await task_fward
 
         #wait asyncio.sleep(0.01)
 
