@@ -115,11 +115,14 @@ async def send_deal():
 async def request_cpu_continue():
     end_node = 3
     print("check1")
+    await asyncio.sleep(1)
     path = [node.addr]
     ack_id = 1
     print("check2")
+    await asyncio.sleep(1)
     time = datetime.datetime.now()
     print("check3")
+    await asyncio.sleep(1)
         #await asyncio.sleep(10)
         #global timer_task
         #global seconds
