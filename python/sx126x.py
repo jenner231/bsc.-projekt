@@ -381,9 +381,8 @@ class sx126x:
             time.sleep(0.1)
             print("receive checkpoint 1")
             r_buff = self.ser.read(self.ser.inWaiting())
-            rec = r_buff
-            print(type(rec))
-            decoded = rec.decode()
+            rec = str(r_buff)
+            print(rec)
             print(decoded)
             print("checkpoint 2")
             get_t = rec.split(",")
