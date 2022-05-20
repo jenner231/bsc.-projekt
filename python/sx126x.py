@@ -386,7 +386,7 @@ class sx126x:
             print(r_buff)
             print(rec)
             print((r_buff[0]<<8) + r_buff[1])
-            print((bytes(rec[0])<<8) + bytes(rec[1]))
+            print(int(rec[0]) + int(rec[1]))
             print("checkpoint 2")
             get_t = rec.split(",")
             print("checkpoint3 receive")
