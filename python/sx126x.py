@@ -353,9 +353,11 @@ class sx126x:
                 ##### we need the path to navigate the way back to original sender of request.
                 self.path = path
 
-        print("check_message checkpoint 4")
+            print("check_message checkpoint 4")
         elif r_buff[4] != self.addr and not visited:
+            print("check_message checkpoint 5")
             if self.calc_new_message(r_buff[6], r_buff[5]):
+                print("check_message checkpoint 6")
                 ###if we have the node in reachable_dev, only send message to it instead of broadcast!!!!
                 id = (r_buff[0]<<8) + r_buff[1]
                 self.received_time = (r_buff[6], id)
@@ -365,6 +367,7 @@ class sx126x:
                 pass
         else: 
             pass
+        print("check_message checkpoint 7")
 
 
 
