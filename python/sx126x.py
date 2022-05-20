@@ -382,7 +382,7 @@ class sx126x:
             time.sleep(0.1)
             print("receive checkpoint 1")
             r_buff = self.ser.read(self.ser.inWaiting())
-            rec = str(r_buff)
+            rec = str(r_buff[1:-1])
             print(r_buff)
             print(rec)
             print((r_buff[0]<<8) + r_buff[1])
