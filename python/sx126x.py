@@ -386,15 +386,16 @@ class sx126x:
             print(r_buff)
             print(rec)
             print((r_buff[0]<<8) + r_buff[1])
-            print(rec[1])
-            print(rec[2])
-            print(rec[3])
 
-            print(int(rec[0]) + int(rec[1]))
             print("checkpoint 2")
             get_t = rec.split(",")
             print("checkpoint3 receive")
             print(get_t)
+            print(get_t[0])
+            print(get_t[1])
+            print(get_t[2])
+            print(get_t[3])
+
 
             #####Made a check to see if the message was for us
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
