@@ -115,6 +115,7 @@ async def send_deal():
 async def request_cpu_continue():
     print("extra check")
     end_node = 3
+    seperate = ","
     print("check1")
     await asyncio.sleep(1)
     path = [node.addr]
@@ -129,7 +130,7 @@ async def request_cpu_continue():
         #global seconds
         
         # broadcast a request to end_node for it's "sensor" data, here, cpu temp
-    data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + str(end_node).encode() + str(path).encode() + str(time).encode()
+    data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode()
     node.send(data)
     print("check1")
     # broadcast the cpu temperature at 868.125MHz
