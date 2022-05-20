@@ -113,6 +113,7 @@ async def send_deal():
     print('\x1b[3A',end='\r')
 
 async def request_cpu_continue():
+    print("extra check")
     end_node = 3
     print("check1")
     await asyncio.sleep(1)
