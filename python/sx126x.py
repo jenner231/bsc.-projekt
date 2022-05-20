@@ -385,12 +385,13 @@ class sx126x:
             rec = str(r_buff)
             print(r_buff)
             print(rec)
+            print((r_buff[0]<<8) + r_buff[1])
+            ((rec[0]<<8) + rec[1])
             print("checkpoint 2")
             get_t = rec.split(",")
             print("checkpoint3 receive")
             print(get_t)
 
-            print(get_t)
             #####Made a check to see if the message was for us
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
