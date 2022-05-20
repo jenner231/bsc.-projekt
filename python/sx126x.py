@@ -386,6 +386,7 @@ class sx126x:
             print(r_buff)
             print(rec)
             print((r_buff[0]<<8) + r_buff[1])
+            print(rec[0])
             print(int(rec[0]) + int(rec[1]))
             print("checkpoint 2")
             get_t = rec.split(",")
