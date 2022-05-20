@@ -256,7 +256,7 @@ async def async_main():
             # dectect key i
             if c == '\x69':
                 print("Checkpoint1: In main loop, pressed i")
-                task_fward = asyncio.create_task(request_cpu_continue)
+                task_fward = asyncio.create_task(request_cpu_continue())
                 await task_fward
                 #task_ack = asyncio.create_task(send_ack())
                 #task_deal = asyncio.create_task(send_deal())
