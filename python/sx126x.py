@@ -332,12 +332,12 @@ class sx126x:
         print(r_buff[5])
         print(r_buff[5][2])
         #####Check we have visited this not before to avoid infinite loop when flooding the network in broadcasts
-        for i in r_buff[5]:
-            if self.addr == r_buff[5][i]:
+        for i in r_buff[4]:
+            if self.addr == r_buff[4][i]:
                 visited = True
                 break
 
-        print(r_buff[5])
+        print(r_buff[4])
         
         ####if we're the end node, go in here
         if r_buff[4] == self.addr and (not visited):
