@@ -328,6 +328,7 @@ class sx126x:
     def check_message(self, r_buff):
         print("check message checkpoint 1")
         visited = False
+        print(r_buff)
         #####Check we have visited this not before to avoid infinite loop when flooding the network in broadcasts
         for i in r_buff[5]:
             if self.addr == r_buff[5][i]:
@@ -380,21 +381,9 @@ class sx126x:
         if self.ser.inWaiting() > 0:
             #####TODO: Make sleep appropriate. If too small, it will not read the entire message!!
             time.sleep(0.1)
-            print("receive checkpoint 1")
             r_buff = self.ser.read(self.ser.inWaiting())
             rec = str(r_buff)
-            print(r_buff)
-            print(rec)
-            print((r_buff[0]<<8) + r_buff[1])
-
-            print("checkpoint 2")
             get_t = rec.split(",")
-            print("checkpoint3 receive")
-            print(get_t)
-            print(get_t[0])
-            print(get_t[1])
-            print(get_t[2])
-            print(get_t[3])
 
 
             #####Made a check to see if the message was for us
@@ -411,7 +400,7 @@ class sx126x:
                     print(print("Node IDs in range: "+str(self.reachable_dev)))
             elif int(chr(r_buff[3])) == 1:
                 print("Receive checkpoint 2")
-                self.check_message(r_buff)
+                self.check_message(get_t)
                 #self.receive_ack(r_buff)
                 #print("Noted ack_id")
             elif int(chr(r_buff[3])) == 2:
