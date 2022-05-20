@@ -329,11 +329,12 @@ class sx126x:
         print("check message checkpoint 1")
         visited = False
         print(r_buff)
-        print(r_buff[5])
-        print(r_buff[5][2])
+        print(r_buff[4])
+        print(r_buff[4][0])
         #####Check we have visited this not before to avoid infinite loop when flooding the network in broadcasts
-        for i in r_buff[4]:
-            if self.addr == r_buff[4][i]:
+        path = r_buff[4]
+        for i in path:
+            if self.addr == path[i]:
                 visited = True
                 break
 
