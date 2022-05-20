@@ -382,7 +382,7 @@ class sx126x:
             print("receive checkpoint 1")
             r_buff = self.ser.read(self.ser.inWaiting())
             rec = " "
-            print("checkpoint 2")
+            print(type(r_buff))
             #for n in r_buff:
             rec.join(r_buff)
             print("checkpoint 2")
