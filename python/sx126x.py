@@ -334,7 +334,7 @@ class sx126x:
         #####Check we have visited this not before to avoid infinite loop when flooding the network in broadcasts
         path = r_buff[4]
         for i in path:
-            if self.addr == path[i]:
+            if self.addr == i:
                 visited = True
                 break
 
