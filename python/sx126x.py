@@ -1,5 +1,6 @@
 # This file is used for LoRa and Raspberry pi4B related issues 
 
+from array import array
 from ctypes import sizeof
 from curses import raw
 import RPi.GPIO as GPIO
