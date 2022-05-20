@@ -380,7 +380,7 @@ class sx126x:
             time.sleep(0.05)
             print("receive checkpoint 1")
             r_buff = self.ser.read(self.ser.inWaiting())
-            print(r_buff)
+            print(r_buff[3])
             #####Made a check to see if the message was for us
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
