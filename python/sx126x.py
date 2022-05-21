@@ -343,7 +343,8 @@ class sx126x:
         ####must remove \\x to convert from string to int 
         sender = r_buff[1].split("\\x") 
         for i in path:
-            if self.addr == int(i):
+            val = int(i)
+            if self.addr == val:
                 print("We have seen a message from node id "+ self.path[0] + "before")
                 visited = True
 
