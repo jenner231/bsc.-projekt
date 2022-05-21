@@ -310,6 +310,7 @@ class sx126x:
     #####Function to determine wether we have seen a request for this data before. e.g if multiple nodes can reach the end node with different paths, 
     #####we only want to answer the first one
     def calc_new_message(self, time, path):
+        print("checkpoint calc message 1")
         m, s = time.strftime("%M") * 60, time.strftime("%S")
         #####See if we've already received a time from the same address set time to the time received, else set time to 0 for next statement
         if self.received_time[0] != 0 and self.received_time[1] == path[0]:
