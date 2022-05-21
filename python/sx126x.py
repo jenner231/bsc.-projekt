@@ -355,7 +355,7 @@ class sx126x:
                 ####here
                 sender = r_buff[1].split("\\") 
 
-                print(sender)
+                print(type(sender[1]))
                 temp1, temp2 = int(sender[1], 16), int(sender[2], 16)
                 print(temp1, temp2)
                 id = int(sender[1], 16) + int(sender[2], 16)
