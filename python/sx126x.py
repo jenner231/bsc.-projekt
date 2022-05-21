@@ -345,9 +345,9 @@ class sx126x:
         for i in path:
             val = int(i)
             if self.addr == val:
-                #print("We have seen a message from node id "+ val + "before")
+                print("We have seen a message from node id "+ val + "before")
                 visited = True
-                
+
         ####if we're the end node, go in here
         if int(r_buff[3]) == self.addr and (not visited):
             print("check_message checkpoint 2")
