@@ -346,7 +346,6 @@ class sx126x:
             if self.addr == int(i):
                 print("We have seen a message from node id "+ self.path[0] + "before")
                 visited = True
-                break
 
         ####if we're the end node, go in here
         if int(r_buff[3]) == self.addr and (not visited):
