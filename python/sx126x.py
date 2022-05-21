@@ -314,7 +314,7 @@ class sx126x:
         print(type(datetime.datetime.now()))
         print(time)
         dateT = datetime.strptime(time, '%d/%m/%y %H:%M:%S')
-        print(type(time))
+        print(dateT)
         m = dateT.strftime("%M") * 60 
         s = dateT.strftime("%S")
         print("checkpoint calc message 2")
