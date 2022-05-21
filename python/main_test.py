@@ -205,11 +205,11 @@ async def return_ack():
         pass
 
 async def for_mes():
-    rand = float((random.randrange(0, 50, 3)) / 10)
-    await asyncio.sleep(rand)
-    seperate = ","
-    in_reach = False
     if(node.forward != 0):
+        rand = float((random.randrange(0, 50, 3)) / 10)
+        await asyncio.sleep(rand)
+        seperate = ","
+        in_reach = False
         #####Just setting variables for readability. We set forward in our chechk_message function in sx126x
         ack_id = node.forward[0]
         end_node = node.forward[1]
