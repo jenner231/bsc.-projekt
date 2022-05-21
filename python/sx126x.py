@@ -355,7 +355,7 @@ class sx126x:
                 ####here
                 sender = r_buff[1].split("\\") 
                 print(sender)
-                print(int(sender[2]))
+                print(int(hex(sender[2])))
                 id = int(sender[1]) + int(sender[2])
                 self.received_time = (r_buff[5], id)
 
