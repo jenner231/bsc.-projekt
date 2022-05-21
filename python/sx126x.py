@@ -384,7 +384,7 @@ class sx126x:
                 pass
         else: 
             pass
-        print("check_message checkpoint 7")
+        print("check_message checkpoint 9")
 
 
 
