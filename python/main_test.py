@@ -121,8 +121,8 @@ async def request_cpu_continue():
     path = [node.addr]
     ack_id = 1
     print("check2")
-    time = datetime.time()
-    print(time)
+    time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    print("checkpoint 3")
         #await asyncio.sleep(10)
         #global timer_task
         #global seconds
