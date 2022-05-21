@@ -339,14 +339,15 @@ class sx126x:
                 break
 
         print(r_buff[4])
-        
+        print(type(r_buff[3]))
         ####if we're the end node, go in here
-        if r_buff[4] == self.addr and (not visited):
+        if r_buff[3] == self.addr and (not visited):
             print("check_message checkpoint 2")
-            if self.calc_new_message(r_buff[6], r_buff[5]):
+            if self.calc_new_message(r_buff[5], r_buff[4]):
                 print("check_message checkpoint 3")
-                id = (r_buff[0]<<8) + r_buff[1]
-                self.received_time = (r_buff[6], id)
+                sender = r_buff[2].split("\\") 
+                id = int(sender[0]) + int(sender[1])
+                self.received_time = (r_buff[5], id)
 
                 #####We set path to r_buff[5], so we can get the array of nodes we to send the information back through. 
                 path = r_buff[5]
@@ -354,9 +355,9 @@ class sx126x:
                 self.path = path
 
             print("check_message checkpoint 4")
-        elif r_buff[4] != self.addr and not visited:
+        elif r_buff[3] != self.addr and (not visited):
             print("check_message checkpoint 5")
-            if self.calc_new_message(r_buff[6], r_buff[5]):
+            if self.calc_new_message(r_buff[5], r_buff[4]):
                 print("check_message checkpoint 6")
                 ###if we have the node in reachable_dev, only send message to it instead of broadcast!!!!
                 id = (r_buff[0]<<8) + r_buff[1]
