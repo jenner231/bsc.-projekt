@@ -314,7 +314,7 @@ class sx126x:
         print(type(datetime.datetime.now()))
         print(time)
         print(type(time))
-        dateT = datetime.strptime(time, '%d-%m-%y %H:%M:%S')
+        dateT = datetime.datetime.strptime(time, '%d-%m-%y %H:%M:%S')
         print(dateT)
         m = dateT.strftime("%M") * 60 
         s = dateT.strftime("%S")
