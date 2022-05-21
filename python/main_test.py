@@ -205,13 +205,23 @@ async def return_ack():
         pass
 
 async def for_mes():
+    rand = float((random.randrange(0, 50, 3)) / 10)
+    await asyncio.sleep(rand)
+    seperate = ","
+    in_reach = False
     if(node.forward != 0):
         #####Just setting variables for readability. We set forward in our chechk_message function in sx126x
         ack_id = node.forward[0]
         end_node = node.forward[1]
         path = node.forward[2]
         time = node.forward[3]
-        data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + str(end_node).encode() + str(path).encode() + str(time).encode()
+        #####check neighbours to see if we can send directly.
+        for i in node.reachable_dev:
+            if i == end_node:
+                data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+                in_reach = True
+        if not in_reach:
+            data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
         node.send(data)
         node.forward = 0
     else:
@@ -287,7 +297,8 @@ async def async_main():
         # else: 
         #     pass
 
-
+        task_forward = asyncio.create_task(for_mes())
+        await task_forward
         #wait asyncio.sleep(0.01)
 
         # timer,send messages automatically
