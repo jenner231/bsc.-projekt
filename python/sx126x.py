@@ -312,9 +312,11 @@ class sx126x:
     def calc_new_message(self, time, path):
         print("checkpoint calc message 1")
         print(type(datetime.datetime.now()))
+        print(time)
+        dateT = datetime.strptime(time, '%d/%m/%y %H:%M:%S')
         print(type(time))
-        m = time.strftime("%M") * 60 
-        s = time.strftime("%S")
+        m = dateT.strftime("%M") * 60 
+        s = dateT.strftime("%S")
         print("checkpoint calc message 2")
         #####See if we've already received a time from the same address set time to the time received, else set time to 0 for next statement
         if self.received_time[0] != 0 and self.received_time[1] == path[0]:
