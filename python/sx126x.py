@@ -355,7 +355,8 @@ class sx126x:
                 ####here
                 sender = r_buff[1].split("\\") 
                 print(sender)
-                id = int(sender[0]) + int(sender[1])
+                print(int(sender[2]))
+                id = int(sender[1]) + int(sender[2])
                 self.received_time = (r_buff[5], id)
 
                 #####We set path to r_buff[5], so we can get the array of nodes we to send the information back through. 
