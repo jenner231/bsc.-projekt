@@ -320,6 +320,7 @@ class sx126x:
         s = dateT.strftime("%S")
         print("checkpoint calc message 2")
         #####See if we've already received a time from the same address set time to the time received, else set time to 0 for next statement
+        #####Here it's okay to only check path[0] as we've already made sure in check_message() func, that we haven't visited a node twice.
         if self.received_time[0] != 0 and self.received_time[1] == path[0]:
             c_m, c_s = self.received_time.strftime("%M"), self.received_time.strftime("%S")
         else:
@@ -336,11 +337,10 @@ class sx126x:
     def check_message(self, r_buff):
         print("check message checkpoint 1")
         visited = False
-        print(r_buff)
-        print(r_buff[4])
-        print(r_buff[4][0])
         #####Check we have visited this not before to avoid infinite loop when flooding the network in broadcasts
         path = r_buff[4]
+        ####must remove \\x to convert from string to int 
+        sender = r_buff[1].split("\\x") 
         for i in path:
             if self.addr == i:
                 visited = True
@@ -352,17 +352,14 @@ class sx126x:
             if self.calc_new_message(r_buff[5], path):
                 print("check_message checkpoint 3")
 
-                ####here
-                sender = r_buff[1].split("\\x") 
+                
 
                 print(sender)
-                temp1, temp2 = int(sender[1], 16), int(sender[2], 16)
-                print(temp1, temp2)
                 id = int(sender[1], 16) + int(sender[2], 16)
+                #we store this data so we can check for duplicates
                 self.received_time = (r_buff[5], id)
 
                 #####We set path to r_buff[5], so we can get the array of nodes we to send the information back through. 
-                path = r_buff[5]
                 ##### we need the path to navigate the way back to original sender of request.
                 self.path = path
 
@@ -372,10 +369,11 @@ class sx126x:
             if self.calc_new_message(r_buff[5], path):
                 print("check_message checkpoint 6")
                 ###if we have the node in reachable_dev, only send message to it instead of broadcast!!!!
-                id = (r_buff[0]<<8) + r_buff[1]
-                self.received_time = (r_buff[6], id)
-                r_buff[5].append(self.addr)
-                self.forward = r_buff[3:-1]
+                id = int(sender[1], 16) + int(sender[2], 16)
+
+                self.received_time = (r_buff[5], id)
+                r_buff[4].append(self.addr)
+                self.forward = r_buff[2:-1]
             else: 
                 pass
         else: 
