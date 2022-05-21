@@ -342,11 +342,8 @@ class sx126x:
         path = r_buff[4]
         ####must remove \\x to convert from string to int 
         sender = r_buff[1].split("\\x") 
-        print(path[0])
-        print(path)
         for i in path:
-            val = int(i)
-            if self.addr == val:
+            if self.addr == int(i):
                 visited = True
                 break
 
