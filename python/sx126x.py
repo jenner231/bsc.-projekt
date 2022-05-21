@@ -344,6 +344,7 @@ class sx126x:
         sender = r_buff[1].split("\\x") 
         for i in path:
             if self.addr == int(i):
+                print("We have seen a message from node id "+ self.path[0] + "before")
                 visited = True
                 break
 
