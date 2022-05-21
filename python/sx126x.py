@@ -340,6 +340,7 @@ class sx126x:
 
         print(r_buff[4])
         print(type(r_buff[3]))
+        print(r_buff[3])
         ####if we're the end node, go in here
         if r_buff[3] == self.addr and (not visited):
             print("check_message checkpoint 2")
