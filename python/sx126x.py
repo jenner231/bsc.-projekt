@@ -353,7 +353,7 @@ class sx126x:
                 print("check_message checkpoint 3")
 
                 ####here
-                sender = r_buff[2].split("\\") 
+                sender = r_buff[1].split("\\") 
                 print(sender)
                 id = int(sender[0]) + int(sender[1])
                 self.received_time = (r_buff[5], id)
