@@ -118,7 +118,7 @@ async def request_cpu_continue():
     seperate = ","
     print("check1")
 
-    path = [node.addr]
+    path = node.addr
     ack_id = 1
     print("check2")
     time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
