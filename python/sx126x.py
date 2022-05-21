@@ -373,7 +373,9 @@ class sx126x:
                 id = int(sender[1], 16) + int(sender[2], 16)
 
                 self.received_time = (r_buff[5], id)
+                print("check_message checkpoint 7")
                 r_buff[4].append(self.addr)
+                print("check_message checkpoint 8")
                 self.forward = r_buff[2:-1]
             else: 
                 pass
