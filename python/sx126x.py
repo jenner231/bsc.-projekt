@@ -432,7 +432,10 @@ class sx126x:
                     #temp = str(r_buff)
                     #length = temp.split(",")
                     #print("Message length is: %d"%len(length))
-                    self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
+                    sender = r_buff[1].split("\\x") 
+                    id = int(sender[1], 16) + int(sender[2], 16)
+                    print(r_buff[1])
+                    self.reachable_dev.append(id)
                     print(print("Node IDs in range: "+str(self.reachable_dev)))
             elif int(chr(r_buff[5])) == 1:
                 print("Receive checkpoint 2")
