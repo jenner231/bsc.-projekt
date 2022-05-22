@@ -427,10 +427,11 @@ class sx126x:
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             if int(chr(r_buff[5])) == 0:
+                print("heartbeat check 1")
                 path = get_t[3]
                 m = path.strftime("%M") * 60
                 s = path.strftime("%S")
-                print("heartbeat check 1")
+                print("heartbeat check 2")
                 self.reachable_dev.append((int((r_buff[1]<<8) + r_buff[2]), (m + s)))
                 print(self.reachable_dev)
 
