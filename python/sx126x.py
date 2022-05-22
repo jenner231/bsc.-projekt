@@ -31,7 +31,7 @@ class sx126x:
     serial_n = ""
     addr_temp = 0
     #### reachable_dev tuple for heartbeat on form (node_id, time)
-    reachable_dev = [(0, 0)]
+    reachable_dev = [()]
     ack_info = (0,0)
     received_time = (0, 0)
     path = ""
@@ -434,8 +434,8 @@ class sx126x:
                 print(get_t)
                 timer = get_t[3]
                 dateT = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
-                m = dateT.strftime("%M") * 60
-                s = dateT.strftime("%S")
+                m = int(dateT.strftime("%M")) * 60
+                s = int(dateT.strftime("%S"))
                 print("heartbeat check 2")
                 self.reachable_dev.append((int((r_buff[1]<<8) + r_buff[2]), (m + s)))
                 print(self.reachable_dev)
