@@ -31,7 +31,7 @@ class sx126x:
     serial_n = ""
     addr_temp = 0
     #### reachable_dev for heartbeat
-    reachable_dev = []
+    reachable_dev = ""
     ack_info = (0,0)
     received_time = (0, 0)
     path = ""
@@ -432,7 +432,7 @@ class sx126x:
                     #temp = str(r_buff)
                     #length = temp.split(",")
                     #print("Message length is: %d"%len(length))
-                    self.reachable_dev.append((r_buff[1]<<8) + r_buff[2])
+                    self.reachable_dev = self.reachable_dev + str((r_buff[1]<<8) + r_buff[2])
                     print(print("Node IDs in range: "+str(self.reachable_dev)))
             elif int(chr(r_buff[5])) == 1:
                 print("Receive checkpoint 2")
