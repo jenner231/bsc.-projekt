@@ -115,7 +115,7 @@ async def send_deal():
 async def request_cpu_data():
     print("req check 1")
     #####Start out checking if we have nodes that we haven't heard from in a while
-    #node.compare_time()
+    node.compare_time()
     end_node = 3
     seperate = ","
     in_reach = False
@@ -312,7 +312,6 @@ async def async_main():
                 #####Create the task to send "sensor" data to nearby devices
                 cont = True
                 while cont == True:
-                    print("true loop check 1")
                     cpu = asyncio.create_task(request_cpu_data())
                     await cpu
                     cont = await cancel_cpu(cont)
