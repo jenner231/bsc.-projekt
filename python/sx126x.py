@@ -429,9 +429,10 @@ class sx126x:
             if int(chr(r_buff[5])) == 0:
                 print("heartbeat check 1")
                 print(get_t)
-                path = get_t[3]
-                m = path.strftime("%M") * 60
-                s = path.strftime("%S")
+                time = get_t[3]
+                dateT = datetime.datetime.strptime(time, '%d-%m-%y %H:%M:%S')
+                m = dateT.strftime("%M") * 60
+                s = dateT.strftime("%S")
                 print("heartbeat check 2")
                 self.reachable_dev.append((int((r_buff[1]<<8) + r_buff[2]), (m + s)))
                 print(self.reachable_dev)
