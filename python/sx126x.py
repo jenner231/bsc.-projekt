@@ -410,7 +410,7 @@ class sx126x:
     def compare_time(self):
         #####TODO: Test if this function works at beginning of hours!!
         print("compare time check 1")
-        clock = datetime.datetime.now('%H:%M:%S')
+        clock = datetime.datetime.now().strftime('%H:%M:%S')
         print("compare time check 2")
         current_time = (int(clock.strftime("%M")) * 60) + (int(clock.strftime("%S")))
         timeout = 5*3.5
