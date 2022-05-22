@@ -405,7 +405,20 @@ class sx126x:
 
             print("Node: "+self.end_node + " "+payload)
             self.end_node = ""
-            
+
+
+    def compare_time(self):
+        clock = datetime.datetime.now('%H:%M:%S')
+        current_time = (int(clock.strftime("%M")) * 60) + (int(clock.strftime("%S")))
+        for i in self.reachable_dev:
+            timer = i[1]
+            if (timer + (5*3.5)) < current_time:
+                del self.reachable_dev[i]
+                print("We removed: "+str(i[0]) + " due to expiration exceeded")
+
+
+
+
             
 
 

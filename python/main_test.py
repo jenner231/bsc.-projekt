@@ -326,7 +326,7 @@ async def async_main():
         #         timer = 0
         # else: 
         #     pass
-
+        node.compare_time()
         task_forward = asyncio.create_task(for_mes())
         await task_forward
         task_return = asyncio.create_task(resp_data())
