@@ -312,6 +312,7 @@ async def async_main():
                 #####Create the task to send "sensor" data to nearby devices
                 
                 while cont == True:
+                    print("true loop check 1")
                     cpu = asyncio.create_task(request_cpu_data())
                     await cpu
                     cont = await cancel_cpu(cont)
