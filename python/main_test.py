@@ -131,7 +131,7 @@ async def request_cpu_data():
         # broadcast a request to end_node for it's "sensor" data, here, cpu temp
         #####We seperate with commas so its easier to decode which on the other end
     for i in node.reachable_dev:
-            if i == end_node:
+            if int(i) == end_node:
                 data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
                 in_reach = True
     if not in_reach:
@@ -157,12 +157,13 @@ async def send_ack():
   #  send data with ack id, wait for answer, if we get answer, note addr of answering node
     offset_frequence = int(18)
     ack_id = 0
+    time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
     # the sending message format
     #
     #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
-    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode()
+    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() +str(time).encode() + str(seperate).encode()
     node.send(data)
     #await asyncio.sleep(1)
 
@@ -220,7 +221,7 @@ async def for_mes():
         time = node.forward[3]
         #####check neighbours to see if we can send directly.
         for i in node.reachable_dev:
-            if i == end_node:
+            if int(i) == end_node:
                 data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
                 in_reach = True
         if not in_reach:
