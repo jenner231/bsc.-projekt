@@ -427,13 +427,8 @@ class sx126x:
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             if int(chr(r_buff[5])) == 0:
-                    #print("Receive message from node address with id and frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8) + r_buff[1], r_buff[2]+self.start_freq),end='\r\n',flush = True)
-                    #print("Message is: "+str(r_buff[4:-1]),end='\r\n')
-                    #temp = str(r_buff)
-                    #length = temp.split(",")
-                    #print("Message length is: %d"%len(length))
                     self.reachable_dev = self.reachable_dev + str((r_buff[1]<<8) + r_buff[2])
-                    print(print("Node IDs in range: "+str(self.reachable_dev)))
+                    print("Node IDs in range: "+str(self.reachable_dev))
             elif int(chr(r_buff[5])) == 1:
                 print("Receive checkpoint 2")
                 self.check_message(get_t)
@@ -452,7 +447,7 @@ class sx126x:
             # print the rssi
             if self.rssi:
                 # print('\x1b[3A',end='\r')
-                #print("the packet rssi value: -{0}dBm".format(256-r_buff[-1:][0]))
+                print("the packet rssi value: -{0}dBm".format(256-r_buff[-1:][0]))
                 self.get_channel_rssi()
             else:
                 pass
