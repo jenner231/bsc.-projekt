@@ -390,9 +390,10 @@ class sx126x:
 
     def ret_data(self, r_buff):
         print("Check ret_data 1, we're inside")
-        path = r_buff[4]
-        payload = r_buff[5:-1]
+        path = r_buff[3]
+        payload = r_buff[4]
         if path:
+            print("check ret_data 2, we're still alive")
             self.data = r_buff[5:-1]
             self.path = path
 
