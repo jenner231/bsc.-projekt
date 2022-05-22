@@ -112,10 +112,11 @@ async def send_deal():
     print(" "*200)
     print('\x1b[3A',end='\r')
 
-async def request_cpu_continue():
+async def request_cpu_data():
     print("extra check")
     end_node = 3
     seperate = ","
+    in_reach = False
     print("check1")
 
     path = node.addr
@@ -129,7 +130,12 @@ async def request_cpu_continue():
         
         # broadcast a request to end_node for it's "sensor" data, here, cpu temp
         #####We seperate with commas so its easier to decode which on the other end
-    data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+    for i in node.reachable_dev:
+            if i == end_node:
+                data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+                in_reach = True
+    if not in_reach:
+        data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
     node.send(data)
     print("check1")
     # broadcast the cpu temperature at 868.125MHz
@@ -227,10 +233,10 @@ async def for_mes():
     else:
         pass
 
-async def ret_mes():
+async def resp_data():
     ####if we have something in our path array, basically says if len(node.path) not empty
     if node.path:
-        send_to = node.path[-1]
+        send_to = int(node.path[-1])
         temp = str("CPU Temperature:"+str(get_cpu_temp())+ " C")
         if len(node.path) == 1:
             path = []
@@ -239,14 +245,21 @@ async def ret_mes():
 
         offset_frequence = 18
         ack_id = 2
-        if node.data:
-            temp = node.data
-            node.data = []
+        #if node.data:
+         #   temp = node.data
+          #  node.data = []
 
 
         #####node.get_ack[1] is the sender address stored in the get_ack function
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode() + str(path).encode() + str(temp).encode()
         node.send(data)
+    else:
+        pass
+
+async def ret_data():
+    if node.data:
+        temp = node.data
+        node.data = []
 
 
                 
@@ -266,8 +279,8 @@ async def async_main():
             # dectect key i
             if c == '\x69':
                 print("Checkpoint1: In main loop, pressed i")
-                task_fward = asyncio.create_task(request_cpu_continue())
-                await task_fward
+                task_req = asyncio.create_task(request_cpu_data())
+                await task_req
                 #task_ack = asyncio.create_task(send_ack())
                 #task_deal = asyncio.create_task(send_deal())
                 #await send_deal()
@@ -280,7 +293,7 @@ async def async_main():
                 #####Create the task to send "sensor" data to nearby devices
                 
                 while cont == True:
-                    cpu = asyncio.create_task(request_cpu_continue())
+                    cpu = asyncio.create_task(request_cpu_data())
                     await cpu
                     cont = await cancel_cpu(cont)
                     #press c to cancel
@@ -299,6 +312,8 @@ async def async_main():
 
         task_forward = asyncio.create_task(for_mes())
         await task_forward
+        task_return = asyncio.create_task(resp_data())
+        await task_return
         #wait asyncio.sleep(0.01)
 
         # timer,send messages automatically

@@ -389,6 +389,7 @@ class sx126x:
 
 
     def ret_data(self, r_buff):
+        print("Check ret_data 1, we're inside")
         path = r_buff[4]
         payload = r_buff[5:-1]
         if path:
@@ -432,16 +433,11 @@ class sx126x:
                 #self.receive_ack(r_buff)
                 #print("Noted ack_id")
             elif int(chr(r_buff[5])) == 2:
-               
-                self.ret_data(r_buff)
+                print("checkpoint: ack_id = 2, we're returning data")
+                print(get_t)
+                self.ret_data(get_t)
 
 
-                temp = str(r_buff[0:-1])
-                split = temp.split("\\")
-                print(str(split))
-                print("Message is: "+str(split[1:-1]),end='\r\n')
-                self.reachable_dev.append((r_buff[0]<<8) + r_buff[1])
-                print("Devices in range: "+str(self.reachable_dev))
             else:
                 #error handling if ack_id invalid value
                 print("error")
