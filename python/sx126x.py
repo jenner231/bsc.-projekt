@@ -436,8 +436,9 @@ class sx126x:
                 dateT = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
                 m = int(dateT.strftime("%M")) * 60
                 s = int(dateT.strftime("%S"))
+                total_seconds = m + s
                 print("heartbeat check 2")
-                self.reachable_dev.append((int((r_buff[1]<<8) + r_buff[2]), (m + s)))
+                self.reachable_dev.append((int((r_buff[1]<<8) + r_buff[2]), total_seconds))
                 print(self.reachable_dev)
 
                 #self.reachable_dev[1] = self.reachable_dev[1] + str()
