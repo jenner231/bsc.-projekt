@@ -416,8 +416,8 @@ class sx126x:
         if self.ser.inWaiting() > 0:
             print("receive checkpoint 1")
             #####TODO: Make sleep appropriate. If too small, it will not read the entire message!!
-            time.sleep(0.5)
-            print("receive checkpoint 1")
+            #time.sleep(0.5)
+            
             r_buff = self.ser.read(self.ser.inWaiting())
             print("receive checkpoint 2")
             rec = str(r_buff)
