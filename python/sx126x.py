@@ -416,7 +416,7 @@ class sx126x:
         if self.ser.inWaiting() > 0:
             print("receive checkpoint 1")
             #####TODO: Make sleep appropriate. If too small, it will not read the entire message!!
-            #time.sleep(0.5)
+            time.sleep(0.5)
             
             r_buff = self.ser.read(self.ser.inWaiting())
             print("receive checkpoint 2")
@@ -432,8 +432,8 @@ class sx126x:
             if int(chr(r_buff[5])) == 0:
                 print("heartbeat check 1")
                 print(get_t)
-                time = get_t[3]
-                dateT = datetime.datetime.strptime(time, '%d-%m-%y %H:%M:%S')
+                timer = get_t[3]
+                dateT = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
                 m = dateT.strftime("%M") * 60
                 s = dateT.strftime("%S")
                 print("heartbeat check 2")
