@@ -240,7 +240,7 @@ async def resp_data():
         send_to = int(node.path[-1])
         temp = str("CPU Temperature:"+str(await get_cpu_temp())+ " C")
         if len(node.path) == 1:
-            path = []
+            path = ""
         else:
             path = node.path[0:-2]
 
