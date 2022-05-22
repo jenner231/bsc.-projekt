@@ -408,13 +408,22 @@ class sx126x:
 
 
     def compare_time(self):
+        #####TODO: Test if this function works at beginning of hours!!
         clock = datetime.datetime.now('%H:%M:%S')
         current_time = (int(clock.strftime("%M")) * 60) + (int(clock.strftime("%S")))
+        timeout = 5*3.5
         for i in self.reachable_dev:
             timer = i[1]
-            if (timer + (5*3.5)) < current_time:
+            if ((timer + timeout) < current_time):
                 del self.reachable_dev[i]
                 print("We removed: "+str(i[0]) + " due to expiration exceeded")
+            ####If the timer has moved to a new hour, we check if the value is negative, if it is, we add 3600 to the timer and check with that timer.
+            elif (timer + timeout) - current_time < -(timeout+10):
+                logical_time = current_time + 3600
+                if ((timer + timeout) < logical_time):
+                    del self.reachable_dev[i]
+                    print("We removed: "+str(i[0]) + " due to expiration exceeded")
+
 
 
 
