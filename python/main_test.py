@@ -137,7 +137,7 @@ async def request_cpu_data():
     if not in_reach:
         data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
     node.send(data)
-    print("check1")
+    node.end_node = end_node
     # broadcast the cpu temperature at 868.125MHz
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
     #node.send(data)
@@ -152,6 +152,7 @@ async def request_cpu_data():
     #timer_task.cancel()
 
 async def send_ack():
+    seperate = ","
     #node.reachable_dev.clear()
   #  send data with ack id, wait for answer, if we get answer, note addr of answering node
     offset_frequence = int(18)
@@ -161,11 +162,7 @@ async def send_ack():
     #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
-    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
-    print(data[0])
-    print(data[1])
-    print(data[2])
-    print(data[3])
+    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode()
     node.send(data)
     #await asyncio.sleep(1)
 
@@ -234,9 +231,9 @@ async def for_mes():
         pass
 
 async def resp_data():
-    seperate = ","
     ####if we have something in our path array, basically says if len(node.path) not empty
     if node.path:
+        seperate = ","
         send_to = int(node.path[-1])
         temp = str("CPU Temperature:"+str(await get_cpu_temp())+ " C")
         if len(node.path) == 1:
@@ -246,11 +243,7 @@ async def resp_data():
 
         offset_frequence = 18
         ack_id = 2
-        #if node.data:
-         #   temp = node.data
-          #  node.data = []
-
-        #####node.get_ack[1] is the sender address stored in the get_ack function       
+    
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode()
         node.send(data)
 
@@ -260,9 +253,29 @@ async def resp_data():
         pass
 
 async def ret_data():
-    if node.data:
-        temp = node.data
-        node.data = []
+    ####This function is differnt than resp_data() in the way that this is function relays the message between intermediate nodes, while resp_data() only handles
+    ####the initial response. (This is the general function and resp_data() is the base case.)
+    if node.data[0]:
+        seperate = ","
+        payload = node.data[0]
+        path = node.data[1]
+        send_to = int(path[-1])
+
+        if len(path) == 1:
+            path = ""
+        else:
+            path = path[0:-2]
+
+        offset_frequence = 18
+        ack_id = 2
+
+        #####node.get_ack[1] is the sender address stored in the get_ack function       
+        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(payload).encode() + str(seperate).encode()
+        node.send(data)
+
+        #####Clean the node's data after sending the message
+        node.data[0] = ""
+        node.data[1] = ""
 
 
                 
@@ -282,12 +295,12 @@ async def async_main():
             # dectect key i
             if c == '\x69':
                 print("Checkpoint1: In main loop, pressed i")
-                task_req = asyncio.create_task(request_cpu_data())
-                await task_req
-                #task_ack = asyncio.create_task(send_ack())
+                #task_req = asyncio.create_task(request_cpu_data())
+                #await task_req
+                task_ack = asyncio.create_task(send_ack())
                 #task_deal = asyncio.create_task(send_deal())
                 #await send_deal()
-                #await send_ack()
+                await send_ack()
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
@@ -317,6 +330,9 @@ async def async_main():
         await task_forward
         task_return = asyncio.create_task(resp_data())
         await task_return
+        task_intermediate = asyncio.create_task(ret_data())
+        await task_intermediate
+
         #wait asyncio.sleep(0.01)
 
         # timer,send messages automatically

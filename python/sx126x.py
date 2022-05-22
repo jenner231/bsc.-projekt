@@ -33,10 +33,13 @@ class sx126x:
     #### reachable_dev for heartbeat
     reachable_dev = []
     ack_info = (0,0)
-    forward = 0
     received_time = (0, 0)
     path = ""
-    data = ""
+    #### Both also includes path, but we can't use path as path variable is used as a boolean to enter a function in the main file.
+    forward = 0
+    data = ("", "")
+    #####Used for logging purposes
+    end_node = ""
 
 
     #
@@ -392,14 +395,16 @@ class sx126x:
         print("Check ret_data 1, we're inside")
         path = r_buff[3]
         print(path)
+        ####payload is the cpu temperature
         payload = r_buff[4]
         if path:
             print("check ret_data 2, we're still alive")
-            self.data = payload
-            self.path = path
+            self.data = (payload, path)
 
         else:
-            print(payload)
+
+            print("Node: "+self.end_node + " "+payload)
+            self.end_node = ""
             
             
 
