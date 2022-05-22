@@ -234,6 +234,7 @@ async def for_mes():
         pass
 
 async def resp_data():
+    seperate = ","
     ####if we have something in our path array, basically says if len(node.path) not empty
     if node.path:
         send_to = int(node.path[-1])
@@ -249,10 +250,10 @@ async def resp_data():
          #   temp = node.data
           #  node.data = []
 
-
-        #####node.get_ack[1] is the sender address stored in the get_ack function
-        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode() + str(path).encode() + str(temp).encode()
+        #####node.get_ack[1] is the sender address stored in the get_ack function       
+        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode()
         node.send(data)
+        node.path = []
     else:
         pass
 
