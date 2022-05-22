@@ -113,6 +113,7 @@ async def send_deal():
     print('\x1b[3A',end='\r')
 
 async def request_cpu_data():
+    print("req check 1")
     #####Start out checking if we have nodes that we haven't heard from in a while
     node.compare_time()
     end_node = 3
