@@ -238,7 +238,7 @@ async def resp_data():
     ####if we have something in our path array, basically says if len(node.path) not empty
     if node.path:
         send_to = int(node.path[-1])
-        temp = str("CPU Temperature:"+str(get_cpu_temp())+ " C")
+        temp = str("CPU Temperature:"+str(await get_cpu_temp())+ " C")
         if len(node.path) == 1:
             path = []
         else:
@@ -253,6 +253,8 @@ async def resp_data():
         #####node.get_ack[1] is the sender address stored in the get_ack function       
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode()
         node.send(data)
+
+        #####Clean the node's path after sending the message
         node.path = []
     else:
         pass
