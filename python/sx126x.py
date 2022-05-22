@@ -410,6 +410,7 @@ class sx126x:
     def compare_time(self):
         #####TODO: Test if this function works at beginning of hours!!
         print("compare time check 1")
+        ####TODO: maybe fix this shit so we dont have to make the object as a string and then convert it to a datetime object.
         datetimer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
         clock = datetime.datetime.strptime(datetimer, '%d-%m-%y %H:%M:%S')
         print("compare time check 2")
@@ -419,7 +420,9 @@ class sx126x:
         timeout = 5*3.5
         print("compare time check 3")
         for i in self.reachable_dev:
+            print("We made it inside the for loop in compare time")
             timer = i[1]
+            print("We made it inside the for loop in compare time 2")
             if ((timer + timeout) < current_time):
                 del self.reachable_dev[i]
                 print("We removed: "+str(i[0]) + " due to expiration exceeded")
