@@ -412,7 +412,8 @@ class sx126x:
         print("compare time check 1")
         clock = datetime.datetime.now().strftime('%H:%M:%S')
         print("compare time check 2")
-        current_time = (int(clock.strftime("%M")) * 60) + (int(clock.strftime("%S")))
+        #current_m = clock.strftime("%M") * 60
+        current_time = (clock.strftime("%M") * 60) + (clock.strftime("%S"))
         timeout = 5*3.5
         print("compare time check 3")
         for i in self.reachable_dev:
