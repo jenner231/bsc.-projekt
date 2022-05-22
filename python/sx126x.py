@@ -31,7 +31,7 @@ class sx126x:
     serial_n = ""
     addr_temp = 0
     #### reachable_dev for heartbeat
-    reachable_dev = ""
+    reachable_dev = ("", 0)
     ack_info = (0,0)
     received_time = (0, 0)
     path = ""
@@ -427,8 +427,10 @@ class sx126x:
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             if int(chr(r_buff[5])) == 0:
-                    self.reachable_dev = self.reachable_dev + str((r_buff[1]<<8) + r_buff[2])
-                    print("Node IDs in range: "+str(self.reachable_dev))
+                print(get_t)
+                self.reachable_dev[0] = self.reachable_dev[0] + str((r_buff[1]<<8) + r_buff[2])
+                
+                print("Node IDs in range: "+str(self.reachable_dev))
             elif int(chr(r_buff[5])) == 1:
                 print("Receive checkpoint 2")
                 self.check_message(get_t)
