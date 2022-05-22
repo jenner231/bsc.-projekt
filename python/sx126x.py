@@ -329,7 +329,7 @@ class sx126x:
         else:
             c_m, c_s = 0, 0
         #####if we have a message with the same origin from the same time, we return false, else True
-        if (m + s) == (c_m + c_s) and path[0] == self.path[0]:
+        if (int(m) + int(s)) == (int(c_m) + int(c_s)) and path[0] == self.path[0]:
             print("We have seen a message from node id "+ self.path[0] + "before")
             return False
         else:
@@ -426,7 +426,7 @@ class sx126x:
             print(type(timer))
             print(type(timeout))
             print(type(current_time))
-            if (timer + int(timeout)) < current_time:
+            if (timer + int(timeout)) < int(current_time):
                 print("We made it inside the for loop in compare time 3")
                 del self.reachable_dev[(id, time)]
                 print("We removed: "+str(id) + " due to expiration exceeded")
