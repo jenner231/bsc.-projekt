@@ -35,7 +35,7 @@ class sx126x:
     ack_info = (0,0)
     forward = 0
     received_time = (0, 0)
-    path = []
+    path = ""
     data = []
 
 
@@ -391,6 +391,7 @@ class sx126x:
     def ret_data(self, r_buff):
         print("Check ret_data 1, we're inside")
         path = r_buff[3]
+        print(path)
         payload = r_buff[4]
         if path:
             print("check ret_data 2, we're still alive")
