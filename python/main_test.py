@@ -222,7 +222,7 @@ async def for_mes():
         time = node.forward[3]
         #####check neighbours to see if we can send directly.
         for i in node.reachable_dev:
-            if int(i) == end_node:
+            if int(i[0]) == end_node:
                 data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
                 in_reach = True
         if not in_reach:
