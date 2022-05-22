@@ -428,6 +428,7 @@ class sx126x:
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             if int(chr(r_buff[5])) == 0:
                 print("heartbeat check 1")
+                print(get_t)
                 path = get_t[3]
                 m = path.strftime("%M") * 60
                 s = path.strftime("%S")
