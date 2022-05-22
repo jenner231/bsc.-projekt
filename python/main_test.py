@@ -255,7 +255,7 @@ async def resp_data():
         node.send(data)
 
         #####Clean the node's path after sending the message
-        node.path = []
+        node.path = ""
     else:
         pass
 

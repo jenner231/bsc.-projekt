@@ -36,7 +36,7 @@ class sx126x:
     forward = 0
     received_time = (0, 0)
     path = ""
-    data = []
+    data = ""
 
 
     #
@@ -395,7 +395,7 @@ class sx126x:
         payload = r_buff[4]
         if path:
             print("check ret_data 2, we're still alive")
-            self.data = r_buff[5:-1]
+            self.data = payload
             self.path = path
 
         else:
