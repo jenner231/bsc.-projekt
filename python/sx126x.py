@@ -426,7 +426,8 @@ class sx126x:
             print(type(timer))
             print(type(timeout))
             print(type(current_time))
-            if (timer + int(timeout)) < int(current_time):
+            
+            if ((timer + int(timeout)) < int(current_time)):
                 print("We made it inside the for loop in compare time 3")
                 self.reachable_dev.remove(i)
                 print("We removed: "+str(i) + " due to expiration exceeded")
@@ -438,6 +439,8 @@ class sx126x:
                 if ((timer + int(timeout)) < logical_time):
                     del self.reachable_dev[i]
                     print("We removed: "+str(i[0]) + " due to expiration exceeded")
+            else:
+                pass
 
 
 
