@@ -452,7 +452,7 @@ class sx126x:
             # print the rssi
             if self.rssi:
                 # print('\x1b[3A',end='\r')
-                print("the packet rssi value: -{0}dBm".format(256-r_buff[-1:][0]))
+                #print("the packet rssi value: -{0}dBm".format(256-r_buff[-1:][0]))
                 self.get_channel_rssi()
             else:
                 pass
