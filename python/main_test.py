@@ -113,11 +113,12 @@ async def send_deal():
     print('\x1b[3A',end='\r')
 
 async def request_cpu_data():
-    print("extra check")
+    #####Start out checking if we have nodes that we haven't heard from in a while
+    node.compare_time()
     end_node = 3
     seperate = ","
     in_reach = False
-    print("check1")
+
 
     path = node.addr
     ack_id = 1
@@ -326,7 +327,6 @@ async def async_main():
         #         timer = 0
         # else: 
         #     pass
-        node.compare_time()
         task_forward = asyncio.create_task(for_mes())
         await task_forward
         task_return = asyncio.create_task(resp_data())
