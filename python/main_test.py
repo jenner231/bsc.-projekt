@@ -187,7 +187,6 @@ async def cancel_cpu(cont):
             return cont
         else:
             time = time + 0.1
-            print(time)
             await asyncio.sleep(0.1)
 
 async def return_ack():
