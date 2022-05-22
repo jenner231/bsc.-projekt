@@ -414,8 +414,8 @@ class sx126x:
         datetimer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
         clock = datetime.datetime.strptime(datetimer, '%d-%m-%y %H:%M:%S')
         print("compare time check 2")
-        current_m = clock.strftime("%M") * 60
-        current_s = clock.strftime("%S")
+        current_m = int(clock.strftime("%M")) * 60
+        current_s = int(clock.strftime("%S"))
         current_time = current_m + current_s
         timeout = 5*3.5
         print("compare time check 3")
