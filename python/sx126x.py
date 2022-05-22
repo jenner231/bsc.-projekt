@@ -419,9 +419,9 @@ class sx126x:
         current_time = current_m + current_s
         timeout = 5*3.5
         print("compare time check 3")
-        for id, time in self.reachable_dev:
-            print("We made it inside the for loop in compare time")
-            timer = time
+        for i in self.reachable_dev:
+            print(i)
+            timer = i[0]
             print("We made it inside the for loop in compare time 2")
             if ((timer + timeout) < current_time):
                 del self.reachable_dev[(id, time)]
