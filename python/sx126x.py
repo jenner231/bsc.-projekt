@@ -418,6 +418,7 @@ class sx126x:
             #####TODO: Make sleep appropriate. If too small, it will not read the entire message!!
             time.sleep(0.1)
             r_buff = self.ser.read(self.ser.inWaiting())
+            print("receive checkpoint 2")
             rec = str(r_buff)
             get_t = rec.split(",")
 
