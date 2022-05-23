@@ -151,7 +151,7 @@ async def send_ack():
 
         if len(path) == 1:
             send_to = node.end_node
-            print(type(send_to))
+            print(send_to)
             data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode()
         
         else:
