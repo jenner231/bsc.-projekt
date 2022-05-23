@@ -152,7 +152,7 @@ async def send_ack():
         if len(path) == 1:
             send_to = int(node.end_node)
         else:
-            print("Send ack check xxx")
+            print(path)
             send_to = int(path[1])
             print("Send ack check xxxxx")
             path = path[1:-1]
