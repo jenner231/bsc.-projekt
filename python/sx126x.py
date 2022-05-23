@@ -373,7 +373,7 @@ class sx126x:
             self.data = (payload, path)
 
         else:
-
+            print("test")
             print("Node: "+self.end_node + " "+payload)
             self.end_node = ""
             self.ack_info = (r_buff[2], r_buff[5])
