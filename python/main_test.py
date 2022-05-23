@@ -224,14 +224,13 @@ async def ack_wait():
         current_s = int(clock.strftime("%S"))
         current_time = current_m + current_s
 
-        add_delay = len(node.backup_path)
-        print(type(node.response_time))
+        add_delay = len(node.backup_path) + 10
 
-        if node.response_time + add_delay < current_time:
+        if (node.response_time + add_delay) < current_time:
             ####this line is what makes this function work. When we set node.path to the value of backup_path we "fill" path again, which allows us to enter the resp_data() function again.
             ####As it takes node.path as a boolean where it returns false if empty.
             node.path = node.backup_path
-            node.wait_ack= False
+            node.wait_ack = False
         elif node.got_ack == True:
             node.backup_path = ""
             node.wait_ack = False
