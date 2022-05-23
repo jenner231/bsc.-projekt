@@ -148,13 +148,15 @@ async def send_ack():
         ack_id = 3
         ack_inf = node.get_ack()
         path = ack_inf[0]
-        
+        print("Send ack check 2")
         if len(path) == 1:
             send_to = node.end_node
         else:
+            print("Send ack check xxx")
             send_to = path[1]
+            print("Send ack check xxxxx")
             path = path[1:-1]
-        print("Send ack check 2")
+        print("Send ack check 3")
 
         #time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
         # the sending message format
