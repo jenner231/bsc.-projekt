@@ -140,6 +140,7 @@ async def request_cpu_data():
 async def send_ack():
     if node.send_ack == True:
         seperate = ","
+        print("Send ack check 1")
 
         #node.reachable_dev.clear()
     #  send data with ack id, wait for answer, if we get answer, note addr of answering node
@@ -147,10 +148,12 @@ async def send_ack():
         ack_id = 3
         path = node.ack_info[1]
         send_to = int(path[-1])
+        print("Send ack check 2")
         if len(path) == 1:
             path = ""
         else:
             path = path[0:-2]
+            print("Send ack check 3")
         #time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
         # the sending message format
         #
@@ -159,6 +162,7 @@ async def send_ack():
         #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
         node.send(data)
+        print("Send ack check 4")
         #####reset ack_info
         node.ack_info = (0,0)
         #await asyncio.sleep(1)
