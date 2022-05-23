@@ -279,6 +279,7 @@ async def resp_data():
         if len(node.backup_path) == 0:
             print("Send resp_data  if check 1")
             node.backup_path = path
+            print("Send resp_data  if check 2")
             timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
             print("Send resp_data  if check 2")
             sent_message_timer = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
