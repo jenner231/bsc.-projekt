@@ -147,15 +147,15 @@ async def send_ack():
         offset_frequence = int(18)
         ack_id = 3
         ack_inf = node.get_ack()
-        path = ack_inf[1]
-        send_to = int(path[-1])
-        print(send_to)
-        print("Send ack check 2")
-        if len(path) == 1:
-            path = ""
+        path = ack_inf[0]
+        
+        if len(path) <== 1:
+            send_to = node.end_node
         else:
-            path = path[0:-2]
-            print("Send ack check 3")
+            send_to = path[1]
+            path = path[1:-1]
+        print("Send ack check 2")
+
         #time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
         # the sending message format
         #
