@@ -165,6 +165,7 @@ async def send_ack():
         print("Send ack check 4")
         #####reset ack_info
         node.ack_info = (0,0)
+        node.send_ack = False
         #await asyncio.sleep(1)
 
 
