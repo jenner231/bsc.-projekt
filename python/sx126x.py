@@ -374,10 +374,9 @@ class sx126x:
 
         else:
             print("Node: " +str(self.end_node) + ", " + str(payload))
+            self.ack_info = (int(self.end_node), r_buff[5])
+
             self.end_node = ""
-            print(r_buff[2])
-            print(r_buff[3])
-            self.ack_info = (r_buff[2], r_buff[5])
             self.send_ack = True
 
     def compare_time(self):
