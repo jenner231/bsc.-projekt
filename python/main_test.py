@@ -272,6 +272,7 @@ async def resp_data():
     if node.path:
         seperate = ","
         send_to = int(node.path[-1])
+        print("Send resp_data check 1")
 
         #####back_path is used in ack_wait(). response_time is also used in ack_wait and stores the time we sent the message, so we know when the ack message times out
         #####We only enter the statement if we dont have anything in backup_path already.
@@ -284,12 +285,13 @@ async def resp_data():
             node.response_time = old_m + old_s
             node.wait_ack = True
 
+        print("Send resp_data check 2")
         temp = str("CPU Temperature:"+str(await get_cpu_temp())+ " C")
         if len(node.path) == 1:
             path = ""
         else:
             path = node.path[0:-2]
-
+        print("Send resp_data check 3")    
         offset_frequence = 18
         ack_id = 2
     
