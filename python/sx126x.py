@@ -379,7 +379,6 @@ class sx126x:
             self.ack_info = (r_buff[5], self.end_node)
             print(self.ack_info)
             print(self.end_node)
-            time.sleep(0.5)
             self.end_node = ""
             self.send_ack = True
 
