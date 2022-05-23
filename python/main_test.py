@@ -148,17 +148,19 @@ async def send_ack():
         ack_id = 3
         ack_inf = node.get_ack()
         path = ack_inf[0]
-        print("Send ack check 2")
-        print(len(path))
+
         if len(path) == 1:
-            print("test x21x")
             send_to = node.end_node
+            data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode()
+        
         else:
             print(path)
             send_to = int(path[1])
             print("Send ack check xxxxx")
             path = path[1:-1]
-        print("Send ack check 3")
+            data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
+        
+        print("Send ack check 2")
 
         #time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
         # the sending message format
@@ -166,7 +168,7 @@ async def send_ack():
         #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
         #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
         #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
-        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
+        #data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
         node.send(data)
         print("Send ack check 4")
         #####reset ack_info
