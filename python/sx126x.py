@@ -467,10 +467,10 @@ class sx126x:
                 print(r_buff_in_string[-1])
                 if r_buff_in_string[3] == r_buff_in_string[-1]:
                     #####This value is used in forward ack function when calling assigning info
-                    self.ack_info = (r_buff_in_string[2], r_buff_in_string[3])
-                else:
                     self.got_ack = True
                     print("Message was succesfully received on the other end")
+                else:
+                    self.ack_info = (r_buff_in_string[2], r_buff_in_string[3])
 
             else:
                 #error handling if ack_id invalid value
