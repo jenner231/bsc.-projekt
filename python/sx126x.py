@@ -368,7 +368,7 @@ class sx126x:
         ####payload is the cpu temperature
         payload = r_buff[4]
         ####if path is empty, we're the final node.
-        if path:
+        if len(path) > 0:
             print("check ret_data 2, we're still alive")
             self.data = (payload, path)
 
