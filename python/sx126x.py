@@ -459,11 +459,12 @@ class sx126x:
                 self.ret_data(r_buff_in_string)
             elif int(chr(r_buff[5])) == 3:
                 ####If we're in here the message sent has path in 3rd slot
+                print("Ack test receive")
                 if len(r_buff_in_string[3]) > 0:
                     self.ack_info = (r_buff_in_string[2], r_buff_in_string[3])
                 else:
                     self.got_ack = True
-                print("Message was succesfully received on the other end")
+                    print("Message was succesfully received on the other end")
 
             else:
                 #error handling if ack_id invalid value
