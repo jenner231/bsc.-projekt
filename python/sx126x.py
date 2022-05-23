@@ -376,7 +376,8 @@ class sx126x:
             print("Node: " +str(self.end_node) + ", " + str(payload))
             #passing self.end_node here is pretty bad. Generally we want to pass r_buff[2]as the path. But we are not adding the end node to the path itself.
             self.ack_info = (self.end_node, r_buff[5])
-
+            print(self.ack_info)
+            print(self.end_node)
             self.end_node = ""
             self.send_ack = True
 
