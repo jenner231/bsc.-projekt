@@ -80,38 +80,21 @@ async def get_cpu_temp():
 node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=n_addr,ack_info=(0,0),power=22,rssi=True,air_speed=2400,relay=False)
 
 
-async def send_deal():
-    #####Added the second input requirement of node id (also mentioned as 0 in line 72)
-    get_rec = ""
-    print("")
-    print("input a string such as \033[1;32m0,868,Hello World\033[0m,it will send `Hello World` to lora node device of address 0 with frequncy 868M ")
-    print("please input and press Enter key:",end='',flush=True)
-    ack_id = 1
-    while True:
-        rec = sys.stdin.read(1)
-        if rec != None:
-            if rec == '\x0a': break
-            get_rec += rec
-            sys.stdout.write(rec)
-            sys.stdout.flush()
-
-    get_t = get_rec.split(",")
-
-    offset_frequence = int(get_t[1])-(850 if int(get_t[1])>850 else 410)
-    #####Added the node id to the data variable, both in receiving node and own node.
-    #####
+async def heartbeat():
+    seperate = ","
+    #node.reachable_dev.clear()
+    #send data with ack id, wait for answer, if we get answer, note addr of answering node
+    offset_frequence = int(18)
+    ack_id = 0
+    time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
     # the sending message format
     #
-    #         receiving node              receiving node             receiving node             own high 8bit            own low 8bit                     
-    #         high 8bit address           low 8bit addre             frequency                  address                  address                          own freqency            ack_id                  message payload
-    data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) +  str(ack_id).encode() + get_t[2].encode()
-
+    #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
+    #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
+    #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
+    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
     node.send(data)
-    print('\x1b[2A',end='\r')
-    print(" "*200)
-    print(" "*200)
-    print(" "*200)
-    print('\x1b[3A',end='\r')
+    #await asyncio.sleep(1)
 
 
 async def request_cpu_data():
@@ -153,7 +136,6 @@ async def request_cpu_data():
     #node.send(data)
     #time.sleep(0.2)
     #timer_task.cancel()
-
 
 async def send_ack():
     if node.send_ack == True:
@@ -359,10 +341,10 @@ async def async_main():
                 print("Checkpoint1: In main loop, pressed i")
                 #task_req = asyncio.create_task(request_cpu_data())
                 #await task_req
-                task_ack = asyncio.create_task(send_ack())
+                task_heartbeat = asyncio.create_task(heartbeat())
                 #task_deal = asyncio.create_task(send_deal())
                 #await task_deal()
-                await task_ack
+                await task_heartbeat
             # dectect key s
             if c == '\x73':
                 print("Press \033[1;32mc\033[0m   to exit the send task")
