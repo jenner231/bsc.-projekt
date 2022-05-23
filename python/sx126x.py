@@ -362,6 +362,7 @@ class sx126x:
 
     def ret_data(self, r_buff):
         print("Check ret_data 1, we're inside")
+        print(r_buff)
         path = r_buff[3]
         print(path)
         ####payload is the cpu temperature
@@ -426,7 +427,7 @@ class sx126x:
             rec = str(r_buff)
             r_buff_in_string = rec.split(",")
 
-            print("receive checkpoint 2")
+            print("receive checkpoint 3")
             
             #####Made a check to see if the message was for us
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
@@ -449,7 +450,7 @@ class sx126x:
                 
                 print("Node IDs in range: "+str(self.reachable_dev))
             elif int(chr(r_buff[5])) == 1:
-                print("Receive checkpoint 2")
+                print("Receive checkpoint 4")
                 self.check_message(r_buff_in_string)
                 
                 #print("Noted ack_id")
