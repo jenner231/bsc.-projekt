@@ -373,8 +373,10 @@ class sx126x:
             self.data = (payload, path)
 
         else:
-            print("Node: " +str(self.end_node) + " " + str(payload))
+            print("Node: " +str(self.end_node) + ", " + str(payload))
             self.end_node = ""
+            print(r_buff[2])
+            print(r_buff[3])
             self.ack_info = (r_buff[2], r_buff[5])
             self.send_ack = True
 
@@ -455,7 +457,6 @@ class sx126x:
                 #print("Noted ack_id")
             elif int(chr(r_buff[5])) == 2:
                 print("checkpoint: ack_id = 2, we're returning data")
-                print(r_buff_in_string)
                 self.ret_data(r_buff_in_string)
             elif int(chr(r_buff[5])) == 3:
                 ####If we're in here the message sent has path in 3rd slot

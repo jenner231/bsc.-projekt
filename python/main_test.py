@@ -146,7 +146,8 @@ async def send_ack():
     #  send data with ack id, wait for answer, if we get answer, note addr of answering node
         offset_frequence = int(18)
         ack_id = 3
-        path = node.ack_info[1]
+        ack_inf = node.get_ack()
+        path = ack_inf[1]
         send_to = int(path[-1])
         print(send_to)
         print("Send ack check 2")
