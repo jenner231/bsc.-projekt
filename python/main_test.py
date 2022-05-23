@@ -148,6 +148,7 @@ async def send_ack():
         ack_id = 3
         path = node.ack_info[1]
         send_to = int(path[-1])
+        print(send_to)
         print("Send ack check 2")
         if len(path) == 1:
             path = ""
