@@ -464,7 +464,7 @@ class sx126x:
                 ####If we're in here the message sent has path in 3rd slot
                 print("Ack test receive")
                 print(r_buff_in_string)
-                if r_buff_in_string[3] == "\\xe3":
+                if r_buff_in_string[3] == r_buff_in_string[-1]:
                     #####This value is used in forward ack function when calling assigning info
                     self.ack_info = (r_buff_in_string[2], r_buff_in_string[3])
                 else:
