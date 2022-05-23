@@ -32,12 +32,19 @@ class sx126x:
     reachable_dev = []
     ack_info = (0,0)
     received_time = (0, 0)
+    response_time = 0
     path = ""
+    #####Backup path is used if we dont received the acknowledgement message after responding with our data.
+    backup_path = ""
     #### Both also includes path, but we can't use path as path variable is used as a boolean to enter a function in the main file.
     forward = 0
     data = ("", "")
     #####Used for logging purposes
     end_node = ""
+    #####Bools used in timing
+    got_ack = False
+    wait_ack = False
+    send_ack = False
 
 
     #
@@ -275,37 +282,9 @@ class sx126x:
         time.sleep(0.1)
         if(data[6] == 50):
             print("we're actually sending")
-    
-    def ret_ack(self, received_data):
-        time.sleep(2)
-        get_t = received_data
-        print(received_data)
-        ack_id = 2
-        print(get_t)
-        #         receiving node              receiving node                   receiving node                  own high 8bit            own low 8bit                    own frequency
-        #         high 8bit address           low 8bit address                 frequency                         address                  address                                                  ack_id
-        #data = bytes([int((received_data[0]<<8) + received_data[1])>>8]) + bytes([int((received_data[0]<<8) + received_data[1])&0xff]) + bytes([received_data[2]]) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + str(ack_id).encode()
-        data2 = bytes([int(3)>>8]) + bytes([int(3)&0xff]) + bytes([received_data[2]]) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + str(ack_id).encode()
-        
-        #print(data[0])
-        #print(data[1])
-        #print(data[2])
-        #print(data[3])
-        #print(data[4])
-        #print(data[5])
-        #print(data[6])
-        self.send(data2)
-        print("We send return ack")
-
-    def receive_ack(self, r_buff):
-        #####Store tuple of (ack_id, sender address) 
-            self.ack_info = (r_buff[3], ((r_buff[0]<<8) + r_buff[1]))
-            print(self.ack_info)
 
     def get_ack(self):
-        ack_info = self.ack_info
-        self.ack_info = (0,0)
-        return ack_info
+        return self.ack_info
 
     #####Function to determine wether we have seen a request for this data before. e.g if multiple nodes can reach the end node with different paths, 
     #####we only want to answer the first one
@@ -353,10 +332,10 @@ class sx126x:
 
                 print(sender)
                 id = int(sender[1], 16) + int(sender[2], 16)
-                #we store this data so we can check for duplicates
+                #we store this data so we can check for duplicates. r_buff[5] here is the time sent from the node requesting data
                 self.received_time = (r_buff[5], id)
 
-                #####We set path to r_buff[5], so we can get the array of nodes we to send the information back through. 
+                #####We set path to r_buff[4], so we can get the array of nodes we to send the information back through. 
                 ##### we need the path to navigate the way back to original sender of request.
                 self.path = path
 
@@ -387,6 +366,7 @@ class sx126x:
         print(path)
         ####payload is the cpu temperature
         payload = r_buff[4]
+        ####if path is empty, we're the final node.
         if path:
             print("check ret_data 2, we're still alive")
             self.data = (payload, path)
@@ -395,9 +375,11 @@ class sx126x:
 
             print("Node: "+self.end_node + " "+payload)
             self.end_node = ""
+            self.ack_info = (r_buff[2], r_buff[5])
+            self.send_ack = True
 
     def compare_time(self):
-        #####TODO: Test if this function works at beginning of hours!!
+        #####TODO: Test if this function works at beginning of hours!! should work with the new timeout varaible
         print("compare time check 1")
         ####TODO: maybe fix this shit so we dont have to make the object as a string and then convert it to a datetime object.
         datetimer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
@@ -442,7 +424,7 @@ class sx126x:
             r_buff = self.ser.read(self.ser.inWaiting())
             print("receive checkpoint 2")
             rec = str(r_buff)
-            get_t = rec.split(",")
+            r_buff_in_string = rec.split(",")
 
             print("receive checkpoint 2")
             
@@ -452,8 +434,8 @@ class sx126x:
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             if int(chr(r_buff[5])) == 0:
                 print("heartbeat check 1")
-                print(get_t)
-                timer = get_t[3]
+                print(r_buff_in_string)
+                timer = r_buff_in_string[3]
                 dateT = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
                 m = int(dateT.strftime("%M")) * 60
                 s = int(dateT.strftime("%S"))
@@ -468,13 +450,20 @@ class sx126x:
                 print("Node IDs in range: "+str(self.reachable_dev))
             elif int(chr(r_buff[5])) == 1:
                 print("Receive checkpoint 2")
-                self.check_message(get_t)
-                #self.receive_ack(r_buff)
+                self.check_message(r_buff_in_string)
+                
                 #print("Noted ack_id")
             elif int(chr(r_buff[5])) == 2:
                 print("checkpoint: ack_id = 2, we're returning data")
-                print(get_t)
-                self.ret_data(get_t)
+                print(r_buff_in_string)
+                self.ret_data(r_buff_in_string)
+            elif int(chr(r_buff[5])) == 3:
+                ####If we're in here the message sent has path in 3rd slot
+                if len(r_buff_in_string[3]) > 0:
+                    self.ack_info = (r_buff_in_string[2], r_buff_in_string[3])
+                else:
+                    self.got_ack = True
+                print("Message was succesfully received on the other end")
 
             else:
                 #error handling if ack_id invalid value

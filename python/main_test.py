@@ -156,20 +156,30 @@ async def request_cpu_data():
 
 
 async def send_ack():
-    seperate = ","
-    #node.reachable_dev.clear()
-  #  send data with ack id, wait for answer, if we get answer, note addr of answering node
-    offset_frequence = int(18)
-    ack_id = 0
-    time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
-    # the sending message format
-    #
-    #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
-    #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
-    #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
-    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
-    node.send(data)
-    #await asyncio.sleep(1)
+    if node.send_ack == True:
+        seperate = ","
+
+        #node.reachable_dev.clear()
+    #  send data with ack id, wait for answer, if we get answer, note addr of answering node
+        offset_frequence = int(18)
+        ack_id = 3
+        path = node.ack_info[1]
+        send_to = int(path[-1])
+        if len(path) == 1:
+            path = ""
+        else:
+            path = path[0:-2]
+        #time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+        # the sending message format
+        #
+        #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
+        #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
+        #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
+        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
+        node.send(data)
+        #####reset ack_info
+        node.ack_info = (0,0)
+        #await asyncio.sleep(1)
 
 
 async def cancel_cpu(cont):
@@ -194,24 +204,57 @@ async def cancel_cpu(cont):
 
 
 #TODO: Look at this function?
-async def return_ack():
+async def forward_ack():
         #####check if we have received the requested data, if yes then send ack to end_node
     info = node.get_ack()
-    if info[0] == 49:
-        print(time.time()*1000)
-        rand = float((random.randrange(0, 50, 3)) / 10)
-        print(time.time()*1000)
-        await asyncio.sleep(rand)
-        print("checkpoint1 ")
+    if int(info[0]) == 3:
+        seperate = ","
+        
+        #rand = float((random.randrange(0, 50, 3)) / 10)
+        #await asyncio.sleep(rand)
+        print("forward_ack check 1")
         offset_frequence = 18
-        ack_id = 2
-
+        ack_id = int(info[0])
+        path = info[1]
+        send_to = int(path[-1])
+        if len(path) == 1:
+            path = ""
+        else:
+            path = path[0:-2]
         #####node.get_ack[1] is the sender address stored in the get_ack function
-        data = bytes([int(info[1])>>8]) + bytes([int(info[1])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(ack_id).encode()
-        print("checkpoint2")
+        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
         node.send(data)
+        node.ack_info = (0,0)
     else:
         pass
+
+async def ack_wait():
+    #####This function is kinda dangerous if multiple nodes can send at the same time or in short succession as it allows the backup_path to be modified while node is still waiting for an acknowledgement.
+    if node.wait_ack == True:
+
+        datetimer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+        clock = datetime.datetime.strptime(datetimer, '%d-%m-%y %H:%M:%S')
+        current_m = int(clock.strftime("%M")) * 60
+        current_s = int(clock.strftime("%S"))
+        current_time = current_m + current_s
+
+        add_delay = len(node.backup_path)
+
+        if node.response_time + add_delay < current_time:
+            ####this line is what makes this function work. When we set node.path to the value of backup_path we "fill" path again, which allows us to enter the resp_data() function again.
+            ####As it takes node.path as a boolean where it returns false if empty.
+            node.path = node.backup_path
+            node.wait_ack= False
+        elif node.got_ack == True:
+            node.backup_path = ""
+            node.wait_ack = False
+            print("ack message received succesfully")
+
+
+            node.got_ack = False
+        else:
+            pass
+
 
 
 async def for_mes():
@@ -243,6 +286,18 @@ async def resp_data():
     if node.path:
         seperate = ","
         send_to = int(node.path[-1])
+
+        #####back_path is used in ack_wait(). response_time is also used in ack_wait and stores the time we sent the message, so we know when the ack message times out
+        #####We only enter the statement if we dont have anything in backup_path already.
+        if not node.backup_path:
+            node.backup_path = path
+            timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+            sent_message_timer = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
+            old_m = int(sent_message_timer.strftime("%M")) * 60
+            old_s = int(sent_message_timer.strftime("%S"))
+            node.response_time = old_m + old_s
+            node.wait_ack = True
+
         temp = str("CPU Temperature:"+str(await get_cpu_temp())+ " C")
         if len(node.path) == 1:
             path = ""
@@ -252,7 +307,7 @@ async def resp_data():
         offset_frequence = 18
         ack_id = 2
     
-        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode()
+        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode() + str(node.backup_path).encode() + str(seperate).encode()
         node.send(data)
 
         #####Clean the node's path after sending the message
