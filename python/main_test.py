@@ -195,8 +195,7 @@ async def cancel_cpu(cont):
 
 #TODO: Look at this function?
 async def return_ack():
-        #####check wether we've gotten a heartbeat each loop
-        #####49 == 1 in ascii
+        #####check if we have received the requested data, if yes then send ack to end_node
     info = node.get_ack()
     if info[0] == 49:
         print(time.time()*1000)
