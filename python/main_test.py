@@ -79,6 +79,7 @@ async def get_cpu_temp():
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
 node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=n_addr,ack_info=(0,0),power=22,rssi=True,air_speed=2400,relay=False)
 
+
 async def send_deal():
     #####Added the second input requirement of node id (also mentioned as 0 in line 72)
     get_rec = ""
@@ -112,6 +113,7 @@ async def send_deal():
     print(" "*200)
     print('\x1b[3A',end='\r')
 
+
 async def request_cpu_data():
     print("req check 1")
     #####Start out checking if we have nodes that we haven't heard from in a while
@@ -119,7 +121,6 @@ async def request_cpu_data():
     end_node = 3
     seperate = ","
     in_reach = False
-
 
     path = node.addr
     ack_id = 1
@@ -153,6 +154,7 @@ async def request_cpu_data():
     #time.sleep(0.2)
     #timer_task.cancel()
 
+
 async def send_ack():
     seperate = ","
     #node.reachable_dev.clear()
@@ -168,6 +170,7 @@ async def send_ack():
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
     node.send(data)
     #await asyncio.sleep(1)
+
 
 async def cancel_cpu(cont):
     time = 0
@@ -189,6 +192,8 @@ async def cancel_cpu(cont):
             time = time + 0.1
             await asyncio.sleep(0.1)
 
+
+#TODO: Look at this function?
 async def return_ack():
         #####check wether we've gotten a heartbeat each loop
         #####49 == 1 in ascii
@@ -208,6 +213,7 @@ async def return_ack():
         node.send(data)
     else:
         pass
+
 
 async def for_mes():
     if(node.forward != 0):
@@ -232,6 +238,7 @@ async def for_mes():
     else:
         pass
 
+
 async def resp_data():
     ####if we have something in our path array, basically says if len(node.path) not empty
     if node.path:
@@ -253,6 +260,7 @@ async def resp_data():
         node.path = ""
     else:
         pass
+
 
 async def ret_data():
     ####This function is differnt than resp_data() in the way that this is function relays the message between intermediate nodes, while resp_data() only handles
@@ -279,8 +287,6 @@ async def ret_data():
         node.data[0] = ""
         node.data[1] = ""
 
-
-                
 
 async def async_main():
     #await asyncio.sleep(0.1)

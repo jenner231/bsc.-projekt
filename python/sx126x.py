@@ -11,14 +11,12 @@ import sys
 from encodings import utf_8
 
 
-
 class sx126x:
     ##importing the node library to manually set node id on each node without overwriting from github pulls
     sys.path.insert(1, '/home/pi/address')
     import address
     n_addr = address.node.n_address
     sys.path.insert(1, '/home/bsc.-projekt/python')
-
 
     M0 = 22
     M1 = 27
@@ -304,7 +302,6 @@ class sx126x:
             self.ack_info = (r_buff[3], ((r_buff[0]<<8) + r_buff[1]))
             print(self.ack_info)
 
-
     def get_ack(self):
         ack_info = self.ack_info
         self.ack_info = (0,0)
@@ -335,9 +332,6 @@ class sx126x:
         else:
             return True
 
-
-
-
     def check_message(self, r_buff):
         print("check message checkpoint 1")
         visited = False
@@ -356,8 +350,6 @@ class sx126x:
             print("check_message checkpoint 2")
             if self.calc_new_message(r_buff[5], path):
                 print("check_message checkpoint 3")
-
-                
 
                 print(sender)
                 id = int(sender[1], 16) + int(sender[2], 16)
@@ -389,8 +381,6 @@ class sx126x:
             pass
         print("check_message checkpoint 9")
 
-
-
     def ret_data(self, r_buff):
         print("Check ret_data 1, we're inside")
         path = r_buff[3]
@@ -405,7 +395,6 @@ class sx126x:
 
             print("Node: "+self.end_node + " "+payload)
             self.end_node = ""
-
 
     def compare_time(self):
         #####TODO: Test if this function works at beginning of hours!!
@@ -442,16 +431,6 @@ class sx126x:
                     print("We removed: "+str(i[0]) + " due to expiration exceeded")
             else:
                 pass
-
-
-
-
-
-
-            
-
-
-
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self):
@@ -496,7 +475,6 @@ class sx126x:
                 print("checkpoint: ack_id = 2, we're returning data")
                 print(get_t)
                 self.ret_data(get_t)
-
 
             else:
                 #error handling if ack_id invalid value
