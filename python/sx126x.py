@@ -375,7 +375,7 @@ class sx126x:
         else:
             ###enter here if we're the start node (returning data enters here.)
             print("Node: " +str(self.end_node) + ", " + str(payload))
-
+            ####r_buff[5] is the backup path. 
             self.ack_info = (r_buff[5], self.end_node)
             print(self.ack_info)
             print(self.end_node)
