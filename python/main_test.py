@@ -211,7 +211,7 @@ async def forward_ack():
         #await asyncio.sleep(rand)
         print("forward_ack check 1")
         offset_frequence = 18
-        ack_id = int(info[0])
+        ack_id = 3
         path = info[1]
         send_to = int(path[-1])
         if len(path) == 1:
