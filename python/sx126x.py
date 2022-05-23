@@ -374,7 +374,7 @@ class sx126x:
 
         else:
             print("test")
-            print(self.end_node)
+            print(payload)
             print("Node: "+self.end_node + " " + payload)
             self.end_node = ""
             self.ack_info = (r_buff[2], r_buff[5])
