@@ -273,10 +273,11 @@ async def resp_data():
         seperate = ","
         send_to = int(node.path[-1])
         print("Send resp_data check 1")
-
+        print(node.backup_path)
+        print(type(node.backup_path))
         #####back_path is used in ack_wait(). response_time is also used in ack_wait and stores the time we sent the message, so we know when the ack message times out
         #####We only enter the statement if we dont have anything in backup_path already.
-        if not node.backup_path:
+        if (not node.backup_path):
             node.backup_path = path
             timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
             sent_message_timer = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
