@@ -394,6 +394,14 @@ async def async_main():
         task_intermediate = asyncio.create_task(ret_data())
         await task_intermediate
 
+
+        task_send_ack = asyncio.create_task(send_ack())
+        await task_send_ack
+        task_forward_ack = asyncio.create_task(forward_ack())
+        await task_forward_ack
+        task_ack_wait = asyncio.create_task(ack_wait())
+        await task_ack_wait
+
         #wait asyncio.sleep(0.01)
 
         # timer,send messages automatically
