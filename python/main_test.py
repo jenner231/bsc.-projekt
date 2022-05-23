@@ -149,7 +149,7 @@ async def send_ack():
         ack_inf = node.get_ack()
         path = ack_inf[0]
         
-        if len(path) <== 1:
+        if len(path) == 1:
             send_to = node.end_node
         else:
             send_to = path[1]
