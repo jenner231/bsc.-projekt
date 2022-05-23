@@ -225,6 +225,7 @@ async def ack_wait():
         current_time = current_m + current_s
 
         add_delay = len(node.backup_path)
+        print(type(node.response_time))
 
         if node.response_time + add_delay < current_time:
             ####this line is what makes this function work. When we set node.path to the value of backup_path we "fill" path again, which allows us to enter the resp_data() function again.
@@ -272,29 +273,22 @@ async def resp_data():
     if node.path:
         seperate = ","
         send_to = int(node.path[-1])
-        print("Send resp_data check 1")
-        print(len(node.backup_path))
         #####back_path is used in ack_wait(). response_time is also used in ack_wait and stores the time we sent the message, so we know when the ack message times out
         #####We only enter the statement if we dont have anything in backup_path already.
         if len(node.backup_path) == 0:
-            print("Send resp_data  if check 1")
             node.backup_path = node.path
             timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
-            print("Send resp_data  if check 2")
             sent_message_timer = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
             old_m = int(sent_message_timer.strftime("%M")) * 60
             old_s = int(sent_message_timer.strftime("%S"))
-            print("Send resp_data  if check 3")
             node.response_time = old_m + old_s
             node.wait_ack = True
 
-        print("Send resp_data check 2")
         temp = str("CPU Temperature:"+str(await get_cpu_temp())+ " C")
         if len(node.path) == 1:
             path = ""
         else:
-            path = node.path[0:-2]
-        print("Send resp_data check 3")    
+            path = node.path[0:-2]   
         offset_frequence = 18
         ack_id = 2
     
