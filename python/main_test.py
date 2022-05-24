@@ -357,15 +357,15 @@ async def ret_data():
         node.data = ("","")
 
 
-async def calc_timeslot():
-    s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
-    timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
-    m = int(timer.strftime("%M")) * 60
-    s = int(timer.strftime("%S"))
+# async def calc_timeslot():
+#     s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+#     timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
+#     m = int(timer.strftime("%M")) * 60
+#     s = int(timer.strftime("%S"))
 
-    cycle = 60
+#     cycle = 60
 
-    start_tim = 
+#     start_time = 
 
 async def async_main():
     #await asyncio.sleep(0.1)
