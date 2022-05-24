@@ -305,12 +305,11 @@ async def resp_data():
             node.wait_ack = True
 
         temp = str("CPU Temperature:"+str(await get_cpu_temp())+ " C")
-        print(len(node.path))
+
         if len(node.path) == 1:
             path = ""
         else:
             path = node.path[0:-1]  
-            print(path) 
         offset_frequence = 18
         ack_id = 2
     
@@ -327,6 +326,7 @@ async def ret_data():
     ####This function is differnt than resp_data() in the way that this is function relays the message between intermediate nodes, while resp_data() only handles
     ####the initial response. (This is the general function and resp_data() is the base case.)
     if node.data[0]:
+        print("sender ret data 1")
         seperate = ","
         payload = node.data[0]
         path = node.data[1]

@@ -373,6 +373,8 @@ class sx126x:
         if len(path) > 0:
             print("check ret_data 2, we're still alive")
             self.data = (payload, path)
+            print(type(self.data[0]))
+            print("set data")
 
         else:
             ###enter here if we're the start node (returning data enters here.)
