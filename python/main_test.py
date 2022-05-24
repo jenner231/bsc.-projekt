@@ -213,10 +213,10 @@ async def forward_ack():
         print("forward_ack check 2")
         offset_frequence = 18
         ack_id = 3
-        path = node.ack_info[1]
+        path = node.ack_info[0]
         if len(path) == 1:
             print("forward_ack check 2")
-            send_to = node.ack_info[0]
+            send_to = node.ack_info[1]
             #####ack_inf[1]here is end_node set in ret_data function in sx126x
             data = bytes([int(send_to) >> 8]) + bytes([int(send_to) & 0xff]) + bytes([offset_frequence]) + str(
                 seperate).encode() + bytes([node.addr >> 8]) + bytes([node.addr & 0xff]) + bytes(
@@ -251,6 +251,7 @@ async def ack_wait():
             ####As it takes node.path as a boolean where it returns false if empty.
             node.path = node.backup_path
             node.wait_ack = False
+
         elif node.got_ack == True:
             node.backup_path = ""
             node.wait_ack = False
@@ -304,10 +305,12 @@ async def resp_data():
             node.wait_ack = True
 
         temp = str("CPU Temperature:"+str(await get_cpu_temp())+ " C")
+        print(len(node.path))
         if len(node.path) == 1:
             path = ""
         else:
-            path = node.path[0:-2]   
+            path = node.path[0:-2]  
+            print(path) 
         offset_frequence = 18
         ack_id = 2
     

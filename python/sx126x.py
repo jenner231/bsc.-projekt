@@ -473,7 +473,7 @@ class sx126x:
                     print("Message was succesfully received on the other end")
                 else:
                     #####get path from r_buff_in_string and pass to forward ack function in main file
-                    self.ack_info = (r_buff_in_string[4], r_buff_in_string[3])
+                    self.ack_info = (r_buff_in_string[3], r_buff_in_string[4])
                     self.forward_ack = True
                     print("Forwarding ack message")
 
