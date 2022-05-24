@@ -319,6 +319,7 @@ async def resp_data():
         node.send(data)
 
         #####Clean the node's path after sending the message
+        node.backup_path = ""
         node.path = ""
     else:
         pass
@@ -332,6 +333,7 @@ async def ret_data():
         seperate = ","
         payload = node.data[0]
         path = node.data[1]
+        backup_path = node.data[2]
         print("sender ret data 2")
         send_to = int(path[-1])
 
@@ -344,7 +346,7 @@ async def ret_data():
         ack_id = 2
 
         #####node.get_ack[1] is the sender address stored in the get_ack function       
-        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(payload).encode() + str(seperate).encode()
+        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(payload).encode() + str(seperate).encode() + str(backup_path).encode() + str(seperate).encode()
         node.send(data)
         print("sender ret data 3")
         #####Clean the node's data after sending the message

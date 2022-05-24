@@ -38,7 +38,7 @@ class sx126x:
     backup_path = ""
     #### Both also includes path, but we can't use path as path variable is used as a boolean to enter a function in the main file.
     forward = 0
-    data = ("", "")
+    data = ("", "", "")
     #####Used for logging purposes
     end_node = ""
     #####Bools used in timing
@@ -372,7 +372,7 @@ class sx126x:
         ####if path is empty, we're the final node.
         if len(path) > 0:
             print("check ret_data 2, we're still alive")
-            self.data = (payload, path)
+            self.data = (payload, path, r_buff[5])
             print(type(self.data[0]))
             print("set data")
 
