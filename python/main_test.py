@@ -138,8 +138,8 @@ async def request_cpu_data():
     #timer_task.cancel()
 
 async def send_ack():
-    print(node.send_ack)
     if node.send_ack == True:
+
         seperate = ","
         print("Send ack check 1")
 
