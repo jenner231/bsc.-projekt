@@ -373,8 +373,11 @@ async def async_main():
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
     timer = datetime.datetime.now()
-    s = int(timer.strftime("%S"))
+    s = timer.second
+    milli = timer.microsecond
+    print(type(s))
     print(s)
+    print(milli)
 
     while True:
         timer = 0
