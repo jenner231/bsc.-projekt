@@ -357,59 +357,110 @@ async def ret_data():
         node.data = ("","")
 
 
-# async def calc_timeslot():
-#     s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
-#     timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
-#     m = int(timer.strftime("%M")) * 60
-#     s = int(timer.strftime("%S"))
+async def calc_timeslot():
+    s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
+    m = timer.minute
+    s = timer.second
+    ms = timer.microsecond / 1000000
+    float_sec = float(s) + ms
 
-#     cycle = 60
+    cycle = 60
+    slot_start = (int(node.addr) / (node.number_of_nodes + 1)) * cycle
+    slot_end = (int(node.addr + 1) / (node.number_of_nodes + 1)) * cycle - (slot_start / node.number_of_nodes)
+    hb_start = 0
+    hb_end = 1 / (node.number_of_nodes + 1) * cycle - (((1 / node.number_of_nodes + 1) * cycle) / (node.number_of_nodes + 1))
 
-#     start_time = 
+    hb_slot_size = (hb_end - hb_start) / (node.number_of_nodes)
+
+    hb_slot_start = hb_start + (int(node.addr) - 1) * hb_slot_size
+
+
 
 async def async_main():
     #await asyncio.sleep(0.1)
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
-    timer = datetime.datetime.now()
+    ##### Variables in order to slot the network, determining when to heartbeat and request messages depending on number of nodes in the network
+    s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
+    m = timer.minute
     s = timer.second
-    milli = timer.microsecond
-    print(type(s))
-    print(s)
-    print(milli)
+    ms = timer.microsecond / 1000000
+    float_sec = float(s) + ms
+
+    cycle = 60
+    slot_start = (int(node.addr) / (node.number_of_nodes + 1)) * cycle
+    slot_end = (int(node.addr + 1) / (node.number_of_nodes + 1)) * cycle - (slot_start / node.number_of_nodes)
+    hb_start = 0
+    hb_end = 1 / (node.number_of_nodes + 1) * cycle - (((1 / node.number_of_nodes + 1) * cycle) / (node.number_of_nodes + 1))
+
+    hb_slot_size = (hb_end - hb_start) / (node.number_of_nodes)
+
+    hb_slot_start = hb_start + (int(node.addr) - 1) * hb_slot_size
+    hb_next_start = hb_start + int(node.addr) * hb_slot_size
 
     while True:
-        timer = 0
-        if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
-            c = sys.stdin.read(1)
-            # dectect key Esc
-            if c == '\x1b': break
-            # dectect key i
-            if c == '\x69':
-                print("Checkpoint1: In main loop, pressed i")
-                #task_req = asyncio.create_task(request_cpu_data())
-                #await task_req
-                task_heartbeat = asyncio.create_task(heartbeat())
-                #task_deal = asyncio.create_task(send_deal())
-                #await task_deal()
-                await task_heartbeat
-            # dectect key s
-            if c == '\x73':
-                print("Press \033[1;32mc\033[0m   to exit the send task")
-                #timer_task = Timer(seconds, send_cpu_continue)
-                #timer_task.start()
-                #####Create the task to send "sensor" data to nearby devices
-                #cont = True
-                #while cont == True:
+        c_timer = datetime.datetime.now()
+        c_t = float(timer.second) + (timer.microsecond / 1000000)
+        new_m = c_timer.minute
+
+        #####if statement to reset cycle each minute
+        if new_m > m:
+            node.has_sent_hb = False
+            node.has_sent_mes = False
+            m = new_m
+        elif new_m == 0 and m == 59:
+            node.has_sent_hb = False
+            node.has_sent_mes = False
+            m = new_m 
+
+
+        #####Mac protocol to slot each node into timeslots and give a slot to hearbeats, which is then also split into slots.
+        if c_t > hb_slot_start and c_t < hb_next_start and  (not node.has_sent_hb):
+            task_heartbeat = asyncio.create_task(heartbeat())
+            await task_heartbeat
+            node.has_sent_hb = True
+        
+        if c_t > slot_start and c_t < slot_end and (not node.has_sent_mes):
                 cpu = asyncio.create_task(request_cpu_data())
                 await cpu
-                #cont = await cancel_cpu(cont)
-                #press c to cancel
-                
-                    #await asyncio.sleep(10) 
+                node.has_sent_mes = True
 
-            sys.stdout.flush()
+
+
+
+
+
+        # if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
+        #     c = sys.stdin.read(1)
+        #     # dectect key Esc
+        #     if c == '\x1b': break
+        #     # dectect key i
+        #     if c == '\x69':
+        #         print("Checkpoint1: In main loop, pressed i")
+        #         #task_req = asyncio.create_task(request_cpu_data())
+        #         #await task_req
+        #         task_heartbeat = asyncio.create_task(heartbeat())
+        #         #task_deal = asyncio.create_task(send_deal())
+        #         #await task_deal()
+        #         await task_heartbeat
+        #     # dectect key s
+        #     if c == '\x73':
+        #         print("Press \033[1;32mc\033[0m   to exit the send task")
+        #         #timer_task = Timer(seconds, send_cpu_continue)
+        #         #timer_task.start()
+        #         #####Create the task to send "sensor" data to nearby devices
+        #         #cont = True
+        #         #while cont == True:
+
+        #         #cont = await cancel_cpu(cont)
+        #         #press c to cancel
+                
+        #             #await asyncio.sleep(10) 
+
+        #     sys.stdout.flush()
         node.receive()
         # if timer != 0:
         #     task_return = asyncio.create_task(return_ack())

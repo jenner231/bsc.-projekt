@@ -50,6 +50,8 @@ class sx126x:
     wait_ack = False
     send_ack = False
     forward_ack = False
+    has_sent_mes = False
+    has_sent_hb = False
 
 
 
@@ -401,7 +403,7 @@ class sx126x:
         current_m = int(clock.strftime("%M")) * 60
         current_s = int(clock.strftime("%S"))
         current_time = current_m + current_s
-        timeout = 5*3.5
+        timeout = 60*3.5
         print("compare time check 3")
         for i in self.reachable_dev:
             print(i[1])
