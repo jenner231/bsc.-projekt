@@ -344,11 +344,10 @@ async def ret_data():
         #####node.get_ack[1] is the sender address stored in the get_ack function       
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(payload).encode() + str(seperate).encode()
         node.send(data)
-
+        print("sender ret data 3")
         #####Clean the node's data after sending the message
         node.data[0] = ""
         node.data[1] = ""
-        print("sender ret data 3")
 
 async def async_main():
     #await asyncio.sleep(0.1)
