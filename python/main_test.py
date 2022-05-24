@@ -356,11 +356,25 @@ async def ret_data():
         #####Clean the node's data after sending the message
         node.data = ("","")
 
+
+async def calc_timeslot():
+    s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
+    m = int(timer.strftime("%M")) * 60
+    s = int(timer.strftime("%S"))
+
+    cycle = 60
+
+    start_tim = 
+
 async def async_main():
     #await asyncio.sleep(0.1)
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
+    timer = datetime.datetime.now()
+    s = int(timer.strftime("%S"))
+    print(s)
 
     while True:
         timer = 0

@@ -9,6 +9,7 @@ import time
 import datetime
 import sys
 from encodings import utf_8
+import number_of_nodes
 
 
 class sx126x:
@@ -26,6 +27,8 @@ class sx126x:
     get_reg = bytes(12)
     rssi = False
     addr = n_addr
+    ###This is set manually, probably should be set from a 
+    number_of_nodes = number_of_nodes.non.number_of_nodess
     serial_n = ""
     addr_temp = 0
     #### reachable_dev tuple for heartbeat on form (node_id, time)
