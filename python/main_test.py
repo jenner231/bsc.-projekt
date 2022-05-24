@@ -218,6 +218,8 @@ async def forward_ack():
         if len(path) == 1:
             print("forward_ack check path length 1")
             send_to = node.ack_info[1]
+            print("forward_ack check 2 path length 1")
+            print(send_to)
             #####ack_inf[1]here is end_node set in ret_data function in sx126x
             data = bytes([int(send_to) >> 8]) + bytes([int(send_to) & 0xff]) + bytes([offset_frequence]) + str(
                 seperate).encode() + bytes([node.addr >> 8]) + bytes([node.addr & 0xff]) + bytes(
