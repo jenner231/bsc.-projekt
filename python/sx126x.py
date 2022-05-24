@@ -28,7 +28,8 @@ class sx126x:
     rssi = False
     addr = n_addr
     ###This is set manually, probably should be set from a 
-    number_of_nodes = number_of_nodes.non.number_of_nodess
+    number_of_nodes = number_of_nodes.non.number_of_nodes
+    timeslot = 0
     serial_n = ""
     addr_temp = 0
     #### reachable_dev tuple for heartbeat on form (node_id, time)
@@ -49,6 +50,7 @@ class sx126x:
     wait_ack = False
     send_ack = False
     forward_ack = False
+
 
 
     #
