@@ -309,7 +309,7 @@ async def resp_data():
         if len(node.path) == 1:
             path = ""
         else:
-            path = node.path[0:-2]  
+            path = node.path[0:-1]  
             print(path) 
         offset_frequence = 18
         ack_id = 2
