@@ -346,8 +346,7 @@ async def ret_data():
         node.send(data)
         print("sender ret data 3")
         #####Clean the node's data after sending the message
-        node.data[0] = ""
-        node.data[1] = ""
+        node.data = ("","")
 
 async def async_main():
     #await asyncio.sleep(0.1)
