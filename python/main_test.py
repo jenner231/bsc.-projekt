@@ -204,7 +204,7 @@ async def cancel_cpu(cont):
 #TODO: Look at this function?
 async def forward_ack():
     #####check if we have received the requested data, if yes then send ack to end_node
-    if node.forward_ack == True
+    if node.forward_ack == True:
         print("forwards_ack check 1")
         seperate = ","
         end_node = 3
