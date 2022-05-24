@@ -365,6 +365,7 @@ class sx126x:
         print(r_buff)
         path = r_buff[3]
         print(path)
+        print(len(path))
         ####payload is the cpu temperature
         payload = r_buff[4]
         ####if path is empty, we're the final node.
