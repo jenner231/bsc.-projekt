@@ -403,7 +403,7 @@ async def async_main():
 
     while True:
         c_timer = datetime.datetime.now()
-        c_t = float(timer.second) + (timer.microsecond / 1000000)
+        c_t = float(c_timer.second) + (c_timer.microsecond / 1000000)
         new_m = c_timer.minute
         print(c_t)
         #####if statement to reset cycle each minute
