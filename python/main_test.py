@@ -161,7 +161,7 @@ async def send_ack():
             print(path)
             send_to = int(path[1])
             print("Send ack check xxxxx")
-            path = path[1:-1]
+            path = path[1:]
             data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(node.end_node).encode() + str(seperate).encode()
 
         print("Send ack check 2")
@@ -208,7 +208,7 @@ async def forward_ack():
     if node.forward_ack == True:
         print("forwards_ack check 1")
         seperate = ","
-        end_node = 3
+        end_node = node.ack_info[1]
         #rand = float((random.randrange(0, 50, 3)) / 10)
         #await asyncio.sleep(rand)
         print("forward_ack check 2")
@@ -216,7 +216,7 @@ async def forward_ack():
         ack_id = 3
         path = node.ack_info[0]
         if len(path) == 1:
-            print("forward_ack check 2")
+            print("forward_ack check path length 1")
             send_to = node.ack_info[1]
             #####ack_inf[1]here is end_node set in ret_data function in sx126x
             data = bytes([int(send_to) >> 8]) + bytes([int(send_to) & 0xff]) + bytes([offset_frequence]) + str(
@@ -224,15 +224,16 @@ async def forward_ack():
                 [node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode()
 
         else:
-            print("forward_ack check 3")
+            print("forward_ack check path length more than 1")
             print(path)
             send_to = int(path[1])
-            path = path[1:-1]
+            path = path[1:]
             data = bytes([int(send_to) >> 8]) + bytes([int(send_to) & 0xff]) + bytes([offset_frequence]) + str(
                 seperate).encode() + bytes([node.addr >> 8]) + bytes([node.addr & 0xff]) + bytes(
                 [node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(
                 path).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode()
         print("forward_ack check 4")
+        node.send(data)
         node.forward_ack = False
 
 async def ack_wait():
