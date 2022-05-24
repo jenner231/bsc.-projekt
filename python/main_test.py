@@ -155,14 +155,14 @@ async def send_ack():
             send_to = ack_inf[1]
             print(send_to)
             data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode()
-        
+
         else:
             print(path)
             send_to = int(path[1])
             print("Send ack check xxxxx")
             path = path[1:-1]
-            data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
-        
+            data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(node.end_node).encode() + str(seperate).encode()
+
         print("Send ack check 2")
 
         #time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
@@ -204,27 +204,35 @@ async def cancel_cpu(cont):
 #TODO: Look at this function?
 async def forward_ack():
     #####check if we have received the requested data, if yes then send ack to end_node
-    info = node.get_ack()
-    if int(info[0]) == 3:
+    if node.forward_ack == True
+        print("forwards_ack check 1")
         seperate = ","
-        
+        end_node = 3
         #rand = float((random.randrange(0, 50, 3)) / 10)
         #await asyncio.sleep(rand)
-        print("forward_ack check 1")
+        print("forward_ack check 2")
         offset_frequence = 18
         ack_id = 3
-        path = info[1]
-        send_to = int(path[-1])
+        path = node.ack_info[1]
         if len(path) == 1:
-            path = ""
+            print("forward_ack check 2")
+            send_to = node.ack_info[0]
+            #####ack_inf[1]here is end_node set in ret_data function in sx126x
+            data = bytes([int(send_to) >> 8]) + bytes([int(send_to) & 0xff]) + bytes([offset_frequence]) + str(
+                seperate).encode() + bytes([node.addr >> 8]) + bytes([node.addr & 0xff]) + bytes(
+                [node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode()
+
         else:
-            path = path[0:-2]
-        #####node.get_ack[1] is the sender address stored in the get_ack function
-        data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
-        node.send(data)
-        node.ack_info = (0,0)
-    else:
-        pass
+            print("forward_ack check 3")
+            print(path)
+            send_to = int(path[1])
+            path = path[1:-1]
+            data = bytes([int(send_to) >> 8]) + bytes([int(send_to) & 0xff]) + bytes([offset_frequence]) + str(
+                seperate).encode() + bytes([node.addr >> 8]) + bytes([node.addr & 0xff]) + bytes(
+                [node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(
+                path).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode()
+        print("forward_ack check 4")
+        node.forward_ack = False
 
 async def ack_wait():
     #####This function is kinda dangerous if multiple nodes can send at the same time or in short succession as it allows the backup_path to be modified while node is still waiting for an acknowledgement.

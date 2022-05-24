@@ -45,6 +45,7 @@ class sx126x:
     got_ack = False
     wait_ack = False
     send_ack = False
+    forward_ack = False
 
 
     #
@@ -471,7 +472,10 @@ class sx126x:
                     self.got_ack = True
                     print("Message was succesfully received on the other end")
                 else:
-                    self.ack_info = (r_buff_in_string[2], r_buff_in_string[3])
+                    #####get path from r_buff_in_string and pass to forward ack function in main file
+                    self.ack_info = (r_buff_in_string[4], r_buff_in_string[3])
+                    self.forward_ack = True
+                    print("Forwarding ack message")
 
             else:
                 #error handling if ack_id invalid value
