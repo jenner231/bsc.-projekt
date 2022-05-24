@@ -330,6 +330,7 @@ async def ret_data():
         seperate = ","
         payload = node.data[0]
         path = node.data[1]
+        print("sender ret data 2")
         send_to = int(path[-1])
 
         if len(path) == 1:
