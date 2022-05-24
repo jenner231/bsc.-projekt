@@ -405,7 +405,6 @@ async def async_main():
         c_timer = datetime.datetime.now()
         c_t = float(c_timer.second) + (c_timer.microsecond / 1000000)
         new_m = c_timer.minute
-        print(c_t)
         #####if statement to reset cycle each minute
         if new_m > m:
             node.has_sent_hb = False
