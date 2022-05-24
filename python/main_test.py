@@ -162,7 +162,8 @@ async def send_ack():
             send_to = int(path[1])
             print("Send ack check xxxxx")
             path = path[1:]
-            data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(node.end_node).encode() + str(seperate).encode()
+            end_node = ack_inf[1]
+            data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode()
 
         print("Send ack check 2")
 
