@@ -149,7 +149,7 @@ async def send_ack():
         ack_id = 3
         ack_inf = node.get_ack()
         path = ack_inf[0]
-        print(node.get_ack())
+        print(node.ack_info)
 
         if len(path) == 1:
             #####ack_inf[1]here is end_node set in ret_data function in sx126x
