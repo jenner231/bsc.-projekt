@@ -26,7 +26,7 @@ class sx126x:
     cfg_reg = [0xC2,0x00,0x09,0x00,0x00,0x00,0x62,0x00,0x12,0x43,0x00,0x00]
     get_reg = bytes(12)
     rssi = False
-    addr = n_addr
+    addr = 0
     ###This is set manually, probably should be set from a 
     number_of_nodes = number_of_nodes.non.number_of_nodes
     timeslot = 0
