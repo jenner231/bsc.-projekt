@@ -402,6 +402,9 @@ async def async_main():
 
     hb_slot_start = hb_start + (int(node.addr) - 1) * hb_slot_size
     hb_next_start = hb_start + int(node.addr) * hb_slot_size
+    print(hb_slot_start)
+    print(hb_next_start)
+    print(hb_slot_size)
 
     while True:
         c_timer = datetime.datetime.now()
@@ -422,7 +425,6 @@ async def async_main():
         if c_t > hb_slot_start and c_t < hb_next_start and (not node.has_sent_hb):
             task_heartbeat = asyncio.create_task(heartbeat())
             await task_heartbeat
-            print("test heartbeat works")
             node.has_sent_hb = True
         
         if c_t > slot_start and c_t < slot_end and (not node.has_sent_mes):
