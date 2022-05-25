@@ -217,6 +217,7 @@ async def forward_ack():
         offset_frequence = 18
         ack_id = 3
         path = node.ack_info[0]
+        print(node.ack_info)
         if len(path) == 1:
             print("forward_ack check path length 1")
             send_to = end_node
@@ -322,7 +323,7 @@ async def resp_data():
     
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode() + str(node.backup_path).encode() + str(seperate).encode()
         node.send(data)
-
+        print("we send the response, waiting for ack")
         #####Clean the node's path after sending the message
         node.backup_path = ""
         node.path = ""

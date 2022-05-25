@@ -329,7 +329,8 @@ class sx126x:
         for i in path:
             val = int(i)
             if self.addr == val:
-                print("We have seen a message from node id "+ str(val) + " before")
+                                                            ##Path[-1] returns the last element in path, which in turn is the sender of the message this node received
+                print("We have seen a message from node id "+ str(path[-1]) + " before")
                 visited = True
 
         ####if we're the end node, go in here
