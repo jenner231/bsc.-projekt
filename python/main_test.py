@@ -434,9 +434,11 @@ async def async_main():
             node.has_sent_hb = True
         
         if c_t > slot_start and c_t < slot_end and (not node.has_sent_mes):
-                cpu = asyncio.create_task(request_cpu_data())
-                await cpu
-                node.has_sent_mes = True
+            print(slot_start)
+            print(slot_end)
+            cpu = asyncio.create_task(request_cpu_data())
+            await cpu
+            node.has_sent_mes = True
 
 
 
