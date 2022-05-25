@@ -331,7 +331,7 @@ class sx126x:
             val = int(i)
             if self.addr == val:
                                                             ##Path[-1] returns the last element in path, which in turn is the sender of the message this node received
-                print("We have seen a message from node id "+ str(path[-1]) + " before")
+                print("We have seen the message node id "+ str(path[-1]) + " sent us before")
                 visited = True
 
         ####if we're the end node, go in here (this pseudo calls resp_data() by setting its bool in path)
@@ -346,7 +346,11 @@ class sx126x:
                 self.received_time = (r_buff[5], id)
                 #####We set path to r_buff[4], so we can get the array of nodes we to send the information back through. 
                 ##### we need the path to navigate the way back to original sender of request.
-                if int(self.store_received_requests) == int(path[0]):
+                temp = int(self.store_received_requests)
+                i_path = int(path[0])
+                print(type(temp))
+                print(type(i_path))
+                if  temp == i_path:
                     pass
                 else:
                     self.path = path
