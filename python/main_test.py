@@ -104,8 +104,6 @@ async def request_cpu_data():
     #####Start out checking if we have nodes that we haven't heard from in a while
     node.compare_time()
     ###choice chooses a random i in the range 1-max number of nodes but excludes its own address
-    print(node.addr)
-    print(node.number_of_nodes)
     end_node = choice([i for i in range(1,node.number_of_nodes+1) if i not in [node.addr]])
     print(end_node)
     seperate = ","
@@ -241,11 +239,14 @@ async def forward_ack():
             print("forward_ack check path length more than 1")
             print(path)
             send_to = int(path[1])
+            print("forward_ack check path length more than 2")
             path = path[1:]
+            print("forward_ack check path length more than 3")
             data = bytes([int(send_to) >> 8]) + bytes([int(send_to) & 0xff]) + bytes([offset_frequence]) + str(
                 seperate).encode() + bytes([node.addr >> 8]) + bytes([node.addr & 0xff]) + bytes(
                 [node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(
                 path).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode()
+            print("forward_ack check path length more than 4")
         print("forward_ack check 4")
         node.send(data)
         node.forward_ack = False
