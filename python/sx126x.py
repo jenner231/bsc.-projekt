@@ -349,12 +349,14 @@ class sx126x:
 
 
                 if  self.store_received_requests == int(path[0]):
+                    print("check_message checkpoint 3.1")
                     pass
                 else:
-                        self.path = path
-                        print(path)
-                        print(path[0])
-                        self.store_received_requests = int(path[0])
+                    print("check_message checkpoint 3.2")
+                    self.path = path
+                    print(path)
+                    print(path[0])
+                    self.store_received_requests = int(path[0])
 
             print("check_message checkpoint 4")
         elif int(r_buff[3]) != self.addr and (not visited):
