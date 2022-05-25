@@ -38,6 +38,7 @@ class sx126x:
     received_time = (0, 0)
     response_time = 0
     path = ""
+    store_received_requests = ""
     #####Backup path is used if we dont received the acknowledgement message after responding with our data.
     backup_path = ""
     #### Both also includes path, but we can't use path as path variable is used as a boolean to enter a function in the main file.
@@ -45,7 +46,6 @@ class sx126x:
     data = ("", "", "")
     #####Used for logging purposes
     end_node = ""
-    last_req = ""
     #####Bools used in timing
     got_ack = False
     wait_ack = False
@@ -334,7 +334,7 @@ class sx126x:
                 print("We have seen a message from node id "+ str(path[-1]) + " before")
                 visited = True
 
-        ####if we're the end node, go in here
+        ####if we're the end node, go in here (this pseudo calls resp_data() by setting its bool in path)
         if int(r_buff[3]) == self.addr and (not visited):
             print("check_message checkpoint 2")
             if self.calc_new_message(r_buff[5], path):
@@ -344,10 +344,13 @@ class sx126x:
                 id = int(sender[1], 16) + int(sender[2], 16)
                 #we store this data so we can check for duplicates. r_buff[5] here is the time sent from the node requesting data
                 self.received_time = (r_buff[5], id)
-
+                self.store_received_requests = path[0]
                 #####We set path to r_buff[4], so we can get the array of nodes we to send the information back through. 
                 ##### we need the path to navigate the way back to original sender of request.
-                self.path = path
+                if int(self.store_received_requests) == int(path[0]):
+                    pass
+                else:
+                    self.path = path
 
             print("check_message checkpoint 4")
         elif int(r_buff[3]) != self.addr and (not visited):
