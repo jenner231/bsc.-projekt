@@ -344,13 +344,13 @@ class sx126x:
                 id = int(sender[1], 16) + int(sender[2], 16)
                 #we store this data so we can check for duplicates. r_buff[5] here is the time sent from the node requesting data
                 self.received_time = (r_buff[5], id)
-                self.store_received_requests = path[0]
                 #####We set path to r_buff[4], so we can get the array of nodes we to send the information back through. 
                 ##### we need the path to navigate the way back to original sender of request.
                 if int(self.store_received_requests) == int(path[0]):
                     pass
                 else:
                     self.path = path
+                    self.store_received_requests = path[0]
 
             print("check_message checkpoint 4")
         elif int(r_buff[3]) != self.addr and (not visited):
