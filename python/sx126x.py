@@ -45,6 +45,7 @@ class sx126x:
     data = ("", "", "")
     #####Used for logging purposes
     end_node = ""
+    last_req = ""
     #####Bools used in timing
     got_ack = False
     wait_ack = False

@@ -297,7 +297,7 @@ async def for_mes():
 
 async def resp_data():
     ####if we have something in our path array, basically says if len(node.path) not empty
-    if node.path:
+    if node.path and path[0] != node.last_req:
         seperate = ","
         send_to = int(node.path[-1])
         #####back_path is used in ack_wait(). response_time is also used in ack_wait and stores the time we sent the message, so we know when the ack message times out
@@ -327,6 +327,7 @@ async def resp_data():
         #####Clean the node's path after sending the message
         node.backup_path = ""
         node.path = ""
+        node.last_req = send_to
     else:
         pass
 
@@ -411,10 +412,12 @@ async def async_main():
         if new_m > m:
             node.has_sent_hb = False
             node.has_sent_mes = False
+            node.last_req = ""
             m = new_m
         elif new_m == 0 and m == 59:
             node.has_sent_hb = False
             node.has_sent_mes = False
+            node.last_req = ""
             m = new_m 
 
 
