@@ -402,6 +402,7 @@ async def async_main():
 
     hb_slot_start = hb_start + (int(node.addr) - 1) * hb_slot_size
     hb_next_start = hb_start + int(node.addr) * hb_slot_size
+    print(hb_end)
     print(hb_slot_start)
     print(hb_next_start)
     print(hb_slot_size)
