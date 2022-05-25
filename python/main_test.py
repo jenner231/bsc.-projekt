@@ -419,9 +419,10 @@ async def async_main():
 
 
         #####Mac protocol to slot each node into timeslots and give a slot to hearbeats, which is then also split into slots.
-        if c_t > hb_slot_start and c_t < hb_next_start and  (not node.has_sent_hb):
+        if c_t > hb_slot_start and c_t < hb_next_start and (not node.has_sent_hb):
             task_heartbeat = asyncio.create_task(heartbeat())
             await task_heartbeat
+            print("test heartbeat works")
             node.has_sent_hb = True
         
         if c_t > slot_start and c_t < slot_end and (not node.has_sent_mes):
