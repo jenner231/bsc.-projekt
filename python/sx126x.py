@@ -352,6 +352,8 @@ class sx126x:
                     pass
                 else:
                         self.path = path
+                        print(path)
+                        print(path[0])
                         self.store_received_requests = path[0]
 
             print("check_message checkpoint 4")
