@@ -121,6 +121,7 @@ async def request_cpu_data():
         # broadcast a request to end_node for it's "sensor" data, here, cpu temp
         #####We seperate with commas so its easier to decode which on the other end
     for i in node.reachable_dev:
+        print(i)
         n_id = i[0]
         if int(n_id[0]) == end_node:
             print(n_id[0])
