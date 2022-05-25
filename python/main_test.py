@@ -401,12 +401,13 @@ async def async_main():
 
     cycle = 60
     slot_start = (int(node.addr) / (node.number_of_nodes + 1)) * cycle
-    slot_end = (((int(node.addr) + 1) / (node.number_of_nodes + 1)) * cycle) - (slot_start / (node.number_of_nodes + 1))
+    slot_idle = slot_start * (1 / (node.number_of_nodes + 1))
+    slot_size = cycle / (node.number_of_nodes + 1)
+    slot_end = slot_start + slot_size - slot_idle
+
     hb_start = 0
     hb_end = ((1 / (node.number_of_nodes + 1)) * cycle) - (((1 / (node.number_of_nodes + 1)) * cycle) / (node.number_of_nodes + 1))
-
     hb_slot_size = (hb_end - hb_start) / (node.number_of_nodes)
-
     hb_slot_start = hb_start + (int(node.addr) - 1) * hb_slot_size
     hb_next_start = hb_start + int(node.addr) * hb_slot_size
 
