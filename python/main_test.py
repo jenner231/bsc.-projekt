@@ -83,17 +83,18 @@ node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=n_addr,ack_info=(0,
 
 def heartbeat():
     seperate = ","
+    print("heartbeat 1")
     #node.reachable_dev.clear()
     #send data with ack id, wait for answer, if we get answer, note addr of answering node
     offset_frequence = int(18)
     ack_id = 0
-    time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
     # the sending message format
     #
     #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
-    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+    data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
     time.sleep(0.2)
     print(data)
     node.send(data)
@@ -114,7 +115,7 @@ def request_cpu_data():
     path = node.addr
     ack_id = 1
     #print("check2")
-    time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
     #print("checkpoint 3")
         #await asyncio.sleep(10)
         #global timer_task
@@ -126,10 +127,10 @@ def request_cpu_data():
         print(i[0])
         n_id = int(i[0])
         if n_id == end_node:
-            data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+            data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
             in_reach = True
     if not in_reach:
-        data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+        data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
     time.sleep(0.2)
     node.send(data)
     print("We requested data from: " + str(end_node))
@@ -177,7 +178,7 @@ def send_ack():
 
         #print("Send ack check 2")
 
-        #time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+        #timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
         # the sending message format
         #
         #         receiving node              receiving node           receiving node             own high 8bit            own low 8bit              own
@@ -194,11 +195,11 @@ def send_ack():
 
 
 def cancel_cpu(cont):
-    time = 0
+    timer = 0
     max_time = 10
 
     while cont:
-        print(time)
+        print(timer)
         if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
             if sys.stdin.read(1) == '\x63':
                 print('\x1b[1A', end='\r')
@@ -207,10 +208,10 @@ def cancel_cpu(cont):
                 cont = False
                 print("Stopped sending data")
                 return cont
-        if max_time < time:
+        if max_time < timer:
             return cont
         else:
-            time = time + 0.1
+            timer = timer + 0.1
             time.sleep(0.1)
 
 
@@ -300,14 +301,14 @@ def for_mes():
         ack_id = node.forward[0]
         end_node = node.forward[1]
         path = node.forward[2]
-        time = node.forward[3]
+        timer = node.forward[3]
         #####check neighbours to see if we can send directly.
         for i in node.reachable_dev:
             if int(i[0]) == end_node:
-                data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+                data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
                 in_reach = True
         if not in_reach:
-            data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+            data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
         time.sleep(0.2)
         node.send(data)
         print(data)
