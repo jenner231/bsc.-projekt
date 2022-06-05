@@ -373,6 +373,17 @@ class sx126x:
                 r_buff[4] = path
                 print("check_message checkpoint 8")
                 self.forward = r_buff[2:-1]
+
+                if  self.store_received_requests == int(path[0]):
+                    print("check_message checkpoint 8.1")
+                    print("We have seen a message with this origin before, passing")
+                    pass
+                else:
+                    print("check_message checkpoint 8.2")
+                    self.path = path
+                    print(path)
+                    print(path[0])
+                    self.store_received_requests = int(path[0])
             else: 
                 pass
         else: 
