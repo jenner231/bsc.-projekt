@@ -53,7 +53,7 @@ sys.path.insert(1, '/home/bsc.-projekt/python')
 
 
 #    The following is to obtain the temprature of the RPi CPU 
-async def get_cpu_temp():
+def get_cpu_temp():
     tempFile = open( "/sys/class/thermal/thermal_zone0/temp" )
     cpu_temp = tempFile.read()
     tempFile.close()
@@ -81,7 +81,7 @@ async def get_cpu_temp():
 node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=n_addr,ack_info=(0,0),power=22,rssi=True,air_speed=2400,relay=False)
 
 
-async def heartbeat():
+def heartbeat():
     seperate = ","
     #node.reachable_dev.clear()
     #send data with ack id, wait for answer, if we get answer, note addr of answering node
@@ -94,14 +94,14 @@ async def heartbeat():
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
-    await asyncio.sleep(0.2)
+    time.sleep(0.2)
     print(data)
     node.send(data)
     print("We sent our heartbeat out")
     #await asyncio.sleep(1)
 
 #
-async def request_cpu_data():
+def request_cpu_data():
     #print("req check 1")
     #####Start out checking if we have nodes that we haven't heard from in a while
     node.compare_time()
@@ -130,7 +130,7 @@ async def request_cpu_data():
             in_reach = True
     if not in_reach:
         data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
-    await asyncio.sleep(0.2)
+    time.sleep(0.2)
     node.send(data)
     print("We requested data from: " + str(end_node))
     node.end_node = str(end_node)
@@ -147,7 +147,7 @@ async def request_cpu_data():
     #time.sleep(0.2)
     #timer_task.cancel()
 
-async def send_ack():
+def send_ack():
     if node.send_ack == True:
 
         seperate = ","
@@ -184,7 +184,7 @@ async def send_ack():
         #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
         #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
         #data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
-        await asyncio.sleep(0.2)
+        time.sleep(0.2)
         node.send(data)
         print("We succesfully sent the ack message to the next hop in the path: " +str(ack_inf[1]))
         #####reset ack_info
@@ -193,7 +193,7 @@ async def send_ack():
         #await asyncio.sleep(1)
 
 
-async def cancel_cpu(cont):
+def cancel_cpu(cont):
     time = 0
     max_time = 10
 
@@ -211,11 +211,11 @@ async def cancel_cpu(cont):
             return cont
         else:
             time = time + 0.1
-            await asyncio.sleep(0.1)
+            time.sleep(0.1)
 
 
 #TODO: Look at this function?
-async def forward_ack():
+def forward_ack():
     #####check if we have received the requested data, if yes then send ack to end_node
     if node.forward_ack == True:
         print("forwards_ack check 1")
@@ -251,13 +251,13 @@ async def forward_ack():
                 path).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode()
             #print("forward_ack check path length more than 4")
         #print("forward_ack check 4")
-        await asyncio.sleep(0.2)
+        time.sleep(0.2)
         node.send(data)
         print(data)
         print("We successfully forwarded the acknowledgement message to the next hop in the path.")
         node.forward_ack = False
 
-async def ack_wait():
+def ack_wait():
     #####This function is kinda dangerous if multiple nodes can send at the same time or in short succession as it allows the backup_path to be modified while node is still waiting for an acknowledgement.
     if node.wait_ack == True:
 
@@ -286,11 +286,11 @@ async def ack_wait():
         else:
             pass
 
-async def sleep_func():
+def sleep_func():
         rand = float((random.randrange(0, 50, 3)) / 10)
-        await asyncio.sleep(rand)
+        time.sleep(rand)
 
-async def for_mes():
+def for_mes():
     if(node.forward != 0):
         #await sleep_func()
         print("for_mes 1")
@@ -308,7 +308,7 @@ async def for_mes():
                 in_reach = True
         if not in_reach:
             data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
-        await asyncio.sleep(0.2)
+        time.sleep(0.2)
         node.send(data)
         print(data)
         print("We were not the requested node, successfully forwarded the request to my neighbours(or if i had the node in my cache, only it)")
@@ -317,7 +317,7 @@ async def for_mes():
         pass
 
 
-async def resp_data():
+def resp_data():
     ####if we have something in our path array, basically says if len(node.path) not empty
     if node.path:
         #await sleep_func()
@@ -336,7 +336,7 @@ async def resp_data():
             node.response_time = old_m + old_s
             node.wait_ack = True
 
-        temp = str("CPU Temperature:"+str(await get_cpu_temp())+ " C")
+        temp = str("CPU Temperature:"+str(get_cpu_temp())+ " C")
 
         if len(node.path) == 1:
             path = ""
@@ -346,7 +346,7 @@ async def resp_data():
         ack_id = 2
     
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode() + str(node.backup_path).encode() + str(seperate).encode()
-        await asyncio.sleep(0.2)
+        time.sleep(0.2)
         node.send(data)
         print(data)
         print("we send the response, waiting for ack")
@@ -357,7 +357,7 @@ async def resp_data():
         pass
 
 
-async def ret_data():
+def ret_data():
     ####This function is differnt than resp_data() in the way that this is function relays the message between intermediate nodes, while resp_data() only handles
     ####the initial response. (This is the general function and resp_data() is the base case.)
     if node.data[0]:
@@ -380,15 +380,14 @@ async def ret_data():
 
         #####node.get_ack[1] is the sender address stored in the get_ack function       
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(payload).encode() + str(seperate).encode() + str(backup_path).encode() + str(seperate).encode()
-        await asyncio.sleep(0.2)
+        time.sleep(0.2)
         node.send(data)
         print(data)
         print("Forwarding return data to next hop")
         #####Clean the node's data after sending the message
         node.data = ("","")
 
-async def async_main():
-    #await asyncio.sleep(0.1)
+def async_main():
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
@@ -432,18 +431,12 @@ async def async_main():
 
         #####Mac protocol to slot each node into timeslots and give a slot to hearbeats, which is then also split into slots.
         if c_t > hb_slot_start and c_t < hb_next_start and (not node.has_sent_hb):
-            task_heartbeat = asyncio.create_task(heartbeat())
-            await task_heartbeat
+            heartbeat()
             node.has_sent_hb = True
-            await asyncio.sleep(0.1)
         
         if c_t > slot_start and c_t < slot_end and (not node.has_sent_mes):
-            print(slot_start)
-            print(slot_end)
-            cpu = asyncio.create_task(request_cpu_data())
-            await cpu
+            request_cpu_data()
             node.has_sent_mes = True
-            await asyncio.sleep(0.1)
 
 
 
@@ -486,20 +479,13 @@ async def async_main():
         #         timer = 0
         # else: 
         #     pass
-        task_forward = asyncio.create_task(for_mes())
-        await task_forward
-        task_return = asyncio.create_task(resp_data())
-        await task_return
-        task_intermediate = asyncio.create_task(ret_data())
-        await task_intermediate
+        for_mes()
+        resp_data()
+        ret_data()
 
-
-        task_send_ack = asyncio.create_task(send_ack())
-        await task_send_ack
-        task_forward_ack = asyncio.create_task(forward_ack())
-        await task_forward_ack
-        task_ack_wait = asyncio.create_task(ack_wait())
-        await task_ack_wait
+        send_ack()
+        forward_ack()
+        ack_wait()
 
         #wait asyncio.sleep(0.01)
 
@@ -507,8 +493,7 @@ async def async_main():
 
 try:
     #seconds = 10
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(async_main())
+    async_main()
     #asyncio.run(async_main())
 except:
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
