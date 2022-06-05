@@ -436,6 +436,7 @@ async def async_main():
             task_heartbeat = asyncio.create_task(heartbeat())
             await task_heartbeat
             node.has_sent_hb = True
+            await asyncio.sleep(0.1)
         
         if c_t > slot_start and c_t < slot_end and (not node.has_sent_mes):
             print(slot_start)
@@ -443,6 +444,7 @@ async def async_main():
             cpu = asyncio.create_task(request_cpu_data())
             await cpu
             node.has_sent_mes = True
+            await asyncio.sleep(0.1)
 
 
 
