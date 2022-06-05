@@ -293,7 +293,7 @@ def sleep_func():
 
 def for_mes():
     if(node.forward != 0):
-        #await sleep_func()
+        sleep_func()
         print("for_mes 1")
         seperate = ","
         in_reach = False
