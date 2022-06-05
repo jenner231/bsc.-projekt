@@ -217,6 +217,7 @@ async def cancel_cpu(cont):
 async def forward_ack():
     #####check if we have received the requested data, if yes then send ack to end_node
     if node.forward_ack == True:
+        await sleep_func()
         print("forwards_ack check 1")
         seperate = ","
         end_node = node.ack_info[1]
@@ -284,12 +285,13 @@ async def ack_wait():
         else:
             pass
 
-
+async def sleep_func():
+        rand = float((random.randrange(0, 50, 3)) / 10)
+        await asyncio.sleep(rand)
 
 async def for_mes():
     if(node.forward != 0):
-        rand = float((random.randrange(0, 50, 3)) / 10)
-        await asyncio.sleep(rand)
+        await sleep_func()
         seperate = ","
         in_reach = False
         #####Just setting variables for readability. We set forward in our chechk_message function in sx126x
@@ -315,6 +317,7 @@ async def for_mes():
 async def resp_data():
     ####if we have something in our path array, basically says if len(node.path) not empty
     if node.path:
+        await sleep_func()
         seperate = ","
         send_to = int(node.path[-1])
         #####back_path is used in ack_wait(). response_time is also used in ack_wait and stores the time we sent the message, so we know when the ack message times out
@@ -353,6 +356,7 @@ async def ret_data():
     ####This function is differnt than resp_data() in the way that this is function relays the message between intermediate nodes, while resp_data() only handles
     ####the initial response. (This is the general function and resp_data() is the base case.)
     if node.data[0]:
+        await sleep_func()
         print("sender ret data 1")
         seperate = ","
         payload = node.data[0]
