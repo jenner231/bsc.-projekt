@@ -272,6 +272,7 @@ async def ack_wait():
             ####As it takes node.path as a boolean where it returns false if empty.
             node.path = node.backup_path
             node.wait_ack = False
+            print("We did not receive the ack message")
 
         elif node.got_ack == True:
             node.backup_path = ""
@@ -281,7 +282,6 @@ async def ack_wait():
 
             node.got_ack = False
         else:
-            print("We did not receive the ack message in time, passing")
             pass
 
 
