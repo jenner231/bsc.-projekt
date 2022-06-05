@@ -293,7 +293,7 @@ def sleep_func():
 
 def for_mes():
     if(node.forward != 0):
-        #await sleep_func()
+        sleep_func()
         print("for_mes 1")
         seperate = ","
         in_reach = False
@@ -471,7 +471,6 @@ def async_main():
                 
         #             #await asyncio.sleep(10) 
 
-        #     sys.stdout.flush()
         node.receive()
         # if timer != 0:
         #     task_return = asyncio.create_task(return_ack())
@@ -487,6 +486,7 @@ def async_main():
         send_ack()
         forward_ack()
         ack_wait()
+        sys.stdout.flush()
 
         #wait asyncio.sleep(0.01)
 
