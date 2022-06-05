@@ -382,9 +382,6 @@ class sx126x:
                     pass
                 else:
                     print("check_message checkpoint 8.2")
-                    self.path = path
-                    print(path)
-                    print(path[0])
                     self.store_received_requests = int(path[0])
             else: 
                 pass
