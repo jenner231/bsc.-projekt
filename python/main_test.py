@@ -94,6 +94,7 @@ async def heartbeat():
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+    await asyncio.sleep(0.2)
     node.send(data)
     print("We sent our heartbeat out")
     #await asyncio.sleep(1)
@@ -130,6 +131,7 @@ async def request_cpu_data():
             in_reach = True
     if not in_reach:
         data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+    await asyncio.sleep(0.2)
     node.send(data)
     node.end_node = str(end_node)
     # broadcast the cpu temperature at 868.125MHz
@@ -182,6 +184,7 @@ async def send_ack():
         #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
         #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
         #data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
+        await asyncio.sleep(0.2)
         node.send(data)
         print("Send ack check 4")
         #####reset ack_info
@@ -248,6 +251,7 @@ async def forward_ack():
                 path).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode()
             print("forward_ack check path length more than 4")
         print("forward_ack check 4")
+        await asyncio.sleep(0.2)
         node.send(data)
         node.forward_ack = False
 
@@ -299,6 +303,7 @@ async def for_mes():
                 in_reach = True
         if not in_reach:
             data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(time).encode() + str(seperate).encode()
+        await asyncio.sleep(0.2)
         node.send(data)
         node.forward = 0
     else:
@@ -332,6 +337,7 @@ async def resp_data():
         ack_id = 2
     
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode() + str(node.backup_path).encode() + str(seperate).encode()
+        await asyncio.sleep(0.2)
         node.send(data)
         print("we send the response, waiting for ack")
         #####Clean the node's path after sending the message
@@ -363,6 +369,7 @@ async def ret_data():
 
         #####node.get_ack[1] is the sender address stored in the get_ack function       
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(payload).encode() + str(seperate).encode() + str(backup_path).encode() + str(seperate).encode()
+        await asyncio.sleep(0.2)
         node.send(data)
         print("sender ret data 3")
         #####Clean the node's data after sending the message
