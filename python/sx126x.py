@@ -483,6 +483,8 @@ class sx126x:
             print(r_buff[14])
             print(r_buff[15])
             print(r_buff[16])
+            print("test")
+            print(len(r_buff))
 
             print(r_buff_in_string)
             
