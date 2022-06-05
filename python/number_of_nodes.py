@@ -1,2 +1,2 @@
 class non:
-    number_of_nodes = 2
+    number_of_nodes = 3
