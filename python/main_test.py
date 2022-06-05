@@ -98,6 +98,7 @@ def heartbeat():
     print(data)
     node.send(data)
     print("We sent our heartbeat out")
+    sys.stdout.flush()
     #await asyncio.sleep(1)
 
 #
@@ -133,6 +134,7 @@ def request_cpu_data():
     node.send(data)
     print("We requested data from: " + str(end_node))
     node.end_node = str(end_node)
+    sys.stdout.flush()
     # broadcast the cpu temperature at 868.125MHz
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
     #node.send(data)
@@ -188,6 +190,7 @@ def send_ack():
         #####reset ack_info
         node.ack_info = (0,0)
         node.send_ack = False
+        sys.stdout.flush()
         #await asyncio.sleep(1)
 
 
@@ -253,6 +256,7 @@ def forward_ack():
         print(data)
         print("We successfully forwarded the acknowledgement message to the next hop in the path.")
         node.forward_ack = False
+        sys.stdout.flush()
 
 def ack_wait():
     #####This function is kinda dangerous if multiple nodes can send at the same time or in short succession as it allows the backup_path to be modified while node is still waiting for an acknowledgement.
@@ -309,6 +313,7 @@ def for_mes():
         print(data)
         print("We were not the requested node, successfully forwarded the request to my neighbours(or if i had the node in my cache, only it)")
         node.forward = 0
+        sys.stdout.flush()
     else:
         pass
 
@@ -348,6 +353,7 @@ def resp_data():
         #####Clean the node's path after sending the message
         node.backup_path = ""
         node.path = ""
+        sys.stdout.flush()
     else:
         pass
 
@@ -380,6 +386,7 @@ def ret_data():
         print("Forwarding return data to next hop")
         #####Clean the node's data after sending the message
         node.data = ("","")
+        sys.stdout.flush()
 
 def async_main():
     print("Press \033[1;32mEsc\033[0m to exit")
