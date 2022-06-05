@@ -410,6 +410,7 @@ async def async_main():
         if new_m > m:
             node.has_sent_hb = False
             node.has_sent_mes = False
+            #####We need to reset this variable in case the last node to send last cycle tries to send as the first node this cycle.
             node.store_received_requests = 0
             m = new_m
         elif new_m == 0 and m == 59:

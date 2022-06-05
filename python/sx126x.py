@@ -348,8 +348,10 @@ class sx126x:
                 ##### we need the path to navigate the way back to original sender of request.
 
 
+                #####This block makes sure that if we have seen the original sender of the request before, we also ignore the message
                 if  self.store_received_requests == int(path[0]):
                     print("check_message checkpoint 3.1")
+                    print("We have seen a message with this origin before, passing")
                     pass
                 else:
                     print("check_message checkpoint 3.2")
