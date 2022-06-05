@@ -466,7 +466,13 @@ class sx126x:
             #print("We received a message from " +str(int((r_buff[1]<<8) + r_buff[2])) + " with ack id " +str(int(chr(r_buff[5]))))
             print(type(r_buff[5]))
             print(r_buff)
+            print(r_buff[0])
+            print(r_buff[1])
+            print(r_buff[2])
+            print(r_buff[3])
+            print(r_buff[4])
             print(r_buff[5])
+            print(r_buff[6])
             print(r_buff_in_string)
             
             print(int(chr(r_buff[5])))
