@@ -453,6 +453,7 @@ class sx126x:
             r_buff_in_string = rec.split(",")
 
             print("receive checkpoint 3")
+            #print("We received a message from " +str(int((r_buff[1]<<8) + r_buff[2])) + " with ack id " +str(int(chr(r_buff[5]))))
             print(type(r_buff[5]))
             print(r_buff[5])
             print(r_buff_in_string)
