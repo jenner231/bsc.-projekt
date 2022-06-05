@@ -464,6 +464,7 @@ class sx126x:
 
             print("receive checkpoint 3")
             #print("We received a message from " +str(int((r_buff[1]<<8) + r_buff[2])) + " with ack id " +str(int(chr(r_buff[5]))))
+            print(len(r_buff))
             print(r_buff)
             print(type(r_buff[5]))
             print(r_buff[0])
@@ -484,7 +485,6 @@ class sx126x:
             print(r_buff[15])
             print(r_buff[16])
             print("test")
-            print(len(r_buff))
 
             print(r_buff_in_string)
             
