@@ -473,6 +473,17 @@ class sx126x:
             print(r_buff[4])
             print(r_buff[5])
             print(r_buff[6])
+            print(r_buff[7])
+            print(r_buff[8])
+            print(r_buff[9])
+            print(r_buff[10])
+            print(r_buff[11])
+            print(r_buff[12])
+            print(r_buff[13])
+            print(r_buff[14])
+            print(r_buff[15])
+            print(r_buff[16])
+
             print(r_buff_in_string)
             
             print(int(chr(r_buff[5])))
