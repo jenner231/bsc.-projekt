@@ -422,6 +422,18 @@ def ret_data():
         node.data = ("","")
         sys.stdout.flush()
 
+    #####https://stackoverflow.com/questions/11232230/logging-to-two-files-with-different-settings reference
+def setup_logger(logger_name, log_file, level=logging.INFO):
+    l = logging.getLogger(logger_name)
+    formatter = logging.Formatter('%(message)s')
+    fileHandler = logging.FileHandler(log_file, mode='w')
+    fileHandler.setFormatter(formatter)
+    streamHandler = logging.StreamHandler()
+    streamHandler.setFormatter(formatter)
+
+    l.setLevel(level)
+    l.addHandler(fileHandler)
+    l.addHandler(streamHandler)
 
 
 def async_main():
@@ -429,15 +441,15 @@ def async_main():
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
     ##### Loggers to keep count of number of messages, and number of each type of messages sent
-    node.setup_logger('log_all', "log_all.txt")
-    node.setup_logger('log_ack', "log_ack.txt")
-    node.setup_logger('log_resp', "log_resp.txt")
-    node.setup_logger('log_for', "log_for.txt")
-    node.setup_logger('log_hb', "log_hb.txt")
-    node.setup_logger('log_ret', "log_ret.txt")
-    node.setup_logger('log_req', "log_req.txt")
-    node.setup_logger('log_fack', "log_fack.txt")
-    node.setup_logger('log_receive', "log_receive.txt")
+    setup_logger('log_all', "log_all.txt")
+    setup_logger('log_ack', "log_ack.txt")
+    setup_logger('log_resp', "log_resp.txt")
+    setup_logger('log_for', "log_for.txt")
+    setup_logger('log_hb', "log_hb.txt")
+    setup_logger('log_ret', "log_ret.txt")
+    setup_logger('log_req', "log_req.txt")
+    setup_logger('log_fack', "log_fack.txt")
+    #node.setup_logger('log_receive', "log_receive.txt")
 
     print("main checkpoint 1")
 

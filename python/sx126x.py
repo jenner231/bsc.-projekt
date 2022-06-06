@@ -19,7 +19,6 @@ class sx126x:
     import address
     n_addr = address.node.n_address
     sys.path.insert(1, '/home/bsc.-projekt/python')
-    
     M0 = 22
     M1 = 27
     # if the header is 0xC0, then the LoRa register settings dont lost when it poweroff, and 0xC2 will be lost. 
