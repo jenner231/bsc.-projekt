@@ -459,19 +459,6 @@ class sx126x:
             else:
                 pass
 
-    #####https://stackoverflow.com/questions/11232230/logging-to-two-files-with-different-settings reference
-    def setup_logger(logger_name, log_file, level=logging.INFO):
-        l = logging.getLogger(logger_name)
-        formatter = logging.Formatter('%(message)s')
-        fileHandler = logging.FileHandler(log_file, mode='w')
-        fileHandler.setFormatter(formatter)
-        streamHandler = logging.StreamHandler()
-        streamHandler.setFormatter(formatter)
-
-        l.setLevel(level)
-        l.addHandler(fileHandler)
-        l.addHandler(streamHandler)
-
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self, log_receive):
         if self.ser.inWaiting() > 0:
@@ -479,7 +466,7 @@ class sx126x:
             #####Sleep has to be appropriate. If too small, it will not read the entire message!!
             time.sleep(0.3)
             self.receive_icr += 1
-            log_receive.info("Number of received messages" + self.receive_icr)
+            log_receive.info("Number of received messages" + str(self.receive_icr))
             r_buff = self.ser.read(self.ser.inWaiting())
             print("receive checkpoint 2")
             rec = str(r_buff)

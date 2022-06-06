@@ -98,13 +98,10 @@ def heartbeat():
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
     print(data)
     node.send(data)
-    print("heartbeat log 1")
     node.all_icr += 1
     node.hb_icr += 1
-    print("heartbeat log 2")
     logger_all.info('Total number of messages %d', node.all_icr)
     logger_hb.info("Number of hearbeat messages " + str(node.hb_icr))
-    print("heartbeat log 3")
     print("We sent our heartbeat out")
     sys.stdout.flush()
     
@@ -143,8 +140,8 @@ def request_cpu_data():
     node.send(data)
     node.all_icr += 1
     node.req_icr += 1
-    logger_all.info("Total number of messages " + node.all_icr)
-    logger_req.info("Number of request data messages " + node.req_icr)
+    logger_all.info("Total number of messages " + str(node.all_icr))
+    logger_req.info("Number of request data messages " + str(node.req_icr))
     print("We requested data from: " + str(end_node))
     node.end_node = str(end_node)
     sys.stdout.flush()
@@ -202,8 +199,8 @@ def send_ack():
         node.send(data)
         node.all_icr += 1
         node.ack_icr += 1
-        logger_all.info("Total number of messages " + node.all_icr)
-        logger_ack.info("Number of send ack messages " + node.ack_icr)
+        logger_all.info("Total number of messages " + str(node.all_icr))
+        logger_ack.info("Number of send ack messages " + str(node.ack_icr))
         print("We succesfully sent the ack message to the next hop in the path: " +str(ack_inf[1]))
         #####reset ack_info
         node.ack_info = (0,0)
@@ -273,8 +270,8 @@ def forward_ack():
         node.send(data)
         node.all_icr += 1
         node.fack_icr += 1
-        logger_all.info("Total number of messages " + node.all_icr)
-        logger_fack.info("Number of forward ack messages " + node.fack_icr)
+        logger_all.info("Total number of messages " + str(node.all_icr))
+        logger_fack.info("Number of forward ack messages " + str(node.fack_icr))
         print(data)
         print("We successfully forwarded the acknowledgement message to the next hop in the path.")
         node.forward_ack = False
@@ -334,8 +331,8 @@ def for_mes():
         node.send(data)
         node.all_icr += 1
         node.for_icr += 1
-        logger_all.info("Total number of messages " + node.all_icr)
-        logger_for.info("Number of forarded data messages " + node.for_icr)
+        logger_all.info("Total number of messages " + str(node.all_icr))
+        logger_for.info("Number of forarded data messages " + str(node.for_icr))
         print(data)
         print("We were not the requested node, successfully forwarded the request to my neighbours(or if i had the node in my cache, only it)")
         node.forward = 0
