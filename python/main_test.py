@@ -439,7 +439,10 @@ def async_main():
     node.setup_logger('log_fack', "log_fack.txt")
     node.setup_logger('log_receive', "log_receive.txt")
 
+    print("main checkpoint 1")
+
     global logger_all, logger_ack, logger_fack, logger_for, logger_hb, logger_req, logger_resp, logger_ret
+    print("main checkpoint 2")
     logger_all = logging.getLogger('log_all')
     logger_ack = logging.getLogger('log_ack')
     logger_resp = logging.getLogger('log_resp')
@@ -449,7 +452,7 @@ def async_main():
     logger_req = logging.getLogger('log_req')
     logger_fack = logging.getLogger('log_fack')
     logger_receive = logging.getLogger('log_receive')
-
+    print("main checkpoint 3")
 
 
 
