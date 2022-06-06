@@ -466,7 +466,7 @@ class sx126x:
             #####Sleep has to be appropriate. If too small, it will not read the entire message!!
             time.sleep(0.3)
             self.receive_icr += 1
-            log_receive.info("Number of received messages" + str(self.receive_icr))
+            log_receive.info("Number of received messages %d", self.receive_icr)
             r_buff = self.ser.read(self.ser.inWaiting())
             print("receive checkpoint 2")
             rec = str(r_buff)
