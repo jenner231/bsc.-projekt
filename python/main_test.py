@@ -546,8 +546,9 @@ def async_main():
         #         #press c to cancel
                 
         #             #await asyncio.sleep(10) 
-
+        print("logger receive cp1")
         node.receive(logger_receive)
+        print("logger receive cp2")
         # if timer != 0:
         #     task_return = asyncio.create_task(return_ack())
         #     await task_return
