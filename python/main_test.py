@@ -140,7 +140,7 @@ def request_cpu_data():
     node.send(data)
     node.all_icr += 1
     node.req_icr += 1
-    logger_all.info("Total number of messages " + str(node.all_icr))
+    logger_all.info("Total number of messages %d", node.all_icr)
     logger_req.info("Number of request data messages " + str(node.req_icr))
     print("We requested data from: " + str(end_node))
     node.end_node = str(end_node)
@@ -199,7 +199,7 @@ def send_ack():
         node.send(data)
         node.all_icr += 1
         node.ack_icr += 1
-        logger_all.info("Total number of messages " + str(node.all_icr))
+        logger_all.info("Total number of messages %d", node.all_icr)
         logger_ack.info("Number of send ack messages " + str(node.ack_icr))
         print("We succesfully sent the ack message to the next hop in the path: " +str(ack_inf[1]))
         #####reset ack_info
@@ -270,7 +270,7 @@ def forward_ack():
         node.send(data)
         node.all_icr += 1
         node.fack_icr += 1
-        logger_all.info("Total number of messages " + str(node.all_icr))
+        logger_all.info("Total number of messages %d", node.all_icr)
         logger_fack.info("Number of forward ack messages " + str(node.fack_icr))
         print(data)
         print("We successfully forwarded the acknowledgement message to the next hop in the path.")
@@ -331,7 +331,7 @@ def for_mes():
         node.send(data)
         node.all_icr += 1
         node.for_icr += 1
-        logger_all.info("Total number of messages " + str(node.all_icr))
+        logger_all.info("Total number of messages %d", node.all_icr)
         logger_for.info("Number of forarded data messages " + str(node.for_icr))
         print(data)
         print("We were not the requested node, successfully forwarded the request to my neighbours(or if i had the node in my cache, only it)")
@@ -373,9 +373,8 @@ def resp_data():
         node.send(data)
         node.all_icr += 1
         node.resp_icr += 1
-        logger_all.info("Total number of messages " + node.all_icr)
-        logger_resp.info("Number of respond data messages " + node.resp_icr)
-        print(data)
+        logger_all.info("Total number of messages %d", node.all_icr)
+        logger_resp.info("Number of respond data messages " + str(node.resp_icr))
         print("we send the response, waiting for ack")
         #####Clean the node's path after sending the message
         node.backup_path = ""
@@ -413,8 +412,8 @@ def ret_data():
         ##### increment counter for number of messages sent and number of type of message sent
         node.all_icr += 1
         node.ret_icr += 1
-        logger_all.info("Total number of messages " + node.all_icr)
-        logger_ret.info("Number of return data messages " + node.ret_icr)
+        logger_all.info("Total number of messages %d", node.all_icr)
+        logger_ret.info("Number of return data messages " + str(node.ret_icr))
 
         print(data)
         print("Forwarding return data to next hop")
@@ -449,7 +448,7 @@ def async_main():
     setup_logger('log_ret', "log_ret.txt")
     setup_logger('log_req', "log_req.txt")
     setup_logger('log_fack', "log_fack.txt")
-    #node.setup_logger('log_receive', "log_receive.txt")
+    setup_logger('log_receive', "log_receive.txt")
 
     print("main checkpoint 1")
 
