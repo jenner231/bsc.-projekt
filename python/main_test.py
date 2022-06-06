@@ -29,6 +29,7 @@ import asyncio
 import tty
 import datetime
 import random
+import logging
 from threading import Timer
 from random import randint, choice
 
@@ -97,9 +98,14 @@ def heartbeat():
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
     print(data)
     node.send(data)
+    node.all_icr += 1
+    node.hb_icr += 1
+    logger_all.info("Total number of messages " + node.all_icr)
+    logger_hb.info("Number of hearbeat messages " + node.hb_icr)
     print("We sent our heartbeat out")
     sys.stdout.flush()
-    #await asyncio.sleep(1)
+    
+   #await asyncio.sleep(1)
 
 #
 def request_cpu_data():
@@ -132,6 +138,10 @@ def request_cpu_data():
     if not in_reach:
         data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
     node.send(data)
+    node.all_icr += 1
+    node.req_icr += 1
+    logger_all.info("Total number of messages " + node.all_icr)
+    logger_req.info("Number of request data messages " + node.req_icr)
     print("We requested data from: " + str(end_node))
     node.end_node = str(end_node)
     sys.stdout.flush()
@@ -187,6 +197,10 @@ def send_ack():
         #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
         #data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
         node.send(data)
+        node.all_icr += 1
+        node.ack_icr += 1
+        logger_all.info("Total number of messages " + node.all_icr)
+        logger_ack.info("Number of send ack messages " + node.ack_icr)
         print("We succesfully sent the ack message to the next hop in the path: " +str(ack_inf[1]))
         #####reset ack_info
         node.ack_info = (0,0)
@@ -254,6 +268,10 @@ def forward_ack():
             #print("forward_ack check path length more than 4")
         #print("forward_ack check 4")
         node.send(data)
+        node.all_icr += 1
+        node.fack_icr += 1
+        logger_all.info("Total number of messages " + node.all_icr)
+        logger_fack.info("Number of forward ack messages " + node.fack_icr)
         print(data)
         print("We successfully forwarded the acknowledgement message to the next hop in the path.")
         node.forward_ack = False
@@ -311,6 +329,10 @@ def for_mes():
         if not in_reach:
             data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
         node.send(data)
+        node.all_icr += 1
+        node.for_icr += 1
+        logger_all.info("Total number of messages " + node.all_icr)
+        logger_for.info("Number of forarded data messages " + node.for_icr)
         print(data)
         print("We were not the requested node, successfully forwarded the request to my neighbours(or if i had the node in my cache, only it)")
         node.forward = 0
@@ -349,6 +371,10 @@ def resp_data():
     
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode() + str(node.backup_path).encode() + str(seperate).encode()
         node.send(data)
+        node.all_icr += 1
+        node.resp_icr += 1
+        logger_all.info("Total number of messages " + node.all_icr)
+        logger_resp.info("Number of respond data messages " + node.resp_icr)
         print(data)
         print("we send the response, waiting for ack")
         #####Clean the node's path after sending the message
@@ -383,16 +409,50 @@ def ret_data():
         #####node.get_ack[1] is the sender address stored in the get_ack function       
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(payload).encode() + str(seperate).encode() + str(backup_path).encode() + str(seperate).encode()
         node.send(data)
+
+        ##### increment counter for number of messages sent and number of type of message sent
+        node.all_icr += 1
+        node.ret_icr += 1
+        logger_all.info("Total number of messages " + node.all_icr)
+        logger_ret.info("Number of return data messages " + node.ret_icr)
+
         print(data)
         print("Forwarding return data to next hop")
         #####Clean the node's data after sending the message
         node.data = ("","")
         sys.stdout.flush()
 
+
+
 def async_main():
     print("Press \033[1;32mEsc\033[0m to exit")
     print("Press \033[1;32mi\033[0m   to send")
     print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
+    ##### Loggers to keep count of number of messages, and number of each type of messages sent
+    node.setup_logger('log_all', "log_all.txt")
+    node.setup_logger('log_ack', "log_ack.txt")
+    node.setup_logger('log_resp', "log_resp.txt")
+    node.setup_logger('log_for', "log_for.txt")
+    node.setup_logger('log_hb', "log_hb.txt")
+    node.setup_logger('log_ret', "log_ret.txt")
+    node.setup_logger('log_req', "log_req.txt")
+    node.setup_logger('log_fack', "log_fack.txt")
+    node.setup_logger('log_receive', "log_receive.txt")
+
+    global logger_all, logger_ack, logger_fack, logger_for, logger_hb, logger_req, logger_resp, logger_ret
+    logger_all = logging.getLogger('log_all')
+    logger_ack = logging.getLogger('log_ack')
+    logger_resp = logging.getLogger('log_resp')
+    logger_for = logging.getLogger('log_for')
+    logger_hb = logging.getLogger('log_hb')
+    logger_ret = logging.getLogger('log_ret')
+    logger_req = logging.getLogger('log_req')
+    logger_fack = logging.getLogger('log_fack')
+    logger_receive = logging.getLogger('log_receive')
+
+
+
+
     ##### Variables in order to slot the network, determining when to heartbeat and request messages depending on number of nodes in the network
     s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
     timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
@@ -472,7 +532,7 @@ def async_main():
                 
         #             #await asyncio.sleep(10) 
 
-        node.receive()
+        node.receive(logger_receive)
         # if timer != 0:
         #     task_return = asyncio.create_task(return_ack())
         #     await task_return

@@ -3,11 +3,13 @@
 from array import array
 from ctypes import sizeof
 from curses import raw
+from typing_extensions import Self
 import RPi.GPIO as GPIO
 import serial
 import time
 import datetime
 import sys
+import logging
 from encodings import utf_8
 import number_of_nodes
 
@@ -53,6 +55,17 @@ class sx126x:
     forward_ack = False
     has_sent_mes = False
     has_sent_hb = False
+
+    #####Incrementers used for logging
+    all_icr = 0
+    ack_icr = 0
+    resp_icr = 0
+    for_icr = 0
+    hb_icr = 0
+    ret_icr = 0
+    req_icr = 0
+    fack_icr = 0
+    receive_icr = 0
 
 
 
@@ -284,13 +297,11 @@ class sx126x:
         GPIO.output(self.M1,GPIO.LOW)
         GPIO.output(self.M0,GPIO.LOW)
         time.sleep(0.1)
-
+        
         self.ser.write(data)
         # if self.rssi == True:
             # self.get_channel_rssi()
         time.sleep(0.1)
-        if(data[6] == 50):
-            print("we're actually sending")
 
     def get_ack(self):
         return self.ack_info
@@ -450,38 +461,33 @@ class sx126x:
             else:
                 pass
 
+    #####https://stackoverflow.com/questions/11232230/logging-to-two-files-with-different-settings reference
+    def setup_logger(logger_name, log_file, level=logging.INFO):
+        l = logging.getLogger(logger_name)
+        formatter = logging.Formatter('%(message)s')
+        fileHandler = logging.FileHandler(log_file, mode='w')
+        fileHandler.setFormatter(formatter)
+        streamHandler = logging.StreamHandler()
+        streamHandler.setFormatter(formatter)
+
+        l.setLevel(level)
+        l.addHandler(fileHandler)
+        l.addHandler(streamHandler)
+
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
-    def receive(self):
+    def receive(self, log_receive):
         if self.ser.inWaiting() > 0:
             print("receive checkpoint 1")
             #####Sleep has to be appropriate. If too small, it will not read the entire message!!
             time.sleep(0.3)
-            
+            self.receive_icr += 1
+            log_receive.info("Number of received messages" + self.receive_icr)
             r_buff = self.ser.read(self.ser.inWaiting())
             print("receive checkpoint 2")
             rec = str(r_buff)
             r_buff_in_string = rec.split(",")
 
             print("receive checkpoint 3")
-            #print("We received a message from " +str(int((r_buff[1]<<8) + r_buff[2])) + " with ack id " +str(int(chr(r_buff[5]))))
-            print(len(r_buff))
-            print(r_buff)
-            print("message is "+str(r_buff[0:-1]),end='\r\n')
-            print(type(r_buff[5]))
-            print(r_buff[0])
-            print(r_buff[1])
-            print(r_buff[2])
-            print(r_buff[3])
-            print(r_buff[4])
-            print(r_buff[5])
-            print(r_buff[6])
-            print(r_buff[7])
-            print("test")
-
-            print(r_buff_in_string)
-            
-            print(int(chr(r_buff[5])))
-            print("test")
             #####Made a check to see if the message was for us
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
