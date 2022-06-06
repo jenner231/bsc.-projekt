@@ -102,7 +102,7 @@ def heartbeat():
     node.all_icr += 1
     node.hb_icr += 1
     print("heartbeat log 2")
-    logger_all.info("Total number of messages " + str(node.all_icr))
+    logger_all.info('Total number of messages %d', node.all_icr)
     logger_hb.info("Number of hearbeat messages " + str(node.hb_icr))
     print("heartbeat log 3")
     print("We sent our heartbeat out")
