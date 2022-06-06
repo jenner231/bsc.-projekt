@@ -98,10 +98,13 @@ def heartbeat():
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
     print(data)
     node.send(data)
+    print("heartbeat log 1")
     node.all_icr += 1
     node.hb_icr += 1
+    print("heartbeat log 2")
     logger_all.info("Total number of messages " + node.all_icr)
     logger_hb.info("Number of hearbeat messages " + node.hb_icr)
+    print("heartbeat log 3")
     print("We sent our heartbeat out")
     sys.stdout.flush()
     
