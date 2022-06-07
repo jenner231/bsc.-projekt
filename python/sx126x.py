@@ -471,8 +471,6 @@ class sx126x:
             #print("receive checkpoint 2")
             rec = str(r_buff)
             r_buff_in_string = rec.split(",")
-            print(r_buff)
-            print(r_buff_in_string)
 
             #print("receive checkpoint 3")
             #####Made a check to see if the message was for us
