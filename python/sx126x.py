@@ -324,7 +324,7 @@ class sx126x:
             c_m, c_s = 0, 0
         #####if we have a message with the same origin from the same time, we return false, else True
         if (int(m) + int(s)) == (int(c_m) + int(c_s)) and path[0] == self.path[0]:
-            print("We have seen the message from node id "+ self.path[0] + "before")
+            #print("We have seen the message from node id "+ self.path[0] + "before")
             return False
         else:
             return True
