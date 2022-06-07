@@ -307,15 +307,15 @@ class sx126x:
     #####Function to determine wether we have seen a request for this data before. e.g if multiple nodes can reach the end node with different paths, 
     #####we only want to answer the first one
     def calc_new_message(self, time, path):
-        print("checkpoint calc message 1")
-        print(type(datetime.datetime.now()))
-        print(time)
-        print(type(time))
+        #print("checkpoint calc message 1")
+        #print(type(datetime.datetime.now()))
+        #print(time)
+        #print(type(time))
         dateT = datetime.datetime.strptime(time, '%d-%m-%y %H:%M:%S')
-        print(dateT)
+        #print(dateT)
         m = dateT.strftime("%M") * 60 
         s = dateT.strftime("%S")
-        print("checkpoint calc message 2")
+        #print("checkpoint calc message 2")
         #####See if we've already received a time from the same address set time to the time received, else set time to 0 for next statement
         #####Here it's okay to only check path[0] as we've already made sure in check_message() func, that we haven't visited a node twice.
         if self.received_time[0] != 0 and self.received_time[1] == path[0]:
@@ -324,13 +324,13 @@ class sx126x:
             c_m, c_s = 0, 0
         #####if we have a message with the same origin from the same time, we return false, else True
         if (int(m) + int(s)) == (int(c_m) + int(c_s)) and path[0] == self.path[0]:
-            print("We have seen a message from node id "+ self.path[0] + "before")
+            print("We have seen the message from node id "+ self.path[0] + "before")
             return False
         else:
             return True
 
     def check_message(self, r_buff):
-        print("check message checkpoint 1")
+        #print("check message checkpoint 1")
         visited = False
         #####Check we have visited this not before to avoid infinite loop when flooding the network in broadcasts
         path = r_buff[4]
@@ -340,16 +340,16 @@ class sx126x:
             val = int(i)
             if self.addr == val:
                                                             ##Path[-1] returns the last element in path, which in turn is the sender of the message this node received
-                print("We have seen the message node id "+ str(path[-1]) + " sent us before")
+                print("We have seen the message from node id "+ str(path[-1]) + " before")
                 visited = True
 
         ####if we're the end node, go in here (this pseudo calls resp_data() by setting its bool in path)
         if int(r_buff[3]) == self.addr and (not visited):
-            print("check_message checkpoint 2")
+            #print("check_message checkpoint 2")
             if self.calc_new_message(r_buff[5], path):
-                print("check_message checkpoint 3")
+                #print("check_message checkpoint 3")
 
-                print(sender)
+                #print(sender)
                 id = int(sender[1], 16) + int(sender[2], 16)
                 #we store this data so we can check for duplicates. r_buff[5] here is the time sent from the node requesting data
                 self.received_time = (r_buff[5], id)
@@ -359,99 +359,99 @@ class sx126x:
 
                 #####This block makes sure that if we have seen the original sender of the request before, we also ignore the message
                 if  self.store_received_requests == int(path[0]):
-                    print("check_message checkpoint 3.1")
+                    #print("check_message checkpoint 3.1")
                     print("We have seen a message with this origin before, passing")
                     pass
                 else:
-                    print("check_message checkpoint 3.2")
+                    #print("check_message checkpoint 3.2")
                     self.path = path
-                    print(path)
-                    print(path[0])
+                    #print(path)
+                    #print(path[0])
                     self.store_received_requests = int(path[0])
 
-            print("check_message checkpoint 4")
+            #print("check_message checkpoint 4")
         elif int(r_buff[3]) != self.addr and (not visited):
-            print("check_message checkpoint 5")
+            #print("check_message checkpoint 5")
             if self.calc_new_message(r_buff[5], path):
-                print("check_message checkpoint 6")
+                #print("check_message checkpoint 6")
                 ###if we have the node in reachable_dev, only send message to it instead of broadcast!!!!
                 id = int(sender[1], 16) + int(sender[2], 16)
 
                 self.received_time = (r_buff[5], id)
-                print("check_message checkpoint 7")
+                #print("check_message checkpoint 7")
                 #####appending addr to path 
                 path = path + str(self.addr)
                 r_buff[4] = path
-                print("check_message checkpoint 8")
+                #print("check_message checkpoint 8")
                 self.forward = r_buff[2:-1]
 
                 if  self.store_received_requests == int(path[0]):
-                    print("check_message checkpoint 8.1")
+                    #print("check_message checkpoint 8.1")
                     print("We have seen a message with this origin before, passing")
                     pass
                 else:
-                    print("check_message checkpoint 8.2")
+                    #print("check_message checkpoint 8.2")
                     self.store_received_requests = int(path[0])
             else: 
                 pass
         else: 
             pass
-        print("check_message checkpoint 9")
+        #print("check_message checkpoint 9")
 
     def ret_data(self, r_buff):
-        print("Check ret_data 1, we're inside")
-        print(r_buff)
+        #print("Check ret_data 1, we're inside")
+        #print(r_buff)
         path = r_buff[3]
-        print(path)
-        print(len(path))
+        #print(path)
+        #print(len(path))
         ####payload is the cpu temperature
         payload = r_buff[4]
         ####if path is empty, we're the final node.
         if len(path) > 0:
-            print("check ret_data 2, we're still alive")
+            #print("check ret_data 2, we're still alive")
             self.data = (payload, path, r_buff[5])
-            print(type(self.data[0]))
-            print("set data")
+            #print(type(self.data[0]))
+            #print("set data")
 
         else:
             ###enter here if we're the start node (returning data enters here.)
-            print("Node: " +str(self.end_node) + ", " + str(payload))
+            print("We received the requested data from Node: " +str(self.end_node) + ", the message is: " + str(payload))
             ####r_buff[5] is the backup path. 
             self.ack_info = (r_buff[5], self.end_node)
-            print(self.ack_info)
-            print(self.end_node)
+            #print(self.ack_info)
+            #print(self.end_node)
             self.end_node = ""
             self.send_ack = True
 
     def compare_time(self):
         #####TODO: Test if this function works at beginning of hours!! should work with the new timeout varaible
-        print("compare time check 1")
+        #print("compare time check 1")
         ####TODO: maybe fix this shit so we dont have to make the object as a string and then convert it to a datetime object.
         datetimer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
         clock = datetime.datetime.strptime(datetimer, '%d-%m-%y %H:%M:%S')
-        print("compare time check 2")
+        #print("compare time check 2")
         current_m = int(clock.strftime("%M")) * 60
         current_s = int(clock.strftime("%S"))
         current_time = current_m + current_s
         timeout = 60*3.5
-        print("compare time check 3")
+        #print("compare time check 3")
         for i in self.reachable_dev:
-            print(i[1])
+            #print(i[1])
             timer = int(i[1])
-            print("We made it inside the for loop in compare time 2")
-            print(type(timer))
-            print(type(timeout))
-            print(current_time)
+            #print("We made it inside the for loop in compare time 2")
+            #print(type(timer))
+            #print(type(timeout))
+            #print(current_time)
     
             
             if (timer + int(timeout)) < int(current_time):
-                print("We made it inside the for loop in compare time 3")
+                #print("We made it inside the for loop in compare time 3")
                 self.reachable_dev.remove(i)
-                print("We removed: "+str(i) + " due to expiration exceeded")
-                print(self.reachable_dev)
+                print("We removed: "+ str(i) + " due to expiration exceeded")
+
             ####If the timer has moved to a new hour, we check if the value is negative, if it is, we add 3600 to the timer and check with that timer.
             elif (int(timer + int(timeout))) - current_time < -(timeout+10):
-                print("we wint inside logical if")
+                #print("we wint inside logical if")
                 logical_time = current_time + 3600
                 if ((timer + int(timeout)) < logical_time):
                     del self.reachable_dev[i]
@@ -462,64 +462,64 @@ class sx126x:
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self, log_receive):
         if self.ser.inWaiting() > 0:
-            print("receive checkpoint 1")
+            #print("receive checkpoint 1")
             #####Sleep has to be appropriate. If too small, it will not read the entire message!!
             time.sleep(0.3)
             self.receive_icr += 1
             log_receive.info("Number of received messages %d", self.receive_icr)
             r_buff = self.ser.read(self.ser.inWaiting())
-            print("receive checkpoint 2")
+            #print("receive checkpoint 2")
             rec = str(r_buff)
             r_buff_in_string = rec.split(",")
 
-            print("receive checkpoint 3")
+            #print("receive checkpoint 3")
             #####Made a check to see if the message was for us
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             if int(chr(r_buff[5])) == 0:
-                print("heartbeat check 1")
-                print(r_buff_in_string)
+                #print("heartbeat check 1")
+                #print(r_buff_in_string)
                 timer = r_buff_in_string[3]
                 dateT = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
                 m = int(dateT.strftime("%M")) * 60
                 s = int(dateT.strftime("%S"))
                 total_seconds = m + s
-                print("heartbeat check 2")
+                #print("heartbeat check 2")
                 self.reachable_dev.append((int((r_buff[1]<<8) + r_buff[2]), total_seconds))
 
 
                 #self.reachable_dev[1] = self.reachable_dev[1] + str()
                 #self.reachable_dev[0] = self.reachable_dev[0] + str((r_buff[1]<<8) + r_buff[2])
                 
-                print("Node IDs in range: "+str(self.reachable_dev))
+                print("Neighbour table: " + str(self.reachable_dev))
             elif int(chr(r_buff[5])) == 1:
-                print("Receive checkpoint 4")
+                #print("Receive checkpoint 4")
                 self.check_message(r_buff_in_string)
                 
                 #print("Noted ack_id")
             elif int(chr(r_buff[5])) == 2:
-                print("checkpoint: ack_id = 2, we're returning data")
+                #print("checkpoint: ack_id = 2, we're returning data")
                 self.ret_data(r_buff_in_string)
             elif int(chr(r_buff[5])) == 3:
                 ####If we're in here the message sent has path in 3rd slot
-                print("Ack test receive")
+                #print("Ack test receive")
                 print(r_buff_in_string[3])
                 print(r_buff_in_string[-1])
                 if r_buff_in_string[3] == r_buff_in_string[-1]:
                     #####This value is used in forward ack function when calling assigning info
                     self.got_ack = True
-                    print("Message was succesfully received on the other end")
+                    print("Acknowledgement has been received successfully")
                 else:
                     #####get path from r_buff_in_string and pass to forward ack function in main file
-                    print(r_buff_in_string)
+                    #print(r_buff_in_string)
                     self.ack_info = (r_buff_in_string[3], r_buff_in_string[4])
                     self.forward_ack = True
-                    print("Forwarding ack message")
+                    print("Forwarding acknowledgement message")
 
             else:
                 #error handling if ack_id invalid value
-                print("error")
+                print("Unknown message type")
             
             # print the rssi
             if self.rssi:

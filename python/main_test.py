@@ -114,7 +114,7 @@ def request_cpu_data():
     node.compare_time()
     ###choice chooses a random i in the range 1-max number of nodes but excludes its own address
     end_node = choice([i for i in range(1,node.number_of_nodes+1) if i not in [node.addr]])
-    print(end_node)
+    #print(end_node)
     seperate = ","
     in_reach = False
 
@@ -234,7 +234,7 @@ def cancel_cpu(cont):
 def forward_ack():
     #####check if we have received the requested data, if yes then send ack to end_node
     if node.forward_ack == True:
-        print("forwards_ack check 1")
+        #print("forwards_ack check 1")
         seperate = ","
         end_node = node.ack_info[1]
         #rand = float((random.randrange(0, 50, 3)) / 10)
@@ -243,7 +243,7 @@ def forward_ack():
         offset_frequence = 18
         ack_id = 3
         path = node.ack_info[0]
-        print(node.ack_info)
+        #print(node.ack_info)
         if len(path) == 1:
             #print("forward_ack check path length 1")
             send_to = end_node
@@ -272,7 +272,7 @@ def forward_ack():
         node.fack_icr += 1
         logger_all.info("Total number of messages %d", node.all_icr)
         logger_fack.info("Number of forward ack messages " + str(node.fack_icr))
-        print(data)
+        #print(data)
         print("We successfully forwarded the acknowledgement message to the next hop in the path.")
         node.forward_ack = False
         sys.stdout.flush()
@@ -313,7 +313,7 @@ def sleep_func():
 def for_mes():
     if(node.forward != 0):
         sleep_func()
-        print("for_mes 1")
+        #print("for_mes 1")
         seperate = ","
         in_reach = False
         #####Just setting variables for readability. We set forward in our chechk_message function in sx126x
@@ -333,7 +333,7 @@ def for_mes():
         node.for_icr += 1
         logger_all.info("Total number of messages %d", node.all_icr)
         logger_for.info("Number of forarded data messages " + str(node.for_icr))
-        print(data)
+        #print(data)
         print("We were not the requested node, successfully forwarded the request to my neighbours(or if i had the node in my cache, only it)")
         node.forward = 0
         sys.stdout.flush()
@@ -345,7 +345,7 @@ def resp_data():
     ####if we have something in our path array, basically says if len(node.path) not empty
     if node.path:
         #await sleep_func()
-        print("resp_data 1")
+        #print("resp_data 1")
         seperate = ","
         send_to = int(node.path[-1])
         #####back_path is used in ack_wait(). response_time is also used in ack_wait and stores the time we sent the message, so we know when the ack message times out
@@ -389,7 +389,7 @@ def ret_data():
     ####the initial response. (This is the general function and resp_data() is the base case.)
     if node.data[0]:
         #await sleep_func()
-        print("sender ret data 1")
+        #print("sender ret data 1")
         seperate = ","
         payload = node.data[0]
         path = node.data[1]
@@ -415,7 +415,7 @@ def ret_data():
         logger_all.info("Total number of messages %d", node.all_icr)
         logger_ret.info("Number of return data messages " + str(node.ret_icr))
 
-        print(data)
+        #print(data)
         print("Forwarding return data to next hop")
         #####Clean the node's data after sending the message
         node.data = ("","")
@@ -436,10 +436,11 @@ def setup_logger(logger_name, log_file, level=logging.INFO):
 
 
 def async_main():
-    print("Press \033[1;32mEsc\033[0m to exit")
-    print("Press \033[1;32mi\033[0m   to send")
-    print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
+    #print("Press \033[1;32mEsc\033[0m to exit")
+    #print("Press \033[1;32mi\033[0m   to send")
+    #print("Press \033[1;32ms\033[0m   to send cpu temperature every 10 seconds")
     ##### Loggers to keep count of number of messages, and number of each type of messages sent
+    print("Mesh Network Prototype: Start")
     setup_logger('log_all', "log_all.txt")
     setup_logger('log_ack', "log_ack.txt")
     setup_logger('log_resp', "log_resp.txt")
@@ -450,10 +451,10 @@ def async_main():
     setup_logger('log_fack', "log_fack.txt")
     setup_logger('log_receive', "log_receive.txt")
 
-    print("main checkpoint 1")
+    #print("main checkpoint 1")
 
     global logger_all, logger_ack, logger_fack, logger_for, logger_hb, logger_req, logger_resp, logger_ret
-    print("main checkpoint 2")
+    #print("main checkpoint 2")
     logger_all = logging.getLogger('log_all')
     logger_ack = logging.getLogger('log_ack')
     logger_resp = logging.getLogger('log_resp')
@@ -463,7 +464,7 @@ def async_main():
     logger_req = logging.getLogger('log_req')
     logger_fack = logging.getLogger('log_fack')
     logger_receive = logging.getLogger('log_receive')
-    print("main checkpoint 3")
+    #print("main checkpoint 3")
 
 
 
