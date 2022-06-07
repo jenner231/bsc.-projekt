@@ -84,7 +84,7 @@ node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=n_addr,ack_info=(0,
 
 def heartbeat():
     seperate = ","
-    print("heartbeat 1")
+    #print("heartbeat 1")
     #node.reachable_dev.clear()
     #send data with ack id, wait for answer, if we get answer, note addr of answering node
     offset_frequence = int(18)
@@ -96,7 +96,7 @@ def heartbeat():
     #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
-    print(data)
+    #print(data)
     node.send(data)
     node.all_icr += 1
     node.hb_icr += 1
@@ -130,7 +130,7 @@ def request_cpu_data():
         # broadcast a request to end_node for it's "sensor" data, here, cpu temp
         #####We seperate with commas so its easier to decode which on the other end
     for i in node.reachable_dev:
-        print(i[0])
+        #print(i[0])
         n_id = int(i[0])
         if n_id == end_node:
             data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
