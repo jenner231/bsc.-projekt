@@ -422,7 +422,7 @@ def ret_data():
         sys.stdout.flush()
 
     #####https://stackoverflow.com/questions/11232230/logging-to-two-files-with-different-settings reference
-def setup_logger(logger_name, log_file, level=logging.WARNING):
+def setup_logger(logger_name, log_file, level=logging.INFO):
     l = logging.getLogger(logger_name)
     formatter = logging.Formatter('%(message)s')
     fileHandler = logging.FileHandler(log_file, mode='w')
