@@ -127,14 +127,16 @@ def request_cpu_data():
         
         # broadcast a request to end_node for it's "sensor" data, here, cpu temp
         #####We seperate with commas so its easier to decode which on the other end
-    for i in node.reachable_dev:
+    #for i in node.reachable_dev:
         #print(i[0])
-        n_id = int(i[0])
-        if n_id == end_node:
-            data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
-            in_reach = True
-    if not in_reach:
-        data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
+     #   n_id = int(i[0])
+      #  if n_id == end_node:
+       #     data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
+        #    in_reach = True
+    #if not in_reach:
+    #    data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
+    data = bytes([int(1)>>8]) + bytes([int(1)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
+    
     node.send(data)
     node.all_icr += 1
     node.req_icr += 1
