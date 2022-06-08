@@ -476,9 +476,7 @@ def async_main():
     s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
     timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
     m = timer.minute
-    s = timer.second
-    ms = timer.microsecond / 1000000
-    float_sec = float(s) + ms
+
 
     cycle = 60
     slot_start = (int(node.addr) / (node.number_of_nodes + 1)) * cycle
