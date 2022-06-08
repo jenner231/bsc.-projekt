@@ -64,6 +64,7 @@ class sx126x:
     req_icr = 0
     fack_icr = 0
     receive_icr = 0
+    error_icr = 0
 
 
 
@@ -460,7 +461,7 @@ class sx126x:
                 pass
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
-    def receive(self, log_receive):
+    def receive(self, log_receive, log_error):
         if self.ser.inWaiting() > 0:
             #print("receive checkpoint 1")
             #####Sleep has to be appropriate. If too small, it will not read the entire message!!
@@ -477,50 +478,60 @@ class sx126x:
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
-            if int(chr(r_buff[5])) == 0:
-                #print("heartbeat check 1")
-                #print(r_buff_in_string)
-                timer = r_buff_in_string[3]
-                dateT = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
-                m = int(dateT.strftime("%M")) * 60
-                s = int(dateT.strftime("%S"))
-                total_seconds = m + s
-                #print("heartbeat check 2")
-                self.reachable_dev.append((int((r_buff[1]<<8) + r_buff[2]), total_seconds))
-
-
-                #self.reachable_dev[1] = self.reachable_dev[1] + str()
-                #self.reachable_dev[0] = self.reachable_dev[0] + str((r_buff[1]<<8) + r_buff[2])
-                
-                print("Neighbour table: " + str(self.reachable_dev))
-            elif int(chr(r_buff[5])) == 1:
-                #print("Receive checkpoint 4")
-                self.check_message(r_buff_in_string)
-                
-                #print("Noted ack_id")
-            elif int(chr(r_buff[5])) == 2:
-                #print("checkpoint: ack_id = 2, we're returning data")
-                self.ret_data(r_buff_in_string)
-            elif int(chr(r_buff[5])) == 3:
-                ####If we're in here the message sent has path in 3rd slot
-                #print("Ack test receive")
-                print(r_buff_in_string[3])
-                print(r_buff_in_string[-1])
-                if r_buff_in_string[3] == r_buff_in_string[-1]:
-                    #####This value is used in forward ack function when calling assigning info
-                    self.got_ack = True
-                    print("Acknowledgement has been received successfully")
-                else:
-                    #####get path from r_buff_in_string and pass to forward ack function in main file
+            if len(r_buff[5]) == 1:
+                if int(chr(r_buff[5])) == 0:
+                    #print("heartbeat check 1")
                     #print(r_buff_in_string)
-                    self.ack_info = (r_buff_in_string[3], r_buff_in_string[4])
-                    self.forward_ack = True
-                    print("Forwarding acknowledgement message")
+                    timer = r_buff_in_string[3]
+                    dateT = datetime.datetime.strptime(timer, '%d-%m-%y %H:%M:%S')
+                    m = int(dateT.strftime("%M")) * 60
+                    s = int(dateT.strftime("%S"))
+                    total_seconds = m + s
+                    #print("heartbeat check 2")
+                    self.reachable_dev.append((int((r_buff[1]<<8) + r_buff[2]), total_seconds))
+
+
+                    #self.reachable_dev[1] = self.reachable_dev[1] + str()
+                    #self.reachable_dev[0] = self.reachable_dev[0] + str((r_buff[1]<<8) + r_buff[2])
+                    
+                    print("Neighbour table: " + str(self.reachable_dev))
+                elif int(chr(r_buff[5])) == 1:
+                    #print("Receive checkpoint 4")
+                    self.check_message(r_buff_in_string)
+                    
+                    #print("Noted ack_id")
+                elif int(chr(r_buff[5])) == 2:
+                    #print("checkpoint: ack_id = 2, we're returning data")
+                    self.ret_data(r_buff_in_string)
+                elif int(chr(r_buff[5])) == 3:
+                    ####If we're in here the message sent has path in 3rd slot
+                    #print("Ack test receive")
+                    print(r_buff_in_string[3])
+                    print(r_buff_in_string[-1])
+                    if r_buff_in_string[3] == r_buff_in_string[-1]:
+                        #####This value is used in forward ack function when calling assigning info
+                        self.got_ack = True
+                        print("Acknowledgement has been received successfully")
+                    else:
+                        #####get path from r_buff_in_string and pass to forward ack function in main file
+                        #print(r_buff_in_string)
+                        self.ack_info = (r_buff_in_string[3], r_buff_in_string[4])
+                        self.forward_ack = True
+                        print("Forwarding acknowledgement message")
+
+                else:
+                    #error handling if ack_id invalid value
+                    self.error_icr += 1
+                    log_error.info("Number of error messages %d", self.error_icr)
+                    print("Unknown message type")
 
             else:
-                #error handling if ack_id invalid value
+                print(len(r_buff[5]))
+                self.error_icr += 1
+                log_error.info("Number of error messages %d", self.error_icr)
                 print("Unknown message type")
-            
+                
+                
             # print the rssi
             if self.rssi:
                 # print('\x1b[3A',end='\r')

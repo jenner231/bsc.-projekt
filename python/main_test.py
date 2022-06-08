@@ -452,6 +452,7 @@ def async_main():
     setup_logger('log_req', "log_req.txt")
     setup_logger('log_fack', "log_fack.txt")
     setup_logger('log_receive', "log_receive.txt")
+    setup_logger('log_error', "log_error.txt")
 
     #print("main checkpoint 1")
 
@@ -466,6 +467,7 @@ def async_main():
     logger_req = logging.getLogger('log_req')
     logger_fack = logging.getLogger('log_fack')
     logger_receive = logging.getLogger('log_receive')
+    logger_error = logging.getLogger('log_error')
     #print("main checkpoint 3")
 
 
@@ -548,7 +550,7 @@ def async_main():
         #         #press c to cancel
                 
         #             #await asyncio.sleep(10) 
-        node.receive(logger_receive)
+        node.receive(logger_receive, logger_error)
         # if timer != 0:
         #     task_return = asyncio.create_task(return_ack())
         #     await task_return
