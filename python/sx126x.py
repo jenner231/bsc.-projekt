@@ -472,6 +472,8 @@ class sx126x:
             #print("receive checkpoint 2")
             rec = str(r_buff)
             r_buff_in_string = rec.split(",")
+            size_rbuff = r_buff[5]
+            print(len(str(size_rbuff)))
             print(r_buff)
             print(r_buff_in_string)
             #print("receive checkpoint 3")
