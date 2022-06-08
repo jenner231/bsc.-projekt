@@ -162,7 +162,7 @@ def send_ack():
     if node.send_ack == True:
 
         seperate = ","
-        print("Send ack check 1")
+        #print("Send ack check 1")
 
         #node.reachable_dev.clear()
     #  send data with ack id, wait for answer, if we get answer, note addr of answering node
