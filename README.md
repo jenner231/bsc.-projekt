@@ -29,7 +29,9 @@ https://www.waveshare.com/wiki/SX1262_868M_LoRa_HAT
 Now clone this repository onto the PIs and open a terminal. Navigate to the folder to which you have cloned the repository and run the commands:
 
 $ cd bsc.-projekt
+
 $ cd python
+
 $ sudo python3 main_test.py
 
 
