@@ -15,13 +15,25 @@ Each of the PI´s should be configured to enable serial-port. To do so open a te
 
 $ sudo raspi-config
 
-In the config
+In the raspi-config navigate to the Interface option tab, select serial and configure your pi as shown in the images below:
 
 ![image](https://user-images.githubusercontent.com/61544552/172643158-63b5d184-9c0a-4bab-a83d-aac9cf38da8e.png)
 
- 
- 
+The LoRa modules should now be configured with jumpers and attached to the raspberry PI as shown below:
 
+![image](https://user-images.githubusercontent.com/61544552/172643904-0e1c8fbb-17f1-4468-a31a-3cf10872a2d5.png)
+
+For additional information, please refer this website:
+https://www.waveshare.com/wiki/SX1262_868M_LoRa_HAT
+
+Now clone this repository onto the PIs and open a terminal. Navigate to the folder to which you have cloned the repository and run the commands:
+
+$ cd bsc.-projekt
+$ cd python
+$ sudo python3 main_test.py
+
+
+![image](https://user-images.githubusercontent.com/61544552/172646089-53e94d3e-2012-4ed2-85e1-10c7eeffbc81.png)
 
 
 # How to use the project
