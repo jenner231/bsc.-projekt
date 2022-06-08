@@ -15,17 +15,12 @@
 #    Please refer to another script pc_main.py
 #
 
-from encodings import utf_8
 from multiprocessing import cpu_count
-from pickle import TRUE
-from ssl import ALERT_DESCRIPTION_UNKNOWN_PSK_IDENTITY
 import sys
 import sx126x
-import threading
 import time
 import select
 import termios
-import asyncio
 import tty
 import datetime
 import random
@@ -559,7 +554,7 @@ def async_main():
         #         #press c to cancel
                 
         #             #await asyncio.sleep(10) 
-        node.receive(logger_receive, logger_error)
+        node.receive(logger_receive, logger_error, logger_toa)
         # if timer != 0:
         #     task_return = asyncio.create_task(return_ack())
         #     await task_return
@@ -574,7 +569,6 @@ def async_main():
         send_ack()
         forward_ack()
         ack_wait()
-        log_toa()
         sys.stdout.flush()
 
         #wait asyncio.sleep(0.01)
