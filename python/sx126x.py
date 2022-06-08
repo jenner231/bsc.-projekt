@@ -10,7 +10,6 @@ import datetime
 import sys
 import logging
 from encodings import utf_8
-from main_test import logger_toa
 import number_of_nodes
 
 
@@ -400,7 +399,7 @@ class sx126x:
             pass
         #print("check_message checkpoint 9")
 
-    def ret_data(self, r_buff):
+    def ret_data(self, r_buff, log_toa):
         #print("Check ret_data 1, we're inside")
         #print(r_buff)
         path = r_buff[3]
@@ -422,7 +421,7 @@ class sx126x:
             c_time = float(clock.minute * 60) + float(clock.second) + clock.microsecond
             o_time = float(payload)
             TOA = c_time - o_time
-            logger_toa.info("Time on air: " +str(TOA))
+            log_toa.info("Time on air: " +str(TOA))
             ####r_buff[5] is the backup path. 
             self.ack_info = (r_buff[5], self.end_node)
             #print(self.ack_info)
@@ -467,7 +466,7 @@ class sx126x:
                 pass
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
-    def receive(self, log_receive, log_error):
+    def receive(self, log_receive, log_error, log_toa):
         if self.ser.inWaiting() > 0:
             #print("receive checkpoint 1")
             #####Sleep has to be appropriate. If too small, it will not read the entire message!!
@@ -518,7 +517,7 @@ class sx126x:
                     #print("Noted ack_id")
                 elif int(chr(r_buff[5])) == 2:
                     #print("checkpoint: ack_id = 2, we're returning data")
-                    self.ret_data(r_buff_in_string)
+                    self.ret_data(r_buff_in_string, log_toa)
                 elif int(chr(r_buff[5])) == 3:
                     ####If we're in here the message sent has path in 3rd slot
                     #print("Ack test receive")
