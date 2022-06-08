@@ -10,6 +10,7 @@ import datetime
 import sys
 import logging
 from encodings import utf_8
+from main_test import logger_toa
 import number_of_nodes
 
 
@@ -417,6 +418,11 @@ class sx126x:
         else:
             ###enter here if we're the start node (returning data enters here.)
             print("We received the requested data from Node: " +str(self.end_node) + ", the message is: " + str(payload))
+            clock = datetime.datetime.now()
+            c_time = float(clock.minute * 60) + float(clock.second) + clock.microsecond
+            o_time = float(payload)
+            TOA = c_time - o_time
+            logger_toa.info("Time on air: " +str(TOA))
             ####r_buff[5] is the backup path. 
             self.ack_info = (r_buff[5], self.end_node)
             #print(self.ack_info)

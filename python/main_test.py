@@ -113,7 +113,10 @@ def request_cpu_data():
     #####Start out checking if we have nodes that we haven't heard from in a while
     node.compare_time()
     ###choice chooses a random i in the range 1-max number of nodes but excludes its own address
-    end_node = choice([i for i in range(1,node.number_of_nodes+1) if i not in [node.addr]])
+    
+    #end_node = choice([i for i in range(1,node.number_of_nodes+1) if i not in [node.addr]])
+
+    end_node = 2
     #print(end_node)
     seperate = ","
     in_reach = False
@@ -360,7 +363,11 @@ def resp_data():
             node.response_time = old_m + old_s
             node.wait_ack = True
 
-        temp = str("CPU Temperature:"+str(get_cpu_temp())+ " C")
+        clock = datetime.datetime.now()
+        ####TOA is time on air and is just a current time so we can calc time on air on the other end
+        TOA = float(clock.minute * 60) + float(clock.second) + clock.microsecond
+        #temp = str("CPU Temperature:"+str(get_cpu_temp())+ " C")
+        temp = str(TOA)
 
         if len(node.path) == 1:
             path = ""
@@ -437,6 +444,8 @@ def setup_logger(logger_name, log_file, level=logging.INFO):
     #l.addHandler(streamHandler)
 
 
+
+
 def async_main():
     #print("Press \033[1;32mEsc\033[0m to exit")
     #print("Press \033[1;32mi\033[0m   to send")
@@ -453,6 +462,7 @@ def async_main():
     setup_logger('log_fack', "log_fack.txt")
     setup_logger('log_receive', "log_receive.txt")
     setup_logger('log_error', "log_error.txt")
+    setup_logger('log_toa', "log_toa.txt")
 
     #print("main checkpoint 1")
 
@@ -468,6 +478,7 @@ def async_main():
     logger_fack = logging.getLogger('log_fack')
     logger_receive = logging.getLogger('log_receive')
     logger_error = logging.getLogger('log_error')
+    logger_toa = logging.getLogger('log_toa')
     #print("main checkpoint 3")
 
 
@@ -563,6 +574,7 @@ def async_main():
         send_ack()
         forward_ack()
         ack_wait()
+        log_toa()
         sys.stdout.flush()
 
         #wait asyncio.sleep(0.01)
