@@ -421,6 +421,8 @@ class sx126x:
             c_time = float(clock.minute * 60) + float(clock.second) + clock.microsecond
             o_time = float(payload)
             TOA = c_time - o_time
+            print(payload)
+            print(TOA)
             log_toa.info("Time on air: " +str(TOA))
             ####r_buff[5] is the backup path. 
             self.ack_info = (r_buff[5], self.end_node)
