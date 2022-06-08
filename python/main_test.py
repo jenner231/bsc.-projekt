@@ -360,7 +360,7 @@ def resp_data():
 
         clock = datetime.datetime.now()
         ####TOA is time on air and is just a current time so we can calc time on air on the other end
-        TOA = float(clock.minute * 60) + float(clock.second) + clock.microsecond
+        TOA = float(clock.minute * 60) + float(clock.second) + (clock.microsecond / 1000000)
         #temp = str("CPU Temperature:"+str(get_cpu_temp())+ " C")
         temp = str(TOA)
 

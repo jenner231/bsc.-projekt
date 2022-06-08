@@ -418,7 +418,7 @@ class sx126x:
             ###enter here if we're the start node (returning data enters here.)
             print("We received the requested data from Node: " +str(self.end_node) + ", the message is: " + str(payload))
             clock = datetime.datetime.now()
-            c_time = float(clock.minute * 60) + float(clock.second) + clock.microsecond
+            c_time = float(clock.minute * 60) + float(clock.second) + (clock.microsecond / 1000000)
             o_time = float(payload)
             TOA = c_time - o_time
             print(payload)
