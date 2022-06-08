@@ -111,7 +111,7 @@ def request_cpu_data():
     
     #end_node = choice([i for i in range(1,node.number_of_nodes+1) if i not in [node.addr]])
 
-    end_node = 2
+    end_node = 4
     #print(end_node)
     seperate = ","
     in_reach = False
