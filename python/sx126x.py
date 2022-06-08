@@ -111,8 +111,8 @@ class sx126x:
         4800:0x03,
         9600:0x04,
         19200:0x05,
-        38400:0x06,
-        62500:0x07
+        38400:0x06,#Closest estimate to this value is BW=500, SF6, CR=1 or BW=500, SF7, CR=4
+        62500:0x07 #BW= 500KHz, SF5, CR=1
     }
 
     lora_power_dic = {
