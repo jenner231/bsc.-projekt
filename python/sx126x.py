@@ -473,8 +473,6 @@ class sx126x:
             rec = str(r_buff)
             r_buff_in_string = rec.split(",")
 
-
-            size_ackid = r_buff_in_string[2]
     
             #print("receive checkpoint 3")
             #####Made a check to see if the message was for us
@@ -482,6 +480,15 @@ class sx126x:
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
             try:
+                print(int(chr(r_buff[5])))
+                if int(chr(r_buff[5])) == 0:
+                    pass
+
+            except:
+                self.error_icr += 1
+                log_error.info("Number of error messages %d", self.error_icr)
+                print("Unknown message type")
+            else:
                 if int(chr(r_buff[5])) == 0:
                     #print("heartbeat check 1")
                     #print(r_buff_in_string)
@@ -527,11 +534,6 @@ class sx126x:
                     self.error_icr += 1
                     log_error.info("Number of error messages %d", self.error_icr)
                     print("Unknown message type")
-
-            except:
-                self.error_icr += 1
-                log_error.info("Number of error messages %d", self.error_icr)
-                print("Unknown message type")
                 
                 
             # print the rssi
