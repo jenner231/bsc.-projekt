@@ -481,7 +481,7 @@ class sx126x:
             #r_buff[0] == receiving node address, r_buff[1] == sender node address, r_buff[2] == frequency, r_buff[3] == node_id of receiver, r_buff[4] == sender node_id, r_buff[5] == ack_id, r_buff[6]+ == payload
             ##### TODO: Make the else statement reroute the message to the right owner if in routing table or send to next hop closer to the right owner if not directly connected.
             ###This ugly ass else/if statement is only here because switch statements are only available for python3.10 and newer.
-            if len(str(size_ackid)) == 1:
+            try:
                 if int(chr(r_buff[5])) == 0:
                     #print("heartbeat check 1")
                     #print(r_buff_in_string)
@@ -528,8 +528,7 @@ class sx126x:
                     log_error.info("Number of error messages %d", self.error_icr)
                     print("Unknown message type")
 
-            else:
-                print(sizeof(r_buff[5]))
+            except:
                 self.error_icr += 1
                 log_error.info("Number of error messages %d", self.error_icr)
                 print("Unknown message type")
