@@ -74,7 +74,7 @@ def get_cpu_temp():
 #
 
 # node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=433,addr=0,power=22,rssi=False,air_speed=2400,relay=False)
-node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=n_addr,ack_info=(0,0),power=22,rssi=True,air_speed=62500,relay=False)
+node = sx126x.sx126x(serial_num = "/dev/ttyS0",freq=868,addr=n_addr,ack_info=(0,0),power=22,rssi=True,air_speed=2400,relay=False)
 
 
 def heartbeat():
@@ -103,15 +103,14 @@ def heartbeat():
    #await asyncio.sleep(1)
 
 #
-def request_cpu_data():
+def request_data():
     #print("req check 1")
     #####Start out checking if we have nodes that we haven't heard from in a while
     node.compare_time()
     ###choice chooses a random i in the range 1-max number of nodes but excludes its own address
     
-    #end_node = choice([i for i in range(1,node.number_of_nodes+1) if i not in [node.addr]])
+    end_node = choice([i for i in range(1,node.number_of_nodes+1) if i not in [node.addr]])
 
-    end_node = 4
     #print(end_node)
     seperate = ","
     in_reach = False
@@ -127,15 +126,14 @@ def request_cpu_data():
         
         # broadcast a request to end_node for it's "sensor" data, here, cpu temp
         #####We seperate with commas so its easier to decode which on the other end
-    #for i in node.reachable_dev:
+    for i in node.reachable_dev:
         #print(i[0])
-     #   n_id = int(i[0])
-      #  if n_id == end_node:
-       #     data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
-        #    in_reach = True
-    #if not in_reach:
-    #    data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
-    data = bytes([int(1)>>8]) + bytes([int(1)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
+        n_id = int(i[0])
+        if n_id == end_node:
+            data = bytes([int(end_node)>>8]) + bytes([int(end_node)&0xff]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
+            in_reach = True
+    if not in_reach:
+        data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
     
     node.send(data)
     node.all_icr += 1
@@ -145,18 +143,7 @@ def request_cpu_data():
     print("We requested data from: " + str(end_node))
     node.end_node = str(end_node)
     sys.stdout.flush()
-    # broadcast the cpu temperature at 868.125MHz
-    #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() + "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
-    #node.send(data)
-    #time.sleep(0.2)
-    #rec = asyncio.create_task(send_cpu_continue())
-    #await rec
-    #timer_task = Timer(seconds,send_cpu_continue)
-    #timer_task.start()
-    #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + str(ack_id).encode() +  "CPU Temperature:".encode()+str(await get_cpu_temp()).encode()+" C".encode()
-    #node.send(data)
-    #time.sleep(0.2)
-    #timer_task.cancel()
+
 
 def send_ack():
     if node.send_ack == True:
@@ -164,7 +151,6 @@ def send_ack():
         seperate = ","
         #print("Send ack check 1")
 
-        #node.reachable_dev.clear()
     #  send data with ack id, wait for answer, if we get answer, note addr of answering node
         offset_frequence = 18
         ack_id = 3
@@ -207,27 +193,6 @@ def send_ack():
         node.send_ack = False
         sys.stdout.flush()
         #await asyncio.sleep(1)
-
-
-def cancel_cpu(cont):
-    timer = 0
-    max_time = 10
-
-    while cont:
-        print(timer)
-        if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
-            if sys.stdin.read(1) == '\x63':
-                print('\x1b[1A', end='\r')
-                print(" " * 100)
-                print('\x1b[1A', end='\r')
-                cont = False
-                print("Stopped sending data")
-                return cont
-        if max_time < timer:
-            return cont
-        else:
-            timer = timer + 0.1
-            time.sleep(0.1)
 
 
 #TODO: Look at this function?
@@ -278,6 +243,7 @@ def forward_ack():
         sys.stdout.flush()
 
 def ack_wait():
+    #####The comment under this should be fixed by the statement in resp_data from the block following if len(node.backup_path) == 0:
     #####This function is kinda dangerous if multiple nodes can send at the same time or in short succession as it allows the backup_path to be modified while node is still waiting for an acknowledgement.
     if node.wait_ack == True:
 
@@ -516,13 +482,15 @@ def async_main():
             m = new_m 
 
 
+        node.receive(logger_receive, logger_error, logger_toa)
+
         #####Mac protocol to slot each node into timeslots and give a slot to hearbeats, which is then also split into slots.
         if c_t > hb_slot_start and c_t < hb_next_start and (not node.has_sent_hb):
             heartbeat()
             node.has_sent_hb = True
         
         if c_t > slot_start and c_t < slot_end and (not node.has_sent_mes):
-            request_cpu_data()
+            request_data()
             node.has_sent_mes = True
 
 
@@ -556,7 +524,6 @@ def async_main():
         #         #press c to cancel
                 
         #             #await asyncio.sleep(10) 
-        node.receive(logger_receive, logger_error, logger_toa)
         # if timer != 0:
         #     task_return = asyncio.create_task(return_ack())
         #     await task_return
