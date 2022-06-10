@@ -447,8 +447,9 @@ def async_main():
 
 
     ##### Variables in order to slot the network, determining when to heartbeat and request messages depending on number of nodes in the network
-    s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
-    timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
+    #s_timer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
+    #timer = datetime.datetime.strptime(s_timer, '%d-%m-%y %H:%M:%S')
+    timer = datetime.datetime.now()
     m = timer.minute
 
 
