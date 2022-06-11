@@ -470,7 +470,7 @@ class sx126x:
                 pass
 
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
-    def receive(self, log_receive):#, log_error, log_toa):
+    def receive(self, log_receive, log_error, log_toa):
         if self.ser.inWaiting() > 0:
             timer = datetime.datetime.now()
             t = float(timer.second) + (timer.microsecond / 1000000)
