@@ -278,7 +278,6 @@ def sleep_func():
 
 def for_mes():
     if(node.forward != 0):
-        sleep_func()
         #print("for_mes 1")
         seperate = ","
         in_reach = False
@@ -294,6 +293,7 @@ def for_mes():
                 in_reach = True
         if not in_reach:
             data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
+            sleep_func()
         node.send(data, logger_send)
         node.all_icr += 1
         node.for_icr += 1
