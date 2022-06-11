@@ -92,7 +92,7 @@ def heartbeat():
     #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
     data = bytes([int(65535)>>8]) + bytes([int(65535)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
     #print(data)
-    node.send(data)
+    node.send(data, logger_send)
     node.all_icr += 1
     node.hb_icr += 1
     logger_all.info('Total number of messages %d', node.all_icr)
@@ -135,7 +135,7 @@ def request_data():
     if not in_reach:
         data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
     
-    node.send(data)
+    node.send(data, logger_send)
     node.all_icr += 1
     node.req_icr += 1
     logger_all.info("Total number of messages %d", node.all_icr)
@@ -182,7 +182,7 @@ def send_ack():
         #         high 8bit address           low 8bit address         frequency                  address                  address                   frequency
         #data = bytes([255]) + bytes([255]) + bytes([18]) + bytes([255]) + bytes([255]) + bytes([12]) + "CPU Temperature:".encode()+str(get_cpu_temp()).encode()+" C".encode()
         #data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode()
-        node.send(data)
+        node.send(data, logger_send)
         node.all_icr += 1
         node.ack_icr += 1
         logger_all.info("Total number of messages %d", node.all_icr)
@@ -232,7 +232,7 @@ def forward_ack():
                 path).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode()
             #print("forward_ack check path length more than 4")
         #print("forward_ack check 4")
-        node.send(data)
+        node.send(data, logger_send)
         node.all_icr += 1
         node.fack_icr += 1
         logger_all.info("Total number of messages %d", node.all_icr)
@@ -294,7 +294,7 @@ def for_mes():
                 in_reach = True
         if not in_reach:
             data = bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + bytes([255]) + bytes([255]) + bytes([18]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(end_node).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(timer).encode() + str(seperate).encode()
-        node.send(data)
+        node.send(data, logger_send)
         node.all_icr += 1
         node.for_icr += 1
         logger_all.info("Total number of messages %d", node.all_icr)
@@ -340,7 +340,7 @@ def resp_data():
         ack_id = 2
     
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(temp).encode() + str(seperate).encode() + str(node.backup_path).encode() + str(seperate).encode()
-        node.send(data)
+        node.send(data, logger_send)
         node.all_icr += 1
         node.resp_icr += 1
         logger_all.info("Total number of messages %d", node.all_icr)
@@ -377,7 +377,7 @@ def ret_data():
 
         #####node.get_ack[1] is the sender address stored in the get_ack function       
         data = bytes([int(send_to)>>8]) + bytes([int(send_to)&0xff]) + bytes([offset_frequence]) + str(seperate).encode() + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + str(seperate).encode() + str(ack_id).encode() + str(seperate).encode() + str(path).encode() + str(seperate).encode() + str(payload).encode() + str(seperate).encode() + str(backup_path).encode() + str(seperate).encode()
-        node.send(data)
+        node.send(data, logger_send)
 
         ##### increment counter for number of messages sent and number of type of message sent
         node.all_icr += 1
@@ -426,10 +426,11 @@ def async_main():
     setup_logger('log_receive', "log_receive.txt")
     setup_logger('log_error', "log_error.txt")
     setup_logger('log_toa', "log_toa.txt")
+    setup_logger('log_send', "log_send.txt")
 
     #print("main checkpoint 1")
 
-    global logger_all, logger_ack, logger_fack, logger_for, logger_hb, logger_req, logger_resp, logger_ret
+    global logger_all, logger_ack, logger_fack, logger_for, logger_hb, logger_req, logger_resp, logger_ret, logger_send
     #print("main checkpoint 2")
     logger_all = logging.getLogger('log_all')
     logger_ack = logging.getLogger('log_ack')
@@ -442,6 +443,7 @@ def async_main():
     logger_receive = logging.getLogger('log_receive')
     logger_error = logging.getLogger('log_error')
     logger_toa = logging.getLogger('log_toa')
+    logger_send = logging.getLogger('log_send')
     #print("main checkpoint 3")
 
 

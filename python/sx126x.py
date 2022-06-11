@@ -111,7 +111,7 @@ class sx126x:
         4800:0x03,
         9600:0x04,
         19200:0x05,
-        38400:0x06,#Closest estimate to this value is BW=500, SF6, CR=1 or BW=500, SF7, CR=4
+        38400:0x06,#Closest estimate to this value is BW=500, SF6, CR=1 or BW=500, SF7,
         62500:0x07 #BW= 500KHz, SF5, CR=1
     }
 
@@ -292,11 +292,14 @@ class sx126x:
 # the data format like as following
 # "node address,frequence,payload"
 # "20,868,Hello World"
-    def send(self,data):
+    def send(self,data, logger_send):
         GPIO.output(self.M1,GPIO.LOW)
         GPIO.output(self.M0,GPIO.LOW)
         time.sleep(0.1)
         
+        timer = datetime.datetime.now()
+        t = float(timer.second) + (timer.microsecond / 1000000)
+        logger_send.info(t)
         self.ser.write(data)
         # if self.rssi == True:
             # self.get_channel_rssi()
@@ -432,7 +435,6 @@ class sx126x:
             self.send_ack = True
 
     def compare_time(self):
-        #####TODO: Test if this function works at beginning of hours!! should work with the new timeout varaible
         #print("compare time check 1")
         ####TODO: maybe fix this shit so we dont have to make the object as a string and then convert it to a datetime object.
         datetimer = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
@@ -470,10 +472,14 @@ class sx126x:
     #####Added functionality for receiving node_id as we expect self.ser.inWaiting() to have 1 extra entry in its list.
     def receive(self, log_receive, log_error, log_toa):
         if self.ser.inWaiting() > 0:
+            timer = datetime.datetime.now()
+            t = float(timer.second) + (timer.microsecond / 1000000)
+            log_receive.info(t)
             #print("receive checkpoint 1")
             #####Sleep has to be appropriate. If too small, it will not read the entire message!!
             time.sleep(0.3)
-            self.receive_icr += 1
+            #self.receive_icr += 1
+            #log_receive.info("Number of received messages %d", self.receive_icr)
             log_receive.info("Number of received messages %d", self.receive_icr)
             r_buff = self.ser.read(self.ser.inWaiting())
             #print("receive checkpoint 2")
