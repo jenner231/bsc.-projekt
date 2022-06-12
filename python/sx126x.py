@@ -297,10 +297,10 @@ class sx126x:
         GPIO.output(self.M0,GPIO.LOW)
         time.sleep(0.1)
         
+        self.ser.write(data)
         timer = datetime.datetime.now()
         t = float(timer.second) + (timer.microsecond / 1000000)
         logger_send.info(t)
-        self.ser.write(data)
         # if self.rssi == True:
             # self.get_channel_rssi()
         time.sleep(0.1)
