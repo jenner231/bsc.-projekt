@@ -109,8 +109,8 @@ def request_data():
     node.compare_time()
     ###choice chooses a random i in the range 1-max number of nodes but excludes its own address
     
-    end_node = choice([i for i in range(1,node.number_of_nodes+1) if i not in [node.addr]])
-
+    #end_node = choice([i for i in range(1,node.number_of_nodes+1) if i not in [node.addr]])
+    end_node = 3
     #print(end_node)
     seperate = ","
     in_reach = False
