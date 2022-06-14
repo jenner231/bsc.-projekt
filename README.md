@@ -27,7 +27,20 @@ The LoRa modules should now be configured with jumpers and attached to the raspb
 For additional information, please refer this website:
 https://www.waveshare.com/wiki/SX1262_868M_LoRa_HAT
 
-Now clone this repository onto the PIs and open a terminal. Navigate to the folder to which you have cloned the repository and run the commands:
+Create a folder called address in the following directory /home/pi, then create a python file and call it address.py. Then copy the following code
+and paste it into the file:
+
+class node:
+	n_address = 1
+
+Save the file and exit.
+
+Now clone this repository onto the PIs. The project should be cloned into the home directory /home/pi. 
+
+Open the bsc.-projekt file and navigate to python folder. Inside the python folder is a file called "number_of_nodes.py". Open the file and change the number of nodes in
+your setup, to ensure that slotting will work correctly.
+
+Open a terminal and run the commands:
 
 $ cd bsc.-projekt
 
